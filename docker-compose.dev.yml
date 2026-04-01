@@ -1,0 +1,32 @@
+version: '3.9'
+
+# Development override — run with:
+# docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
+
+services:
+  postgres:
+    ports:
+      - "5432:5432"
+
+  backend:
+    build:
+      context: ./backend
+      target: builder         # use builder stage for hot reload
+    volumes:
+      - ./backend/src:/app/src
+    command: npm run start:dev
+    environment:
+      NODE_ENV: development
+
+  frontend:
+    build:
+      context: ./frontend
+      target: builder
+    volumes:
+      - ./frontend/src:/app/src
+    command: npm run dev
+    environment:
+      NODE_ENV: development
+
+  nginx:
+    profiles: ["!dev"]        # skip nginx in dev

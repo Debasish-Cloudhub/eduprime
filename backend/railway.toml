@@ -1,0 +1,16 @@
+# railway.toml — EduPrime Railway Deployment
+# Docs: https://docs.railway.app/reference/config-as-code
+
+[build]
+builder = "DOCKERFILE"
+
+# ─── Backend Service ──────────────────────────────────────────────────────────
+# Set this file at: backend/railway.toml
+# Railway auto-detects Dockerfile in the service root
+
+[deploy]
+startCommand = "npx prisma migrate deploy && node dist/main"
+healthcheckPath = "/api/v1/health"
+healthcheckTimeout = 60
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 3

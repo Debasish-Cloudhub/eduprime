@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [{ "name": "next" }],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "../../hooks/useAuth": ["./src/hooks/useAuth"],
+      "../../lib/api": ["./src/lib/api"],
+      "../../../lib/api": ["./src/lib/api"],
+      "../../../hooks/useAuth": ["./src/hooks/useAuth"],
+      "../../../components/ui/Sidebar": ["./src/components/ui/Sidebar"],
+      "../../../components/ui/Topbar": ["./src/components/ui/Topbar"],
+      "../../../components/ui/StatCard": ["./src/components/ui/StatCard"],
+      "../../../components/ui/StatusBadge": ["./src/components/ui/StatusBadge"]
+    }
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
+}

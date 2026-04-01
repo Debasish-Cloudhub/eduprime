@@ -1,0 +1,114 @@
+version: '3.9'
+
+services:
+  # ─── PostgreSQL ────────────────────────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: eduprime_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-eduprime}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-eduprime_pass}
+      POSTGRES_DB: ${POSTGRES_DB:-eduprime_db}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-eduprime}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - eduprime_net
+
+  # ─── Backend (NestJS) ──────────────────────────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: eduprime_backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-eduprime}:${POSTGRES_PASSWORD:-eduprime_pass}@postgres:5432/${POSTGRES_DB:-eduprime_db}?schema=public
+      NODE_ENV: ${NODE_ENV:-production}
+      PORT: 4000
+      JWT_SECRET: ${JWT_SECRET:-change_this_in_production}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-7d}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3000}
+      SULEKHA_API_KEY: ${SULEKHA_API_KEY:-}
+      SULEKHA_API_URL: ${SULEKHA_API_URL:-}
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASS: ${SMTP_PASS:-}
+    ports:
+      - "4000:4000"
+    networks:
+      - eduprime_net
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:4000/api/v1/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ─── Frontend (Next.js) ────────────────────────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:4000/api/v1}
+    container_name: eduprime_frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    environment:
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:4000/api/v1}
+      PORT: 3000
+    ports:
+      - "3000:3000"
+    networks:
+      - eduprime_net
+
+  # ─── NGINX Reverse Proxy ───────────────────────────────────────────────────
+  nginx:
+    image: nginx:1.25-alpine
+    container_name: eduprime_nginx
+    restart: unless-stopped
+    depends_on:
+      - backend
+      - frontend
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - nginx_logs:/var/log/nginx
+      - certbot_www:/var/www/certbot:ro
+      - certbot_conf:/etc/letsencrypt:ro
+    networks:
+      - eduprime_net
+
+  # ─── Certbot (SSL) ─────────────────────────────────────────────────────────
+  certbot:
+    image: certbot/certbot:latest
+    container_name: eduprime_certbot
+    volumes:
+      - certbot_www:/var/www/certbot
+      - certbot_conf:/etc/letsencrypt
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+
+volumes:
+  postgres_data:
+  nginx_logs:
+  certbot_www:
+  certbot_conf:
+
+networks:
+  eduprime_net:
+    driver: bridge

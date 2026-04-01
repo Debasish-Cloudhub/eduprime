@@ -1,0 +1,406 @@
+// EduPrime - Production Prisma Schema
+// PostgreSQL + Prisma ORM
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─────────────────────────────────────────────
+// ENUMS
+// ─────────────────────────────────────────────
+
+enum Role {
+  STUDENT
+  SALES_AGENT
+  ADMIN
+  FINANCE
+}
+
+enum LeadStatus {
+  NEW
+  INITIATED
+  IN_PROGRESS
+  DOCS_SUBMITTED
+  OFFER_RECEIVED
+  ENROLLED
+  WON
+  LOST
+  DROPPED
+}
+
+enum LeadSource {
+  SULEKHA
+  WEBSITE
+  REFERRAL
+  WALK_IN
+  SOCIAL_MEDIA
+  OTHER
+}
+
+enum IncentiveSource {
+  EXCEL_FIXED
+  PERCENTAGE_OF_FEES
+  MANUAL_OVERRIDE
+}
+
+enum ExpenseStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum ExpenseCategory {
+  TRAVEL
+  MARKETING
+  OFFICE
+  MEALS
+  COMMUNICATION
+  OTHER
+}
+
+enum SlaStatus {
+  ON_TRACK
+  AT_RISK
+  BREACHED
+}
+
+enum NotificationType {
+  SLA_BREACH
+  SLA_WARNING
+  INACTIVITY
+  ADMIN_REPORT
+  LEAD_ASSIGNED
+  INCENTIVE_LOCKED
+}
+
+// ─────────────────────────────────────────────
+// USER
+// ─────────────────────────────────────────────
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String
+  phone         String?
+  passwordHash  String
+  role          Role      @default(STUDENT)
+  isActive      Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  leads               Lead[]        @relation("AgentLeads")
+  studentProfile      StudentProfile?
+  expenses            Expense[]
+  notifications       Notification[]
+  incentiveRecords    IncentiveRecord[]
+
+  @@index([email])
+  @@index([role])
+}
+
+// ─────────────────────────────────────────────
+// STUDENT PROFILE
+// ─────────────────────────────────────────────
+
+model StudentProfile {
+  id              String    @id @default(cuid())
+  userId          String    @unique
+  user            User      @relation(fields: [userId], references: [id])
+  dateOfBirth     DateTime?
+  address         String?
+  city            String?
+  state           String?
+  pincode         String?
+  qualification   String?
+  targetYear      Int?
+  preferredCountries String[] @default([])
+  documents       Document[]
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+// ─────────────────────────────────────────────
+// COLLEGE & COURSE
+// ─────────────────────────────────────────────
+
+model College {
+  id              String    @id @default(cuid())
+  name            String
+  city            String?
+  state           String?
+  country         String    @default("India")
+  type            String?   // Private / Government / Deemed
+  ranking         Int?
+  website         String?
+  isActive        Boolean   @default(true)
+  excelRowId      String?   // Track source Excel row
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  courses         Course[]
+  leads           Lead[]
+
+  @@index([name])
+  @@index([country])
+}
+
+model Course {
+  id              String    @id @default(cuid())
+  name            String
+  collegeId       String
+  college         College   @relation(fields: [collegeId], references: [id])
+  stream          String?   // Engineering / Medical / MBA / etc.
+  duration        String?   // e.g. "4 years"
+  degree          String?   // B.Tech / M.Tech / MBA / etc.
+  fees            Decimal   @db.Decimal(12, 2)   // Annual fees in INR
+  totalFees       Decimal?  @db.Decimal(12, 2)   // Total program fees
+  incentiveFixed  Decimal?  @db.Decimal(10, 2)   // Fixed incentive from Excel
+  incentivePct    Decimal?  @db.Decimal(5, 2)    // % of fees fallback
+  seats           Int?
+  eligibility     String?
+  description     String?
+  isActive        Boolean   @default(true)
+  excelRowId      String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  leads           Lead[]
+  incentiveRecords IncentiveRecord[]
+
+  @@index([collegeId])
+  @@index([stream])
+}
+
+// ─────────────────────────────────────────────
+// LEAD (CRM Core)
+// ─────────────────────────────────────────────
+
+model Lead {
+  id                String      @id @default(cuid())
+  
+  // Student Info
+  studentName       String
+  studentEmail      String?
+  studentPhone      String
+  city              String?
+  state             String?
+  qualification     String?
+  
+  // Lead Meta
+  source            LeadSource  @default(WEBSITE)
+  status            LeadStatus  @default(NEW)
+  priority          Int         @default(1)   // 1=Low, 2=Medium, 3=High
+  
+  // Assignment
+  agentId           String?
+  agent             User?       @relation("AgentLeads", fields: [agentId], references: [id])
+  
+  // College/Course
+  collegeId         String?
+  college           College?    @relation(fields: [collegeId], references: [id])
+  courseId          String?
+  course            Course?     @relation(fields: [courseId], references: [id])
+  
+  // Financials (locked on WON)
+  feesAtClosure     Decimal?    @db.Decimal(12, 2)
+  incentiveAmount   Decimal?    @db.Decimal(10, 2)
+  incentiveSource   IncentiveSource?
+  incentiveLockedAt DateTime?
+  
+  // SLA
+  slaStatus         SlaStatus   @default(ON_TRACK)
+  slaDueDate        DateTime?
+  slaBreachedAt     DateTime?
+  lastActivityAt    DateTime    @default(now())
+  
+  // Sulekha Sync
+  sulekhaId         String?     @unique
+  sulekhaData       Json?
+  
+  // Notes & Tags
+  notes             String?
+  tags              String[]    @default([])
+  
+  // Timestamps
+  wonAt             DateTime?
+  lostAt            DateTime?
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+
+  // Relations
+  activities        LeadActivity[]
+  incentiveRecord   IncentiveRecord?
+  documents         Document[]
+
+  @@index([status])
+  @@index([agentId])
+  @@index([studentPhone])
+  @@index([sulekhaId])
+  @@index([slaStatus])
+}
+
+// ─────────────────────────────────────────────
+// LEAD ACTIVITY (Audit Trail)
+// ─────────────────────────────────────────────
+
+model LeadActivity {
+  id          String      @id @default(cuid())
+  leadId      String
+  lead        Lead        @relation(fields: [leadId], references: [id])
+  actorId     String?
+  action      String      // "STATUS_CHANGE", "NOTE_ADDED", "AGENT_ASSIGNED", etc.
+  fromValue   String?
+  toValue     String?
+  note        String?
+  metadata    Json?
+  createdAt   DateTime    @default(now())
+
+  @@index([leadId])
+}
+
+// ─────────────────────────────────────────────
+// INCENTIVE RECORD (Single source of truth)
+// ─────────────────────────────────────────────
+
+model IncentiveRecord {
+  id                String          @id @default(cuid())
+  leadId            String          @unique
+  lead              Lead            @relation(fields: [leadId], references: [id])
+  agentId           String
+  agent             User            @relation(fields: [agentId], references: [id])
+  courseId          String
+  course            Course          @relation(fields: [courseId], references: [id])
+  
+  feesAtClosure     Decimal         @db.Decimal(12, 2)
+  incentiveAmount   Decimal         @db.Decimal(10, 2)
+  incentiveSource   IncentiveSource
+  incentivePctUsed  Decimal?        @db.Decimal(5, 2)
+  
+  isLocked          Boolean         @default(false)
+  lockedAt          DateTime?
+  paidAt            DateTime?
+  
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+
+  @@index([agentId])
+}
+
+// ─────────────────────────────────────────────
+// EXPENSE
+// ─────────────────────────────────────────────
+
+model Expense {
+  id          String          @id @default(cuid())
+  agentId     String
+  agent       User            @relation(fields: [agentId], references: [id])
+  category    ExpenseCategory
+  amount      Decimal         @db.Decimal(10, 2)
+  description String
+  receiptUrl  String?
+  status      ExpenseStatus   @default(PENDING)
+  month       Int             // 1-12
+  year        Int
+  approvedBy  String?
+  approvedAt  DateTime?
+  rejectedReason String?
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  @@index([agentId])
+  @@index([status])
+  @@index([month, year])
+}
+
+// ─────────────────────────────────────────────
+// DOCUMENT
+// ─────────────────────────────────────────────
+
+model Document {
+  id            String    @id @default(cuid())
+  name          String
+  url           String
+  type          String    // MARKSHEET / ID_PROOF / OFFER_LETTER / etc.
+  leadId        String?
+  lead          Lead?     @relation(fields: [leadId], references: [id])
+  profileId     String?
+  profile       StudentProfile? @relation(fields: [profileId], references: [id])
+  uploadedBy    String?
+  fileSize      Int?
+  mimeType      String?
+  createdAt     DateTime  @default(now())
+
+  @@index([leadId])
+}
+
+// ─────────────────────────────────────────────
+// NOTIFICATION
+// ─────────────────────────────────────────────
+
+model Notification {
+  id          String            @id @default(cuid())
+  userId      String
+  user        User              @relation(fields: [userId], references: [id])
+  type        NotificationType
+  title       String
+  body        String
+  isRead      Boolean           @default(false)
+  metadata    Json?
+  createdAt   DateTime          @default(now())
+
+  @@index([userId, isRead])
+}
+
+// ─────────────────────────────────────────────
+// SULEKHA SYNC LOG
+// ─────────────────────────────────────────────
+
+model SulekhaSync {
+  id          String    @id @default(cuid())
+  triggeredBy String?   // "CRON" | "MANUAL"
+  status      String    // "RUNNING" | "SUCCESS" | "FAILED"
+  leadsFound  Int       @default(0)
+  leadsCreated Int      @default(0)
+  leadsDuplicate Int    @default(0)
+  errors      Json?
+  startedAt   DateTime  @default(now())
+  completedAt DateTime?
+}
+
+// ─────────────────────────────────────────────
+// SYSTEM CONFIG
+// ─────────────────────────────────────────────
+
+model SystemConfig {
+  id          String    @id @default(cuid())
+  key         String    @unique
+  value       String
+  description String?
+  updatedAt   DateTime  @updatedAt
+
+  @@index([key])
+}
+
+// ─────────────────────────────────────────────
+// EXCEL UPLOAD LOG
+// ─────────────────────────────────────────────
+
+model ExcelUpload {
+  id            String    @id @default(cuid())
+  filename      String
+  uploadedBy    String
+  rowsProcessed Int       @default(0)
+  rowsCreated   Int       @default(0)
+  rowsUpdated   Int       @default(0)
+  rowsFailed    Int       @default(0)
+  errors        Json?
+  status        String    // PROCESSING | SUCCESS | PARTIAL | FAILED
+  createdAt     DateTime  @default(now())
+  completedAt   DateTime?
+}
