@@ -15,12 +15,31 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
   }
 
   async onModuleInit() {
+    console.log('[PrismaService] onModuleInit — beginning database connection sequence');
+    console.log(`[PrismaService] Will attempt up to ${MAX_RETRIES} connections (${RETRY_DELAY_MS}ms between retries)`);
+
+    const dbUrl = process.env.DATABASE_URL;
+    if (!dbUrl) {
+      console.error('[PrismaService] DATABASE_URL environment variable is not set — connection will fail');
+    } else {
+      // Log a redacted URL so we can confirm the host/db without exposing credentials
+      try {
+        const redacted = new URL(dbUrl);
+        redacted.password = '***';
+        console.log(`[PrismaService] DATABASE_URL host: ${redacted.host}, pathname: ${redacted.pathname}`);
+      } catch {
+        console.error('[PrismaService] DATABASE_URL is set but could not be parsed as a URL');
+      }
+    }
+
     let lastError: unknown;
 
     for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+      console.log(`[PrismaService] Connection attempt ${attempt}/${MAX_RETRIES}...`);
       try {
         await this.$connect();
         this.logger.log('Database connection established successfully');
+        console.log(`[PrismaService] ✅ Database connected on attempt ${attempt}/${MAX_RETRIES}`);
         return;
       } catch (err) {
         lastError = err;
@@ -29,9 +48,14 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
           `Database connection attempt ${attempt}/${MAX_RETRIES} failed: ${message}`,
           err instanceof Error ? err.stack : undefined,
         );
+        console.error(`[PrismaService] ❌ Attempt ${attempt}/${MAX_RETRIES} failed: ${message}`);
+        if (err instanceof Error && err.stack) {
+          console.error(`[PrismaService] Stack: ${err.stack}`);
+        }
 
         if (attempt < MAX_RETRIES) {
           this.logger.warn(`Retrying in ${RETRY_DELAY_MS / 1000}s...`);
+          console.log(`[PrismaService] Waiting ${RETRY_DELAY_MS}ms before next attempt...`);
           await new Promise((resolve) => setTimeout(resolve, RETRY_DELAY_MS));
         }
       }
@@ -46,6 +70,13 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
         `The application will start in a degraded state. Last error: ${message}`,
       lastError instanceof Error ? lastError.stack : undefined,
     );
+    console.error(
+      `[PrismaService] ❌ All ${MAX_RETRIES} connection attempts exhausted. ` +
+        `Application starting in degraded state. Last error: ${message}`,
+    );
+    if (lastError instanceof Error && lastError.stack) {
+      console.error(`[PrismaService] Final error stack: ${lastError.stack}`);
+    }
   }
 
   async onModuleDestroy() {

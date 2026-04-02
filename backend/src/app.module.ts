@@ -36,4 +36,8 @@ import { HealthModule } from './health/health.module';
     HealthModule,
   ],
 })
-export class AppModule {}
+export class AppModule {
+  constructor() {
+    console.log('[AppModule] Module instantiated — all imports resolved');
+  }
+}
