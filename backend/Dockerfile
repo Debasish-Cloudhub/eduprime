@@ -1,18 +1,16 @@
-[build]
-builder = "DOCKERFILE"
+FROM node:20-alpine
 
-[deploy]
-startCommand = "npx prisma migrate deploy && node dist/main.js"
-healthcheckPath = "/api/v1/health"
-healthcheckTimeout = 120
-restartPolicyType = "ON_FAILURE"
-restartPolicyMaxRetries = 3
-```
+RUN apk add --no-cache openssl
 
-The only change is line 7: `/api/v1` → `/api/v1/health`
+WORKDIR /app
 
----
+COPY package*.json ./
+RUN npm ci
 
-**Then also add this in Railway → Variables:**
-```
-NODE_ENV = production
+COPY . .
+RUN npx prisma generate
+RUN npm run build
+
+EXPOSE 8080
+
+CMD ["node", "dist/main.js"]
