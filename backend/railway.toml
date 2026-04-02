@@ -1,5 +1,5 @@
 [deploy]
-startCommand = "sh start.sh"
+startCommand = "npx prisma migrate deploy; node dist/main.js"
 healthcheckPath = "/api/v1/health"
 healthcheckTimeout = 120
 restartPolicyType = "ON_FAILURE"
