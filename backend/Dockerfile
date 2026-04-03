@@ -24,4 +24,4 @@ EXPOSE 8080
 
 # start.sh constructs the real DATABASE_URL from Railway's PG* variables at
 # runtime, runs migrations, then launches the application.
-CMD ["sh", "start.sh"]
+ENTRYPOINT ["sh", "start.sh"]
