@@ -8,6 +8,10 @@ COPY package*.json ./
 RUN npm ci
 
 COPY . .
+
+# Force fresh build - no cache
+ARG CACHEBUST=1
+
 RUN npx prisma generate
 RUN npm run build
 RUN ls -la dist/
