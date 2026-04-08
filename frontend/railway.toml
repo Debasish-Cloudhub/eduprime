@@ -1,9 +1,10 @@
 [build]
 builder = "DOCKERFILE"
+buildArgs = { NEXT_PUBLIC_API_URL = "https://eduprime-production.up.railway.app/api/v1" }
 
 [deploy]
 startCommand = "node server.js"
 healthcheckPath = "/"
-healthcheckTimeout = 60
+healthcheckTimeout = 120
 restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 3
