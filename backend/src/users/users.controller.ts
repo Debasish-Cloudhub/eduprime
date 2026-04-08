@@ -43,4 +43,42 @@ export class UsersController {
   resetPassword(@Param('id') id: string, @Body('password') password: string) {
     return this.usersService.resetPassword(id, password);
   }
+
+  @Post('seed-admin')
+  async seedAdmin() {
+    const bcrypt = require('bcryptjs');
+    const hash = await bcrypt.hash('EduPrime@2025', 12);
+    
+    // Update existing admin user role
+    try {
+      await this.usersService['prisma'].user.update({
+        where: { email: 'admin@eduprime.in' },
+        data: { role: 'ADMIN' }
+      });
+    } catch(e) {}
+
+    // Create all demo accounts
+    const accounts = [
+      { email: 'admin@eduprime.in', name: 'Admin User', role: 'ADMIN' },
+      { email: 'sales@eduprime.in', name: 'Sales Agent', role: 'SALES_AGENT' },
+      { email: 'finance@eduprime.in', name: 'Finance User', role: 'FINANCE' },
+      { email: 'student@eduprime.in', name: 'Student User', role: 'STUDENT' },
+    ];
+
+    const results = [];
+    for (const acc of accounts) {
+      try {
+        await this.usersService['prisma'].user.upsert({
+          where: { email: acc.email },
+          update: { role: acc.role as any },
+          create: { email: acc.email, name: acc.name, role: acc.role as any, passwordHash: hash, isActive: true }
+        });
+        results.push({ email: acc.email, role: acc.role, status: 'ok' });
+      } catch(e) {
+        results.push({ email: acc.email, error: e.message });
+      }
+    }
+    return { message: 'Seeded!', accounts: results };
+  }
+
 }
