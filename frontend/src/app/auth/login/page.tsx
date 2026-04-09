@@ -27,10 +27,10 @@ export default function LoginPage() {
 
   const fillDemo = (role: string) => {
     const creds: Record<string, { email: string; password: string }> = {
-      admin:   { email: 'admin@test.com',   password: 'Admin@123' },
-      sales:   { email: 'sales@test.com',   password: 'Sales@123' },
-      finance: { email: 'finance@test.com', password: 'Finance@123' },
-      student: { email: 'student@test.com', password: 'Student@123' },
+      admin:   { email: 'admin@eduprime.in',   password: 'EduPrime@2025' },
+      sales:   { email: 'sales@eduprime.in',   password: 'EduPrime@2025' },
+      finance: { email: 'finance@eduprime.in', password: 'EduPrime@2025' },
+      student: { email: 'student@eduprime.in', password: 'EduPrime@2025' },
     };
     setEmail(creds[role].email);
     setPassword(creds[role].password);
