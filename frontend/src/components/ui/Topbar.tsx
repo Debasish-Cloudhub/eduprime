@@ -3,7 +3,7 @@ import { Bell } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { notificationsApi } from '@/lib/api';
 
-export default function Topbar({ title }: { title: string }) {
+export default function Topbar({ title, subtitle }: { title: string; subtitle?: string }) {
   const { data } = useQuery({
     queryKey: ['unread-count'],
     queryFn: () => notificationsApi.getUnreadCount().then(r => r.data),
@@ -11,8 +11,11 @@ export default function Topbar({ title }: { title: string }) {
   });
 
   return (
-    <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6">
-      <h1 className="text-lg font-semibold text-gray-900">{title}</h1>
+    <header className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 flex-shrink-0">
+      <div>
+        <h1 className="text-lg font-semibold text-gray-900">{title}</h1>
+        {subtitle && <p className="text-xs text-gray-500">{subtitle}</p>}
+      </div>
       <div className="flex items-center gap-4">
         <button className="relative p-2 rounded-lg hover:bg-gray-100 transition-colors">
           <Bell size={20} className="text-gray-600" />
