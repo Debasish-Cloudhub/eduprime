@@ -3,7 +3,7 @@ const nextConfig = {
   output: 'standalone',
   env: {
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api/v1',
-    NEXT_PUBLIC_APP_NAME: 'EduPrime',
+    NEXT_PUBLIC_APP_NAME: 'ISCC',
   },
   async rewrites() {
     return [

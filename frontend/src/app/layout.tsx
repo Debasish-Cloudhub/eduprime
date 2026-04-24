@@ -4,8 +4,8 @@ import { Providers } from './providers';
 import { Toaster } from 'sonner';
 
 export const metadata: Metadata = {
-  title: 'EduPrime — Education Consulting Platform',
-  description: 'India & Abroad Admissions Consulting',
+  title: 'ISCC — International Study & Career Counselling',
+  description: 'ISCC — India's trusted international education consulting platform since 2010',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

@@ -61,7 +61,7 @@ export default function RegisterPage() {
               <GraduationCap className="w-7 h-7 text-white" />
             </div>
             <h1 className="text-2xl font-black text-gray-900">Student Registration</h1>
-            <p className="text-gray-500 text-sm mt-1">Create your EduPrime account</p>
+            <p className="text-gray-500 text-sm mt-1">Create your ISCC account</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -130,7 +130,7 @@ export default function RegisterPage() {
 
           <div className="mt-4 p-3 bg-blue-50 rounded-lg">
             <p className="text-xs text-blue-700 text-center">
-              After registration, an EduPrime counselor will contact you within 24 hours to activate your account.
+              After registration, an ISCC counselor will contact you within 24 hours to activate your account.
             </p>
           </div>
         </div>

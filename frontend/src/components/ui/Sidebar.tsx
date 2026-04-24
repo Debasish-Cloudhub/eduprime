@@ -55,7 +55,7 @@ export default function Sidebar({ role }: { role?: string }) {
             <span className="text-blue-900 font-black text-xs">EP</span>
           </div>
           <div>
-            <span className="font-black text-sm text-white block">EduPrime</span>
+            <span className="font-black text-sm text-white block">ISCC</span>
             <span className="text-blue-300 text-xs capitalize">{effectiveRole.replace('_', ' ').toLowerCase()}</span>
           </div>
         </div>

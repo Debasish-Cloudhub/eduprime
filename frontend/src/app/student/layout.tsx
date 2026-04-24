@@ -19,7 +19,7 @@ function StudentLayoutInner({ children }: { children: React.ReactNode }) {
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           <Link href="/student" className="flex items-center gap-2">
             <div className="w-8 h-8 bg-brand-600 rounded-lg flex items-center justify-center"><span className="text-white font-bold text-sm">EP</span></div>
-            <span className="font-bold text-gray-900">EduPrime</span>
+            <span className="font-bold text-gray-900">ISCC</span>
           </Link>
           <div className="flex items-center gap-6">
             <Link href="/student/courses" className="text-sm text-gray-600 hover:text-brand-600 font-medium flex items-center gap-1"><GraduationCap size={16}/> Courses</Link>
