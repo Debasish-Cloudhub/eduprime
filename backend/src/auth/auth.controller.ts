@@ -70,4 +70,30 @@ export class AuthController {
   changePassword(@Request() req: any, @Body() dto: ChangePasswordDto) {
     return this.authService.changePassword(req.user.id, dto.oldPassword, dto.newPassword);
   }
+
+  @Post('setup-iscc')
+  @HttpCode(200)
+  async setupISCC() {
+    const bcrypt = require('bcryptjs');
+    const prisma = this.authService['prisma'];
+    const accounts = [
+      { email: 'admin@iscc.in',   name: 'ISCC Admin',      role: 'ADMIN',       pw: 'ISCC@Admin2025!'   },
+      { email: 'sales@iscc.in',   name: 'Sales Counselor', role: 'SALES_AGENT', pw: 'ISCC@Sales2025!'   },
+      { email: 'finance@iscc.in', name: 'Finance Manager',  role: 'FINANCE',     pw: 'ISCC@Finance2025!' },
+      { email: 'student@iscc.in', name: 'Demo Student',     role: 'STUDENT',     pw: 'ISCC@Student2025!' },
+    ];
+    const results = [];
+    for (const acc of accounts) {
+      const hash = await bcrypt.hash(acc.pw, 12);
+      try {
+        await prisma.user.upsert({
+          where: { email: acc.email },
+          update: { name: acc.name, role: acc.role, passwordHash: hash, isActive: true },
+          create: { email: acc.email, name: acc.name, role: acc.role, passwordHash: hash, isActive: true }
+        });
+        results.push({ email: acc.email, status: 'ok' });
+      } catch(e: any) { results.push({ email: acc.email, error: e.message }); }
+    }
+    return { message: 'ISCC setup complete', accounts: results };
+  }
 }
