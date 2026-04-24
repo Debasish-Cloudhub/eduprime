@@ -3,8 +3,9 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/hooks/useAuth';
+import { authApi } from '@/lib/api';
 import { toast } from 'sonner';
-import { Eye, EyeOff, ArrowLeft, GraduationCap } from 'lucide-react';
+import { Eye, EyeOff, ArrowLeft } from 'lucide-react';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -20,14 +21,13 @@ export default function LoginPage() {
     setLoading(true);
     try {
       await login(email, password);
-      const role = (await import('@/lib/api')).authApi.me().then(r => r.data?.role);
-      role.then(r => {
-        if (r === 'STUDENT') router.push('/student');
-        else if (r === 'SALES_AGENT') router.push('/sales');
-        else if (r === 'FINANCE') router.push('/finance');
-        else router.push('/admin');
-      });
-    } catch (err: any) {
+      const res = await authApi.me();
+      const role = res.data?.role;
+      if (role === 'STUDENT') router.push('/student');
+      else if (role === 'SALES_AGENT') router.push('/sales');
+      else if (role === 'FINANCE') router.push('/finance');
+      else router.push('/admin');
+    } catch {
       toast.error('Invalid email or password. Please try again.');
     } finally {
       setLoading(false);
@@ -37,14 +37,14 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-950 via-blue-800 to-indigo-700 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-        <Link href="/" className="flex items-center gap-2 text-blue-200 hover:text-white mb-8 text-sm w-fit">
+        <Link href="/" className="flex items-center gap-2 text-blue-200 hover:text-white mb-8 text-sm w-fit transition-colors">
           <ArrowLeft className="w-4 h-4" /> Back to Home
         </Link>
 
         <div className="bg-white rounded-2xl shadow-2xl p-8">
           {/* Logo */}
           <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-700 rounded-2xl mb-4 shadow-lg">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl mb-4 shadow-lg">
               <span className="text-white font-black text-xl">IS</span>
             </div>
             <h1 className="text-2xl font-black text-gray-900">Sign In</h1>
@@ -67,7 +67,6 @@ export default function LoginPage() {
             <div>
               <div className="flex items-center justify-between mb-1.5">
                 <label className="block text-xs font-semibold text-gray-600">Password</label>
-                <a href="#" className="text-xs text-blue-600 hover:underline">Forgot password?</a>
               </div>
               <div className="relative">
                 <input
@@ -87,7 +86,7 @@ export default function LoginPage() {
             </div>
 
             <button type="submit" disabled={loading}
-              className="w-full py-3.5 bg-blue-700 text-white font-bold rounded-xl hover:bg-blue-800 disabled:opacity-50 transition-colors text-sm shadow-lg">
+              className="w-full py-3.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold rounded-xl hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 transition-all text-sm shadow-lg">
               {loading ? 'Signing in...' : 'Sign In'}
             </button>
           </form>
@@ -102,7 +101,7 @@ export default function LoginPage() {
           </div>
         </div>
 
-        <p className="text-center text-blue-200 text-xs mt-6">
+        <p className="text-center text-blue-200/60 text-xs mt-6">
           © 2025 ISCC — International Study & Career Counselling
         </p>
       </div>

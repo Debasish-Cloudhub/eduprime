@@ -5,7 +5,7 @@ import { Toaster } from 'sonner';
 
 export const metadata: Metadata = {
   title: 'ISCC — International Study & Career Counselling',
-  description: 'ISCC — India's trusted international education consulting platform since 2010',
+  description: 'ISCC — Trusted international education consulting since 2010',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
