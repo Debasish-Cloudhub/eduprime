@@ -4,8 +4,8 @@ import { Providers } from './providers';
 import { Toaster } from 'sonner';
 
 export const metadata: Metadata = {
-  title: 'ISCC — International Study & Career Counselling',
-  description: 'ISCC — Trusted international education consulting since 2010',
+  title: 'ISCC Digital — International Study & Career Counselling',
+  description: 'ISCC Digital — Trusted international education consulting since 2010',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

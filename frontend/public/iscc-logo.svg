@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="mark-svg" width="130" height="130" viewBox="0 0 100 100" data-om-id="4ee8ff00:73" data-src-loc="10993:11059:11476" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="10" width="80" height="80" rx="14" transform="rotate(45 50 50)" fill="#1E3A8A" data-src-loc="11070:11166"/>
+          <rect x="18" y="18" width="64" height="64" rx="10" transform="rotate(45 50 50)" fill="none" stroke="#E11D48" stroke-width="1.5" opacity="0.9" data-src-loc="11177:11320"/>
+          <text x="50" y="58" text-anchor="middle" font-family="Inter, sans-serif" font-weight="800" font-size="28" fill="white" data-om-id="4ee8ff00:74" data-src-loc="11331:11450:11461">iscc</text>
+        </svg>

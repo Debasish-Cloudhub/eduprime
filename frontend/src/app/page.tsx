@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Cookies from 'js-cookie';
 import { authApi } from '../lib/api';
+import ISCCLogo from '../components/ui/ISCCLogo';
 import { GraduationCap, Users, BookOpen, CheckCircle, ArrowRight, Star, Globe, Phone, Mail, Menu, X, Clock, ChevronRight, Shield, Zap } from 'lucide-react';
 
 const COURSES = [
@@ -62,14 +63,8 @@ export default function LandingPage() {
       {/* ── NAVBAR ── */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm shadow-sm border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2.5">
-            <div className="w-9 h-9 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-xl flex items-center justify-center shadow-md">
-              <span className="text-white font-black text-xs">IS</span>
-            </div>
-            <div>
-              <span className="text-gray-900 font-black text-base leading-none block">ISCC</span>
-              <span className="text-gray-400 text-xs leading-none">International Study & Career Counselling</span>
-            </div>
+          <Link href="/">
+            <ISCCLogo size="sm" showText={true} textColor="dark" />
           </Link>
           <div className="hidden md:flex items-center gap-6 text-sm font-medium">
             <a href="#home" className="text-gray-600 hover:text-blue-700 transition-colors">Home</a>
@@ -122,7 +117,7 @@ export default function LandingPage() {
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-orange-300">
                 Global Career
               </span><br />
-              with ISCC
+              with ISCC Digital
             </h1>
             <p className="text-blue-100 text-lg leading-relaxed mb-8 max-w-lg">
               International Study & Career Counselling — guiding students since 2010 from distance learning to study abroad, with end-to-end education consulting for every career goal.
@@ -371,14 +366,8 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>
-              <div className="flex items-center gap-2.5 mb-4">
-                <div className="w-9 h-9 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-md">
-                  <span className="text-white font-black text-xs">IS</span>
-                </div>
-                <div>
-                  <span className="text-white font-black block">ISCC</span>
-                  <span className="text-gray-400 text-xs">International Study & Career Counselling</span>
-                </div>
+              <div className="mb-4">
+                <ISCCLogo size="sm" showText={true} textColor="light" />
               </div>
               <p className="text-sm leading-relaxed">India's trusted international education consulting platform since 2010.</p>
             </div>
@@ -406,7 +395,7 @@ export default function LandingPage() {
             </div>
           </div>
           <div className="border-t border-gray-800 pt-6 flex flex-col md:flex-row items-center justify-between gap-4 text-sm">
-            <p>© 2025 ISCC — International Study & Career Counselling. All rights reserved.</p>
+            <p>© 2025 ISCC Digital — International Study & Career Counselling. All rights reserved.</p>
             <div className="flex gap-4"><a href="#" className="hover:text-white">Privacy Policy</a><a href="#" className="hover:text-white">Terms</a></div>
           </div>
         </div>

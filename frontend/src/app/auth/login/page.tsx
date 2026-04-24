@@ -6,6 +6,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { authApi } from '@/lib/api';
 import { toast } from 'sonner';
 import { Eye, EyeOff, ArrowLeft } from 'lucide-react';
+import ISCCLogo from '@/components/ui/ISCCLogo';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -35,48 +36,38 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-950 via-blue-800 to-indigo-700 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-950 via-blue-900 to-indigo-800 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <Link href="/" className="flex items-center gap-2 text-blue-200 hover:text-white mb-8 text-sm w-fit transition-colors">
           <ArrowLeft className="w-4 h-4" /> Back to Home
         </Link>
 
         <div className="bg-white rounded-2xl shadow-2xl p-8">
-          {/* Logo */}
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl mb-4 shadow-lg">
-              <span className="text-white font-black text-xl">IS</span>
+          {/* ISCC Logo */}
+          <div className="flex flex-col items-center mb-8">
+            <ISCCLogo size="lg" showText={true} textColor="dark" />
+            <div className="mt-4 text-center">
+              <h1 className="text-xl font-black text-gray-900">Sign In</h1>
+              <p className="text-gray-400 text-sm mt-0.5">ISCC Digital Portal</p>
             </div>
-            <h1 className="text-2xl font-black text-gray-900">Sign In</h1>
-            <p className="text-gray-500 text-sm mt-1">ISCC Education Portal</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label className="block text-xs font-semibold text-gray-600 mb-1.5">Email Address</label>
               <input
-                type="email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                placeholder="Enter your email"
-                autoComplete="email"
+                type="email" value={email} onChange={e => setEmail(e.target.value)}
+                placeholder="Enter your email" autoComplete="email" required
                 className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-                required
               />
             </div>
             <div>
-              <div className="flex items-center justify-between mb-1.5">
-                <label className="block text-xs font-semibold text-gray-600">Password</label>
-              </div>
+              <label className="block text-xs font-semibold text-gray-600 mb-1.5">Password</label>
               <div className="relative">
                 <input
-                  type={showPass ? 'text' : 'password'}
-                  value={password}
-                  onChange={e => setPassword(e.target.value)}
-                  placeholder="Enter your password"
-                  autoComplete="current-password"
+                  type={showPass ? 'text' : 'password'} value={password} onChange={e => setPassword(e.target.value)}
+                  placeholder="Enter your password" autoComplete="current-password" required
                   className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 pr-10"
-                  required
                 />
                 <button type="button" onClick={() => setShowPass(!showPass)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
@@ -84,25 +75,22 @@ export default function LoginPage() {
                 </button>
               </div>
             </div>
-
             <button type="submit" disabled={loading}
-              className="w-full py-3.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold rounded-xl hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 transition-all text-sm shadow-lg">
+              className="w-full py-3.5 bg-gradient-to-r from-blue-900 to-blue-700 text-white font-bold rounded-xl hover:from-blue-800 hover:to-blue-600 disabled:opacity-50 transition-all text-sm shadow-lg">
               {loading ? 'Signing in...' : 'Sign In'}
             </button>
           </form>
 
-          <div className="mt-6 pt-6 border-t border-gray-100 text-center">
+          <div className="mt-6 pt-5 border-t border-gray-100 text-center">
             <p className="text-gray-500 text-sm">
               New student?{' '}
-              <Link href="/auth/register" className="text-blue-700 font-semibold hover:underline">
-                Register here
-              </Link>
+              <Link href="/auth/register" className="text-blue-700 font-semibold hover:underline">Register here</Link>
             </p>
           </div>
         </div>
 
-        <p className="text-center text-blue-200/60 text-xs mt-6">
-          © 2025 ISCC — International Study & Career Counselling
+        <p className="text-center text-blue-300/50 text-xs mt-6">
+          © 2025 ISCC Digital — International Study & Career Counselling
         </p>
       </div>
     </div>
