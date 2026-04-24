@@ -1,5 +1,5 @@
-import ISCCLogo from '@/components/ui/ISCCLogo';
 'use client';
+import ISCCLogo from '@/components/ui/ISCCLogo';
 import { useAuth } from '@/hooks/useAuth';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
