@@ -1,8 +1,17 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
+// Always use the Next.js proxy (/api/*) in the browser to avoid CORS.
+// On the server side (SSR), use the direct backend URL.
+const getBaseURL = () => {
+  if (typeof window !== 'undefined') {
+    return '/api'; // browser → Next.js rewrite proxy
+  }
+  return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api/v1';
+};
+
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api/v1',
+  baseURL: getBaseURL(),
   headers: { 'Content-Type': 'application/json' },
 });
 
@@ -17,8 +26,10 @@ api.interceptors.response.use(
   (err) => {
     if (err.response?.status === 401) {
       Cookies.remove('token');
-      localStorage.removeItem('token');
-      if (typeof window !== 'undefined') window.location.href = '/auth/login';
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('token');
+        window.location.href = '/auth/login';
+      }
     }
     return Promise.reject(err);
   },
