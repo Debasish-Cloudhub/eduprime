@@ -88,8 +88,8 @@ export class AuthController {
       try {
         await prisma.user.upsert({
           where: { email: acc.email },
-          update: { name: acc.name, role: acc.role, passwordHash: hash, isActive: true },
-          create: { email: acc.email, name: acc.name, role: acc.role, passwordHash: hash, isActive: true }
+          update: { name: acc.name, role: acc.role as any, passwordHash: hash, isActive: true },
+          create: { email: acc.email, name: acc.name, role: acc.role as any, passwordHash: hash, isActive: true }
         });
         results.push({ email: acc.email, status: 'ok' });
       } catch(e: any) { results.push({ email: acc.email, error: e.message }); }
