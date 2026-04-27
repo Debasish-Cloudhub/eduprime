@@ -191,7 +191,7 @@ export default function LandingPage() {
       </section>
 
       {/* ── COURSES ── */}
-      <section id="courses" className="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
+      <section id="courses" className="py-20 bg-gradient-to-br from-slate-50 to-blue-50">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
             <div className="inline-block text-blue-700 font-semibold text-xs mb-3 uppercase tracking-widest bg-blue-100 px-3 py-1 rounded-full">Our Programs</div>
@@ -221,7 +221,7 @@ export default function LandingPage() {
       </section>
 
       {/* ── TESTIMONIALS ── */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
             <div className="inline-block text-blue-700 font-semibold text-xs mb-3 uppercase tracking-widest bg-blue-50 px-3 py-1 rounded-full">Student Stories</div>
