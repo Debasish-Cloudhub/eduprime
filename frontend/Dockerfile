@@ -4,8 +4,9 @@ COPY package*.json ./
 RUN npm ci
 COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
-ARG NEXT_PUBLIC_API_URL=https://eduprime-production.up.railway.app/api/v1
+ARG NEXT_PUBLIC_API_URL=https://iscc-backend-production.up.railway.app/api/v1
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+ARG BUILD_ID=1
 RUN npm run build
 
 FROM node:20-alpine AS runner

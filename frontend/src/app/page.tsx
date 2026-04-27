@@ -29,6 +29,7 @@ const PROCESS = [
   { step: '04', title: 'Start Learning', desc: 'Begin your journey with full support', color: 'from-purple-400 to-purple-600' },
 ];
 
+// BUILD: 2026-04-27 12:28 UTC - Courses first, then Testimonials
 export default function LandingPage() {
   const router = useRouter();
   const [checking, setChecking] = useState(true);
