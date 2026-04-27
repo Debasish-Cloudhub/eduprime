@@ -189,6 +189,65 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* ── COURSES ── */}
+      <section id="courses" className="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="text-center mb-12">
+            <div className="inline-block text-blue-700 font-semibold text-xs mb-3 uppercase tracking-widest bg-blue-100 px-3 py-1 rounded-full">Our Programs</div>
+            <h2 className="text-3xl font-black text-gray-900 mb-4">Popular Courses</h2>
+            <p className="text-gray-500 max-w-xl mx-auto">UGC-approved distance and online programs from top universities across India and abroad</p>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {COURSES.map(({ name, desc, duration, mode, grad }) => (
+              <div key={name} className="bg-white rounded-2xl border border-gray-100 p-6 hover:shadow-xl transition-all group cursor-pointer overflow-hidden relative">
+                <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${grad}`} />
+                <div className={`w-12 h-12 bg-gradient-to-br ${grad} rounded-xl flex items-center justify-center mb-4 shadow-md`}>
+                  <GraduationCap className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="font-bold text-gray-900 text-lg mb-1">{name}</h3>
+                <p className="text-gray-500 text-sm mb-4">{desc}</p>
+                <div className="flex items-center gap-4 text-xs text-gray-400 mb-4">
+                  <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{duration}</span>
+                  <span className="flex items-center gap-1"><BookOpen className="w-3 h-3" />{mode}</span>
+                </div>
+                <a href="#contact" className="flex items-center gap-1 text-blue-700 font-semibold text-sm group-hover:gap-2 transition-all">
+                  Enquire Now <ChevronRight className="w-4 h-4" />
+                </a>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── TESTIMONIALS ── */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="text-center mb-12">
+            <div className="inline-block text-blue-700 font-semibold text-xs mb-3 uppercase tracking-widest bg-blue-50 px-3 py-1 rounded-full">Student Stories</div>
+            <h2 className="text-3xl font-black text-gray-900">What Our Students Say</h2>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6">
+            {TESTIMONIALS.map(({ name, course, text }, i) => (
+              <div key={name} className="rounded-2xl p-6 border border-gray-100 hover:shadow-lg transition-all bg-gradient-to-br from-white to-blue-50">
+                <div className="flex gap-1 mb-4">
+                  {[...Array(5)].map((_, j) => <Star key={j} className="w-4 h-4 text-yellow-400 fill-yellow-400" />)}
+                </div>
+                <p className="text-gray-700 text-sm leading-relaxed mb-6 italic">"{text}"</p>
+                <div className="flex items-center gap-3">
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center ${['bg-gradient-to-br from-blue-500 to-blue-700', 'bg-gradient-to-br from-indigo-500 to-indigo-700', 'bg-gradient-to-br from-violet-500 to-violet-700'][i]}`}>
+                    <span className="text-white font-bold text-sm">{name[0]}</span>
+                  </div>
+                  <div>
+                    <div className="font-bold text-gray-900 text-sm">{name}</div>
+                    <div className="text-gray-500 text-xs">{course}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── STATS ── */}
       <section className="bg-gradient-to-r from-yellow-400 via-orange-400 to-yellow-400 py-8">
         <div className="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
@@ -239,36 +298,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── COURSES ── */}
-      <section id="courses" className="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-12">
-            <div className="inline-block text-blue-700 font-semibold text-xs mb-3 uppercase tracking-widest bg-blue-100 px-3 py-1 rounded-full">Our Programs</div>
-            <h2 className="text-3xl font-black text-gray-900 mb-4">Popular Courses</h2>
-            <p className="text-gray-500 max-w-xl mx-auto">UGC-approved distance and online programs from top universities across India and abroad</p>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {COURSES.map(({ name, desc, duration, mode, grad }) => (
-              <div key={name} className="bg-white rounded-2xl border border-gray-100 p-6 hover:shadow-xl transition-all group cursor-pointer overflow-hidden relative">
-                <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${grad}`} />
-                <div className={`w-12 h-12 bg-gradient-to-br ${grad} rounded-xl flex items-center justify-center mb-4 shadow-md`}>
-                  <GraduationCap className="w-6 h-6 text-white" />
-                </div>
-                <h3 className="font-bold text-gray-900 text-lg mb-1">{name}</h3>
-                <p className="text-gray-500 text-sm mb-4">{desc}</p>
-                <div className="flex items-center gap-4 text-xs text-gray-400 mb-4">
-                  <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{duration}</span>
-                  <span className="flex items-center gap-1"><BookOpen className="w-3 h-3" />{mode}</span>
-                </div>
-                <a href="#contact" className="flex items-center gap-1 text-blue-700 font-semibold text-sm group-hover:gap-2 transition-all">
-                  Enquire Now <ChevronRight className="w-4 h-4" />
-                </a>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ── PROCESS ── */}
       <section className="py-20 bg-gradient-to-br from-blue-950 via-blue-900 to-indigo-900 relative overflow-hidden">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -289,35 +318,6 @@ export default function LandingPage() {
                 </div>
                 <h3 className="font-bold text-white mb-2">{title}</h3>
                 <p className="text-blue-200 text-sm">{desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── TESTIMONIALS ── */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-12">
-            <div className="inline-block text-blue-700 font-semibold text-xs mb-3 uppercase tracking-widest bg-blue-50 px-3 py-1 rounded-full">Student Stories</div>
-            <h2 className="text-3xl font-black text-gray-900">What Our Students Say</h2>
-          </div>
-          <div className="grid md:grid-cols-3 gap-6">
-            {TESTIMONIALS.map(({ name, course, text }, i) => (
-              <div key={name} className="rounded-2xl p-6 border border-gray-100 hover:shadow-lg transition-all bg-gradient-to-br from-white to-blue-50">
-                <div className="flex gap-1 mb-4">
-                  {[...Array(5)].map((_, j) => <Star key={j} className="w-4 h-4 text-yellow-400 fill-yellow-400" />)}
-                </div>
-                <p className="text-gray-700 text-sm leading-relaxed mb-6 italic">"{text}"</p>
-                <div className="flex items-center gap-3">
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center ${['bg-gradient-to-br from-blue-500 to-blue-700', 'bg-gradient-to-br from-indigo-500 to-indigo-700', 'bg-gradient-to-br from-violet-500 to-violet-700'][i]}`}>
-                    <span className="text-white font-bold text-sm">{name[0]}</span>
-                  </div>
-                  <div>
-                    <div className="font-bold text-gray-900 text-sm">{name}</div>
-                    <div className="text-gray-500 text-xs">{course}</div>
-                  </div>
-                </div>
               </div>
             ))}
           </div>
