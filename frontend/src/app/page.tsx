@@ -67,7 +67,7 @@ export default function LandingPage() {
           </div>
           <div className="hidden md:flex items-center gap-2">
             <Link href="/auth/login"    className="px-4 py-2 text-sm font-semibold text-blue-900 border border-blue-900 rounded-xl hover:bg-blue-50 transition-colors">Login</Link>
-            <Link href="/auth/register" className="px-4 py-2 text-sm font-semibold text-white rounded-xl hover:opacity-90 transition-all shadow-md" className="bg-blue-700">Register Free</Link>
+            <Link href="/auth/register" className="px-4 py-2 text-sm font-semibold text-white bg-blue-700 rounded-xl hover:bg-blue-800 transition-all shadow-md">Register Free</Link>
           </div>
           {/* Mobile menu handled by CSS only */}
           <div className="md:hidden flex gap-2">
