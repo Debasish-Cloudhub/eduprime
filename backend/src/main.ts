@@ -1,107 +1,55 @@
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import { PrismaService } from './prisma/prisma.service';
 
-// Catch any exception that escapes all async error handling
-process.on('uncaughtException', (err: Error) => {
-  console.error('[uncaughtException] Unhandled exception — process will exit');
-  console.error(err?.stack ?? err);
-  process.exit(1);
-});
+process.on('uncaughtException', (err: Error) => { console.error('[uncaughtException]', err?.stack ?? err); process.exit(1); });
+process.on('unhandledRejection', (reason: unknown) => { console.error('[unhandledRejection]', reason); process.exit(1); });
 
-// Catch any unhandled promise rejection
-process.on('unhandledRejection', (reason: unknown) => {
-  console.error('[unhandledRejection] Unhandled promise rejection — process will exit');
-  if (reason instanceof Error) {
-    console.error(reason.stack ?? reason);
-  } else {
-    console.error(reason);
+async function seedAccounts(prisma: PrismaService) {
+  const bcrypt = require('bcryptjs');
+  const accounts = [
+    { email: 'admin@digitalstudy.me',   name: 'ISCC Admin',      role: 'ADMIN',       pw: 'ISCC@Admin2025!'   },
+    { email: 'sales@digitalstudy.me',   name: 'Sales Counselor', role: 'SALES_AGENT', pw: 'ISCC@Sales2025!'   },
+    { email: 'finance@digitalstudy.me', name: 'Finance Manager',  role: 'FINANCE',     pw: 'ISCC@Finance2025!' },
+    { email: 'student@digitalstudy.me', name: 'Demo Student',     role: 'STUDENT',     pw: 'ISCC@Student2025!' },
+  ];
+  for (const acc of accounts) {
+    const hash = await bcrypt.hash(acc.pw, 12);
+    await prisma.user.upsert({
+      where: { email: acc.email },
+      update: { name: acc.name, role: acc.role as any, passwordHash: hash, isActive: true },
+      create: { email: acc.email, name: acc.name, role: acc.role as any, passwordHash: hash, isActive: true },
+    });
+    console.log(`[seed] ✅ ${acc.email} ready`);
   }
-  process.exit(1);
-});
+}
 
 async function bootstrap() {
+  console.log('[bootstrap] Starting ISCC Digital API...');
+  const app = await NestFactory.create(AppModule, { logger: ['log','warn','error'] });
+
+  app.setGlobalPrefix('api/v1');
+
+  // Allow all Railway + localhost origins
+  app.enableCors({
+    origin: (origin: string | undefined, cb: Function) => cb(null, true),
+    credentials: true,
+  });
+
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true, forbidNonWhitelisted: true }));
+
+  const port = process.env.PORT || 4000;
+  await app.listen(port, '0.0.0.0');
+  console.log(`[bootstrap] 🚀 ISCC Digital API running on port ${port}`);
+
+  // Auto-seed accounts on every startup
   try {
-    console.log('[bootstrap] Starting EduPrime API...');
-    console.log(`[bootstrap] NODE_ENV=${process.env.NODE_ENV ?? '(not set)'}`);
-    console.log(`[bootstrap] PORT=${process.env.PORT ?? '(not set, will default to 4000)'}`);
-
-    console.log('[bootstrap] Creating NestJS application...');
-    const app = await NestFactory.create(AppModule, {
-      logger: ['log', 'warn', 'error', 'debug', 'verbose'],
-    });
-    console.log('[bootstrap] NestJS application created successfully');
-
-    // Global prefix
-    app.setGlobalPrefix('api/v1');
-    console.log('[bootstrap] Global prefix set: api/v1');
-
-    // CORS
-    app.enableCors({
-      origin: process.env.CORS_ORIGINS?.split(',') || [
-        'http://localhost:3000',
-        'http://localhost:3001',
-        'https://student.eduprime.in',
-        'https://sales.eduprime.in',
-        'https://admin.eduprime.in',
-        'https://expenses.eduprime.in',
-      ],
-      credentials: true,
-    });
-    console.log('[bootstrap] CORS configured');
-
-    // Global validation
-    app.useGlobalPipes(
-      new ValidationPipe({
-        whitelist: true,
-        transform: true,
-        forbidNonWhitelisted: true,
-      }),
-    );
-    console.log('[bootstrap] Global ValidationPipe configured');
-
-    // Swagger docs
-    if (process.env.NODE_ENV !== 'production') {
-      console.log('[bootstrap] Setting up Swagger (non-production)...');
-      const config = new DocumentBuilder()
-        .setTitle('EduPrime API')
-        .setDescription('B2C Education Consulting Platform API')
-        .setVersion('1.0')
-        .addBearerAuth()
-        .addTag('auth', 'Authentication')
-        .addTag('leads', 'CRM Lead Management')
-        .addTag('courses', 'Course & College Data')
-        .addTag('incentives', 'Incentive Engine')
-        .addTag('expenses', 'Expense Management')
-        .addTag('analytics', 'Analytics & Reports')
-        .addTag('excel', 'Excel Upload')
-        .addTag('sulekha', 'Sulekha Integration')
-        .build();
-
-      const document = SwaggerModule.createDocument(app, config);
-      SwaggerModule.setup('api/docs', app, document, {
-        swaggerOptions: { persistAuthorization: true },
-      });
-      console.log('[bootstrap] Swagger configured');
-    }
-
-    const port = process.env.PORT || 4000;
-    console.log(`[bootstrap] Starting HTTP listener on 0.0.0.0:${port}...`);
-    await app.listen(port, '0.0.0.0');
-    console.log(`[bootstrap] 🚀 EduPrime API running on port ${port}`);
-    console.log(`[bootstrap] 📚 Swagger docs: http://localhost:${port}/api/docs`);
-  } catch (err: unknown) {
-    console.error('[bootstrap] FATAL: Bootstrap failed with an unhandled error');
-    if (err instanceof Error) {
-      console.error(`[bootstrap] Error name   : ${err.name}`);
-      console.error(`[bootstrap] Error message: ${err.message}`);
-      console.error('[bootstrap] Stack trace:');
-      console.error(err.stack);
-    } else {
-      console.error('[bootstrap] Non-Error value thrown:', err);
-    }
-    process.exit(1);
+    const prisma = app.get(PrismaService);
+    await seedAccounts(prisma);
+    console.log('[bootstrap] ✅ ISCC accounts seeded successfully');
+  } catch (e: any) {
+    console.error('[bootstrap] Seed warning:', e.message);
   }
 }
 

@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
-import ISCCLogo from '@/components/ui/ISCCLogo';
+
 import {
   LayoutDashboard, Users, BookOpen, TrendingUp,
   LogOut, FileSpreadsheet, Zap, BarChart2,
@@ -53,8 +53,16 @@ export default function Sidebar({ role }: { role?: string }) {
     <aside className="w-60 bg-[#021b79] text-white flex flex-col h-screen flex-shrink-0">
       {/* Logo */}
       <div className="px-4 py-4 border-b border-white/10">
-        <Link href="/">
-          <ISCCLogo size="sm" showText={true} variant="sidebar" />
+        <Link href="/" className="flex items-center gap-2">
+          <svg width="32" height="32" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style={{flexShrink:0}}>
+            <rect x="10" y="10" width="80" height="80" rx="14" transform="rotate(45 50 50)" fill="#1E3A8A"/>
+            <rect x="18" y="18" width="64" height="64" rx="10" transform="rotate(45 50 50)" fill="none" stroke="#E11D48" strokeWidth="2" opacity="0.9"/>
+            <text x="50" y="58" textAnchor="middle" fontFamily="Inter, Arial, sans-serif" fontWeight="800" fontSize="26" fill="white">iscc</text>
+          </svg>
+          <div>
+            <div className="font-black text-sm leading-tight"><span style={{color:'#93c5fd'}}>ISCC</span><span style={{color:'#fca5a5'}}> Digital</span></div>
+            <div style={{fontSize:'8px',color:'rgba(147,197,253,0.7)',letterSpacing:'0.08em',textTransform:'uppercase'}}>Int. Study &amp; Career Counselling</div>
+          </div>
         </Link>
         <div className="mt-2 px-0.5">
           <span className="text-xs text-blue-300 capitalize bg-blue-800/50 px-2 py-0.5 rounded-full">{roleLabel}</span>

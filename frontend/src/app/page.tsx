@@ -48,13 +48,17 @@ export default function LandingPage() {
       <nav className="fixed top-0 left-0 right-0 z-50 bg-white/98 backdrop-blur-md shadow-sm border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2.5">
-            <img src="/iscc-logo.svg" alt="ISCC" width="36" height="36" />
+            <svg width="36" height="36" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <rect x="10" y="10" width="80" height="80" rx="14" transform="rotate(45 50 50)" fill="#1E3A8A"/>
+              <rect x="18" y="18" width="64" height="64" rx="10" transform="rotate(45 50 50)" fill="none" stroke="#E11D48" strokeWidth="2" opacity="0.9"/>
+              <text x="50" y="58" textAnchor="middle" fontFamily="Inter, Arial, sans-serif" fontWeight="800" fontSize="26" fill="white">iscc</text>
+            </svg>
             <div>
-              <span className="font-black text-base leading-none block">
-                <span className="text-[#1E3A8A]">ISCC</span>
-                <span className="text-[#E11D48]"> Digital</span>
-              </span>
-              <span className="text-gray-500 text-[9px] leading-none uppercase tracking-widest">International Study & Career Counselling</span>
+              <div className="font-black text-sm leading-tight">
+                <span style={{color:'#1E3A8A'}}>ISCC</span>
+                <span style={{color:'#E11D48'}}> Digital</span>
+              </div>
+              <div style={{fontSize:'9px',color:'#6b7280',letterSpacing:'0.1em',textTransform:'uppercase'}}>International Study &amp; Career Counselling</div>
             </div>
           </Link>
           <div className="hidden md:flex items-center gap-6 text-sm font-medium">
@@ -318,11 +322,15 @@ export default function LandingPage() {
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>
               <div className="flex items-center gap-2.5 mb-4">
-                <img src="/iscc-logo.svg" alt="ISCC" width="32" height="32" />
-                <div>
-                  <span className="font-black block"><span className="text-white">ISCC</span><span className="text-[#E11D48]"> Digital</span></span>
-                  <span className="text-gray-400 text-xs">International Study & Career Counselling</span>
-                </div>
+                <svg width="32" height="32" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <rect x="10" y="10" width="80" height="80" rx="14" transform="rotate(45 50 50)" fill="#1E3A8A"/>
+                <rect x="18" y="18" width="64" height="64" rx="10" transform="rotate(45 50 50)" fill="none" stroke="#E11D48" strokeWidth="2" opacity="0.9"/>
+                <text x="50" y="58" textAnchor="middle" fontFamily="Inter, Arial, sans-serif" fontWeight="800" fontSize="26" fill="white">iscc</text>
+              </svg>
+              <div>
+                <div className="font-black"><span style={{color:'#93c5fd'}}>ISCC</span><span style={{color:'#E11D48'}}> Digital</span></div>
+                <div style={{fontSize:'10px',color:'#9ca3af'}}>International Study &amp; Career Counselling</div>
+              </div>
               </div>
               <p className="text-sm leading-relaxed">India's trusted international education consulting platform since 2010.</p>
             </div>

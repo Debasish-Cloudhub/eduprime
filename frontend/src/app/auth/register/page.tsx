@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { authApi } from '@/lib/api';
 import { toast } from 'sonner';
-import ISCCLogo from '@/components/ui/ISCCLogo';
+
 import { GraduationCap, Eye, EyeOff, ArrowLeft, CheckCircle } from 'lucide-react';
 
 export default function RegisterPage() {

@@ -6,7 +6,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { authApi } from '@/lib/api';
 import { toast } from 'sonner';
 import { Eye, EyeOff, ArrowLeft } from 'lucide-react';
-import ISCCLogo from '@/components/ui/ISCCLogo';
+
 
 export default function LoginPage() {
   const router = useRouter();
@@ -45,7 +45,17 @@ export default function LoginPage() {
         <div className="bg-white rounded-2xl shadow-2xl p-8">
           {/* ISCC Logo */}
           <div className="flex flex-col items-center mb-8">
-            <ISCCLogo size="lg" showText={true} />
+            <div className="flex flex-col items-center gap-2">
+            <svg width="56" height="56" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <rect x="10" y="10" width="80" height="80" rx="14" transform="rotate(45 50 50)" fill="#1E3A8A"/>
+              <rect x="18" y="18" width="64" height="64" rx="10" transform="rotate(45 50 50)" fill="none" stroke="#E11D48" strokeWidth="2" opacity="0.9"/>
+              <text x="50" y="58" textAnchor="middle" fontFamily="Inter, Arial, sans-serif" fontWeight="800" fontSize="26" fill="white">iscc</text>
+            </svg>
+            <div className="text-center">
+              <div className="text-xl font-black leading-tight"><span style={{color:'#1E3A8A'}}>ISCC</span><span style={{color:'#E11D48'}}> Digital</span></div>
+              <div style={{fontSize:'9px',color:'#9ca3af',letterSpacing:'0.1em',textTransform:'uppercase'}}>International Study &amp; Career Counselling</div>
+            </div>
+          </div>
             <div className="mt-4 text-center">
               <h1 className="text-xl font-black text-gray-900">Sign In</h1>
               <p className="text-gray-400 text-sm mt-0.5">ISCC Digital Portal</p>
