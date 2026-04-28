@@ -72,13 +72,13 @@ export default function LandingPage() {
           {/* Mobile menu handled by CSS only */}
           <div className="md:hidden flex gap-2">
             <Link href="/auth/login"    className="px-3 py-2 text-xs font-semibold text-blue-900 border border-blue-900 rounded-lg">Login</Link>
-            <Link href="/auth/register" className="px-3 py-2 text-xs font-semibold text-white rounded-lg" className="bg-blue-700">Register</Link>
+            <Link href="/auth/register" className="px-3 py-2 text-xs font-semibold text-white rounded-lg bg-blue-700">Register</Link>
           </div>
         </div>
       </nav>
 
       {/* ── HERO ── */}
-      <section id="home" className="pt-16 min-h-screen flex items-center relative overflow-hidden" className="bg-gradient-to-br from-blue-950 via-blue-800 to-indigo-700">
+      <section id="home" className="pt-16 min-h-screen flex items-center relative overflow-hidden bg-gradient-to-br from-blue-950 via-blue-800 to-indigo-700">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute -top-40 -right-40 w-96 h-96 bg-white/5 rounded-full blur-3xl" />
           <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-white/5 rounded-full blur-3xl" />
@@ -125,7 +125,7 @@ export default function LandingPage() {
       <section id="testimonials" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
-            <div className="inline-block font-semibold text-xs mb-3 uppercase tracking-widest px-3 py-1 rounded-full" className="bg-blue-700 text-white">Student Stories</div>
+            <div className="inline-block font-semibold text-xs mb-3 uppercase tracking-widest px-3 py-1 rounded-full bg-blue-700 text-white">Student Stories</div>
             <h2 className="text-3xl font-black text-gray-900 mt-3">What Our Students Say</h2>
             <p className="text-gray-500 mt-2 max-w-xl mx-auto">Real stories from students who transformed their careers with ISCC Digital</p>
           </div>
@@ -137,7 +137,7 @@ export default function LandingPage() {
                 </div>
                 <p className="text-gray-700 text-sm leading-relaxed mb-6 italic">"{text}"</p>
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm" className="bg-blue-700">
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm bg-blue-700">
                     {name[0]}
                   </div>
                   <div>
@@ -155,7 +155,7 @@ export default function LandingPage() {
       <section id="colleges" className="py-20 bg-gradient-to-br from-slate-50 to-blue-50">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
-            <div className="inline-block font-semibold text-xs mb-3 uppercase tracking-widest px-3 py-1 rounded-full" className="bg-blue-700 text-white">Our Partners</div>
+            <div className="inline-block font-semibold text-xs mb-3 uppercase tracking-widest px-3 py-1 rounded-full bg-blue-700 text-white">Our Partners</div>
             <h2 className="text-3xl font-black text-gray-900 mt-3">Top Partner Colleges</h2>
             <p className="text-gray-500 mt-2 max-w-xl mx-auto">We partner with UGC-approved universities across India and abroad</p>
           </div>
@@ -163,14 +163,14 @@ export default function LandingPage() {
             {COLLEGES.map(({ name, courses, type }) => (
               <div key={name} className="bg-white rounded-2xl border border-gray-100 p-6 hover:shadow-lg transition-all group">
                 <div className="flex items-start justify-between mb-3">
-                  <div className="w-12 h-12 rounded-xl flex items-center justify-center shadow-md" className="bg-blue-700">
+                  <div className="w-12 h-12 rounded-xl flex items-center justify-center shadow-md bg-blue-700">
                     <GraduationCap className="w-6 h-6 text-white" />
                   </div>
                   <span className={`text-xs font-semibold px-2 py-1 rounded-full ${type === 'Online' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700'}`}>{type}</span>
                 </div>
                 <h3 className="font-bold text-gray-900 text-base mb-1">{name}</h3>
                 <p className="text-gray-500 text-sm mb-4">{courses}</p>
-                <a href="#contact" className="flex items-center gap-1 text-sm font-semibold transition-all" className="text-blue-700">
+                <a href="#contact" className="flex items-center gap-1 text-sm font-semibold transition-all text-blue-700">
                   Enquire Now <ChevronRight className="w-4 h-4" />
                 </a>
               </div>
@@ -183,15 +183,15 @@ export default function LandingPage() {
       <section id="courses" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
-            <div className="inline-block font-semibold text-xs mb-3 uppercase tracking-widest px-3 py-1 rounded-full" className="bg-blue-700 text-white">Our Programs</div>
+            <div className="inline-block font-semibold text-xs mb-3 uppercase tracking-widest px-3 py-1 rounded-full bg-blue-700 text-white">Our Programs</div>
             <h2 className="text-3xl font-black text-gray-900 mt-3">Popular Courses</h2>
             <p className="text-gray-500 mt-2 max-w-xl mx-auto">UGC-approved distance and online programs from top universities</p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {COURSES.map(({ name, desc, duration, mode }) => (
               <div key={name} className="bg-white rounded-2xl border border-gray-100 p-6 hover:shadow-xl transition-all group cursor-pointer overflow-hidden relative">
-                <div className="absolute top-0 left-0 right-0 h-1" className="bg-blue-700" />
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 shadow-md" className="bg-blue-700">
+                <div className="absolute top-0 left-0 right-0 h-1 bg-blue-700" />
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 shadow-md bg-blue-700">
                   <GraduationCap className="w-6 h-6 text-white" />
                 </div>
                 <h3 className="font-bold text-gray-900 text-lg mb-1">{name}</h3>
@@ -200,7 +200,7 @@ export default function LandingPage() {
                   <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{duration}</span>
                   <span className="flex items-center gap-1"><BookOpen className="w-3 h-3" />{mode}</span>
                 </div>
-                <a href="#contact" className="flex items-center gap-1 font-semibold text-sm group-hover:gap-2 transition-all" className="text-blue-700">
+                <a href="#contact" className="flex items-center gap-1 font-semibold text-sm group-hover:gap-2 transition-all text-blue-700">
                   Enquire Now <ChevronRight className="w-4 h-4" />
                 </a>
               </div>
@@ -213,7 +213,7 @@ export default function LandingPage() {
       <section id="contact" className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 grid lg:grid-cols-2 gap-16">
           <div>
-            <div className="inline-block font-semibold text-xs mb-3 uppercase tracking-widest px-3 py-1 rounded-full" className="bg-blue-700 text-white">Free Counselling</div>
+            <div className="inline-block font-semibold text-xs mb-3 uppercase tracking-widest px-3 py-1 rounded-full bg-blue-700 text-white">Free Counselling</div>
             <h2 className="text-3xl font-black text-gray-900 mt-3 mb-6">Get In Touch</h2>
             <p className="text-gray-600 mb-8">Our counselors are ready to guide you to the right course and college. Book your free counselling session today.</p>
             <div className="space-y-4">
@@ -223,7 +223,7 @@ export default function LandingPage() {
                 { icon: Clock, label: 'Office Hours', value: 'Mon – Sat: 9:00 AM – 6:00 PM' },
               ].map(({ icon: Icon, label, value }) => (
                 <div key={label} className="flex items-center gap-4 p-4 bg-white rounded-2xl border border-gray-100 shadow-sm">
-                  <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-md flex-shrink-0" className="bg-blue-700">
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-md flex-shrink-0 bg-blue-700">
                     <Icon className="w-5 h-5 text-white" />
                   </div>
                   <div>
@@ -258,13 +258,13 @@ export default function LandingPage() {
       <section id="about" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 grid lg:grid-cols-2 gap-16 items-center">
           <div>
-            <div className="inline-block font-semibold text-xs mb-3 uppercase tracking-widest px-3 py-1 rounded-full" className="bg-blue-700 text-white">About ISCC</div>
+            <div className="inline-block font-semibold text-xs mb-3 uppercase tracking-widest px-3 py-1 rounded-full bg-blue-700 text-white">About ISCC</div>
             <h2 className="text-3xl font-black text-gray-900 mt-3 mb-6">Shaping Global Careers Since 2010</h2>
             <p className="text-gray-600 leading-relaxed mb-6">ISCC (International Study & Career Counselling) has been guiding students to the right educational path since 2010. We specialize in distance learning, online programs, and international education across India and the world.</p>
             <div className="grid grid-cols-2 gap-3">
               {['Distance Learning', 'Study Abroad', 'Career Guidance', 'Document Support', 'Scholarship Help', 'Visa Assistance'].map(item => (
                 <div key={item} className="flex items-center gap-2 text-gray-700 text-sm">
-                  <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0" className="bg-blue-700">
+                  <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 bg-blue-700">
                     <CheckCircle className="w-3 h-3 text-white" />
                   </div>
                   {item}
@@ -280,7 +280,7 @@ export default function LandingPage() {
               { icon: Globe,  title: 'Global Network',   desc: 'India & international universities' },
             ].map(({ icon: Icon, title, desc }) => (
               <div key={title} className="rounded-2xl p-5 bg-gray-50 border border-gray-100 hover:shadow-md transition-shadow">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-3 shadow-md" className="bg-blue-700">
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-3 shadow-md bg-blue-700">
                   <Icon className="w-5 h-5 text-white" />
                 </div>
                 <div className="font-bold text-gray-900 text-sm mb-1">{title}</div>
@@ -292,7 +292,7 @@ export default function LandingPage() {
       </section>
 
       {/* ── PROCESS ── */}
-      <section className="py-20 relative overflow-hidden" className="bg-gradient-to-br from-blue-950 via-blue-900 to-indigo-900">
+      <section className="py-20 relative overflow-hidden bg-gradient-to-br from-blue-950 via-blue-900 to-indigo-900">
         <div className="max-w-7xl mx-auto px-4 relative z-10">
           <div className="text-center mb-12">
             <div className="inline-block text-yellow-400 font-semibold text-xs mb-3 uppercase tracking-widest bg-yellow-400/10 border border-yellow-400/20 px-3 py-1 rounded-full">How It Works</div>
@@ -314,7 +314,7 @@ export default function LandingPage() {
       </section>
 
       {/* ── FOOTER ── */}
-      <footer className="text-gray-400 py-12" className="bg-gray-900">
+      <footer className="text-gray-400 py-12 bg-gray-900">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>
