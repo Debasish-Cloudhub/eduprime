@@ -9,7 +9,7 @@ export default function ContactForm({ courses }: { courses: string[] }) {
         <option value="">Select Course of Interest</option>
         {courses.map(c => <option key={c}>{c}</option>)}
       </select>
-      <button type="submit" className="w-full py-3.5 text-white font-bold rounded-xl hover:opacity-90 transition-all text-sm shadow-lg" style={{background:'linear-gradient(135deg,#0575e6,#021b79)'}}>
+      <button type="submit" className="w-full py-3.5 text-white font-bold rounded-xl hover:opacity-90 transition-all text-sm shadow-lg" className="bg-blue-700">
         Book Free Counselling →
       </button>
     </form>

@@ -6,7 +6,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { authApi } from '@/lib/api';
 import { toast } from 'sonner';
 import { Eye, EyeOff, ArrowLeft } from 'lucide-react';
-
+import ISCCLogo from '@/components/ui/ISCCLogo';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -36,7 +36,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#021b79] via-[#022b6b] to-[#0575e6] flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-950 via-blue-900 to-indigo-800 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <Link href="/" className="flex items-center gap-2 text-blue-200 hover:text-white mb-8 text-sm w-fit transition-colors">
           <ArrowLeft className="w-4 h-4" /> Back to Home
@@ -45,17 +45,7 @@ export default function LoginPage() {
         <div className="bg-white rounded-2xl shadow-2xl p-8">
           {/* ISCC Logo */}
           <div className="flex flex-col items-center mb-8">
-            <div className="flex flex-col items-center gap-2">
-            <svg width="56" height="56" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-              <rect x="10" y="10" width="80" height="80" rx="14" transform="rotate(45 50 50)" fill="#1E3A8A"/>
-              <rect x="18" y="18" width="64" height="64" rx="10" transform="rotate(45 50 50)" fill="none" stroke="#E11D48" strokeWidth="2" opacity="0.9"/>
-              <text x="50" y="58" textAnchor="middle" fontFamily="Inter, Arial, sans-serif" fontWeight="800" fontSize="26" fill="white">iscc</text>
-            </svg>
-            <div className="text-center">
-              <div className="text-xl font-black leading-tight"><span style={{color:'#1E3A8A'}}>ISCC</span><span style={{color:'#E11D48'}}> Digital</span></div>
-              <div style={{fontSize:'9px',color:'#9ca3af',letterSpacing:'0.1em',textTransform:'uppercase'}}>International Study &amp; Career Counselling</div>
-            </div>
-          </div>
+            <ISCCLogo size="lg" showText={true} textColor="dark" />
             <div className="mt-4 text-center">
               <h1 className="text-xl font-black text-gray-900">Sign In</h1>
               <p className="text-gray-400 text-sm mt-0.5">ISCC Digital Portal</p>
@@ -86,7 +76,7 @@ export default function LoginPage() {
               </div>
             </div>
             <button type="submit" disabled={loading}
-              className="w-full py-3.5 bg-gradient-to-r from-[#021b79] to-[#0575e6] text-white font-bold rounded-xl hover:from-blue-800 hover:to-blue-600 disabled:opacity-50 transition-all text-sm shadow-lg">
+              className="w-full py-3.5 bg-gradient-to-r from-blue-900 to-blue-700 text-white font-bold rounded-xl hover:from-blue-800 hover:to-blue-600 disabled:opacity-50 transition-all text-sm shadow-lg">
               {loading ? 'Signing in...' : 'Sign In'}
             </button>
           </form>

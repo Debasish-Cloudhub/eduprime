@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Star, Phone, Mail, Clock, CheckCircle, ArrowRight, ChevronRight, BookOpen, GraduationCap, Globe, Shield, Zap, Users, Menu } from 'lucide-react';
+import ISCCLogo from '@/components/ui/ISCCLogo';
 import AuthRedirect from '@/components/AuthRedirect';
 import EnquiryForm from '@/components/EnquiryForm';
 import ContactForm from '@/components/ContactForm';
@@ -30,10 +31,10 @@ const COLLEGES = [
 ];
 
 const PROCESS = [
-  { step: '01', title: 'Register & Enquire',  desc: 'Fill your details and tell us your goals',    color: 'from-[#0575e6] to-[#034db5]' },
-  { step: '02', title: 'Free Counseling',     desc: 'Our experts guide you to the right course',   color: 'from-[#034db5] to-[#022b6b]' },
-  { step: '03', title: 'Apply & Enroll',      desc: 'We handle your application end to end',       color: 'from-[#022b6b] to-[#021b79]' },
-  { step: '04', title: 'Start Learning',      desc: 'Begin your journey with full support',        color: 'from-[#021b79] to-[#0575e6]' },
+  { step: '01', title: 'Register & Enquire',  desc: 'Fill your details and tell us your goals',    color: 'from-blue-500 to-blue-700' },
+  { step: '02', title: 'Free Counseling',     desc: 'Our experts guide you to the right course',   color: 'from-blue-600 to-blue-800' },
+  { step: '03', title: 'Apply & Enroll',      desc: 'We handle your application end to end',       color: 'from-blue-800 to-blue-900' },
+  { step: '04', title: 'Start Learning',      desc: 'Begin your journey with full support',        color: 'from-blue-900 to-blue-600' },
 ];
 
 // ── SERVER COMPONENT (renders in HTML — no JS needed) ──────────────────────
@@ -45,43 +46,39 @@ export default function LandingPage() {
       <AuthRedirect />
 
       {/* ── NAVBAR ── */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/98 backdrop-blur-md shadow-sm border-b border-gray-100">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2.5">
-            <svg width="36" height="36" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-              <rect x="10" y="10" width="80" height="80" rx="14" transform="rotate(45 50 50)" fill="#1E3A8A"/>
-              <rect x="18" y="18" width="64" height="64" rx="10" transform="rotate(45 50 50)" fill="none" stroke="#E11D48" strokeWidth="2" opacity="0.9"/>
-              <text x="50" y="58" textAnchor="middle" fontFamily="Inter, Arial, sans-serif" fontWeight="800" fontSize="26" fill="white">iscc</text>
-            </svg>
+            <img src="/iscc-logo.svg" alt="ISCC" width="36" height="36" />
             <div>
               <div className="font-black text-sm leading-tight">
-                <span style={{color:'#1E3A8A'}}>ISCC</span>
-                <span style={{color:'#E11D48'}}> Digital</span>
+                <span className="text-blue-900">ISCC</span>
+                <span className="text-red-600"> Digital</span>
               </div>
               <div style={{fontSize:'9px',color:'#6b7280',letterSpacing:'0.1em',textTransform:'uppercase'}}>International Study &amp; Career Counselling</div>
             </div>
           </Link>
           <div className="hidden md:flex items-center gap-6 text-sm font-medium">
-            <a href="#home"         className="text-gray-600 hover:text-[#0575e6] transition-colors">Home</a>
-            <a href="#testimonials" className="text-gray-600 hover:text-[#0575e6] transition-colors">Reviews</a>
-            <a href="#colleges"     className="text-gray-600 hover:text-[#0575e6] transition-colors">Colleges</a>
-            <a href="#courses"      className="text-gray-600 hover:text-[#0575e6] transition-colors">Courses</a>
-            <a href="#contact"      className="text-gray-600 hover:text-[#0575e6] transition-colors">Contact</a>
+            <a href="#home"         className="text-gray-600 hover:text-blue-600 transition-colors">Home</a>
+            <a href="#testimonials" className="text-gray-600 hover:text-blue-600 transition-colors">Reviews</a>
+            <a href="#colleges"     className="text-gray-600 hover:text-blue-600 transition-colors">Colleges</a>
+            <a href="#courses"      className="text-gray-600 hover:text-blue-600 transition-colors">Courses</a>
+            <a href="#contact"      className="text-gray-600 hover:text-blue-600 transition-colors">Contact</a>
           </div>
           <div className="hidden md:flex items-center gap-2">
-            <Link href="/auth/login"    className="px-4 py-2 text-sm font-semibold text-[#021b79] border border-[#021b79] rounded-xl hover:bg-blue-50 transition-colors">Login</Link>
-            <Link href="/auth/register" className="px-4 py-2 text-sm font-semibold text-white rounded-xl hover:opacity-90 transition-all shadow-md" style={{background:'linear-gradient(135deg,#0575e6,#021b79)'}}>Register Free</Link>
+            <Link href="/auth/login"    className="px-4 py-2 text-sm font-semibold text-blue-900 border border-blue-900 rounded-xl hover:bg-blue-50 transition-colors">Login</Link>
+            <Link href="/auth/register" className="px-4 py-2 text-sm font-semibold text-white rounded-xl hover:opacity-90 transition-all shadow-md" className="bg-blue-700">Register Free</Link>
           </div>
           {/* Mobile menu handled by CSS only */}
           <div className="md:hidden flex gap-2">
-            <Link href="/auth/login"    className="px-3 py-2 text-xs font-semibold text-[#021b79] border border-[#021b79] rounded-lg">Login</Link>
-            <Link href="/auth/register" className="px-3 py-2 text-xs font-semibold text-white rounded-lg" style={{background:'linear-gradient(135deg,#0575e6,#021b79)'}}>Register</Link>
+            <Link href="/auth/login"    className="px-3 py-2 text-xs font-semibold text-blue-900 border border-blue-900 rounded-lg">Login</Link>
+            <Link href="/auth/register" className="px-3 py-2 text-xs font-semibold text-white rounded-lg" className="bg-blue-700">Register</Link>
           </div>
         </div>
       </nav>
 
       {/* ── HERO ── */}
-      <section id="home" className="pt-16 min-h-screen flex items-center relative overflow-hidden" style={{background:'linear-gradient(135deg,#021b79 0%,#0347b5 50%,#0575e6 100%)'}}>
+      <section id="home" className="pt-16 min-h-screen flex items-center relative overflow-hidden" className="bg-gradient-to-br from-blue-950 via-blue-800 to-indigo-700">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute -top-40 -right-40 w-96 h-96 bg-white/5 rounded-full blur-3xl" />
           <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-white/5 rounded-full blur-3xl" />
@@ -128,7 +125,7 @@ export default function LandingPage() {
       <section id="testimonials" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
-            <div className="inline-block font-semibold text-xs mb-3 uppercase tracking-widest px-3 py-1 rounded-full" style={{background:'linear-gradient(135deg,#0575e6,#021b79)',color:'white'}}>Student Stories</div>
+            <div className="inline-block font-semibold text-xs mb-3 uppercase tracking-widest px-3 py-1 rounded-full" className="bg-blue-700 text-white">Student Stories</div>
             <h2 className="text-3xl font-black text-gray-900 mt-3">What Our Students Say</h2>
             <p className="text-gray-500 mt-2 max-w-xl mx-auto">Real stories from students who transformed their careers with ISCC Digital</p>
           </div>
@@ -140,7 +137,7 @@ export default function LandingPage() {
                 </div>
                 <p className="text-gray-700 text-sm leading-relaxed mb-6 italic">"{text}"</p>
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm" style={{background:'linear-gradient(135deg,#0575e6,#021b79)'}}>
+                  <div className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm" className="bg-blue-700">
                     {name[0]}
                   </div>
                   <div>
@@ -158,7 +155,7 @@ export default function LandingPage() {
       <section id="colleges" className="py-20 bg-gradient-to-br from-slate-50 to-blue-50">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
-            <div className="inline-block font-semibold text-xs mb-3 uppercase tracking-widest px-3 py-1 rounded-full" style={{background:'linear-gradient(135deg,#0575e6,#021b79)',color:'white'}}>Our Partners</div>
+            <div className="inline-block font-semibold text-xs mb-3 uppercase tracking-widest px-3 py-1 rounded-full" className="bg-blue-700 text-white">Our Partners</div>
             <h2 className="text-3xl font-black text-gray-900 mt-3">Top Partner Colleges</h2>
             <p className="text-gray-500 mt-2 max-w-xl mx-auto">We partner with UGC-approved universities across India and abroad</p>
           </div>
@@ -166,14 +163,14 @@ export default function LandingPage() {
             {COLLEGES.map(({ name, courses, type }) => (
               <div key={name} className="bg-white rounded-2xl border border-gray-100 p-6 hover:shadow-lg transition-all group">
                 <div className="flex items-start justify-between mb-3">
-                  <div className="w-12 h-12 rounded-xl flex items-center justify-center shadow-md" style={{background:'linear-gradient(135deg,#0575e6,#021b79)'}}>
+                  <div className="w-12 h-12 rounded-xl flex items-center justify-center shadow-md" className="bg-blue-700">
                     <GraduationCap className="w-6 h-6 text-white" />
                   </div>
                   <span className={`text-xs font-semibold px-2 py-1 rounded-full ${type === 'Online' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700'}`}>{type}</span>
                 </div>
                 <h3 className="font-bold text-gray-900 text-base mb-1">{name}</h3>
                 <p className="text-gray-500 text-sm mb-4">{courses}</p>
-                <a href="#contact" className="flex items-center gap-1 text-sm font-semibold transition-all" style={{color:'#0575e6'}}>
+                <a href="#contact" className="flex items-center gap-1 text-sm font-semibold transition-all" className="text-blue-700">
                   Enquire Now <ChevronRight className="w-4 h-4" />
                 </a>
               </div>
@@ -186,15 +183,15 @@ export default function LandingPage() {
       <section id="courses" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
-            <div className="inline-block font-semibold text-xs mb-3 uppercase tracking-widest px-3 py-1 rounded-full" style={{background:'linear-gradient(135deg,#0575e6,#021b79)',color:'white'}}>Our Programs</div>
+            <div className="inline-block font-semibold text-xs mb-3 uppercase tracking-widest px-3 py-1 rounded-full" className="bg-blue-700 text-white">Our Programs</div>
             <h2 className="text-3xl font-black text-gray-900 mt-3">Popular Courses</h2>
             <p className="text-gray-500 mt-2 max-w-xl mx-auto">UGC-approved distance and online programs from top universities</p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {COURSES.map(({ name, desc, duration, mode }) => (
               <div key={name} className="bg-white rounded-2xl border border-gray-100 p-6 hover:shadow-xl transition-all group cursor-pointer overflow-hidden relative">
-                <div className="absolute top-0 left-0 right-0 h-1" style={{background:'linear-gradient(135deg,#0575e6,#021b79)'}} />
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 shadow-md" style={{background:'linear-gradient(135deg,#0575e6,#021b79)'}}>
+                <div className="absolute top-0 left-0 right-0 h-1" className="bg-blue-700" />
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 shadow-md" className="bg-blue-700">
                   <GraduationCap className="w-6 h-6 text-white" />
                 </div>
                 <h3 className="font-bold text-gray-900 text-lg mb-1">{name}</h3>
@@ -203,7 +200,7 @@ export default function LandingPage() {
                   <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{duration}</span>
                   <span className="flex items-center gap-1"><BookOpen className="w-3 h-3" />{mode}</span>
                 </div>
-                <a href="#contact" className="flex items-center gap-1 font-semibold text-sm group-hover:gap-2 transition-all" style={{color:'#0575e6'}}>
+                <a href="#contact" className="flex items-center gap-1 font-semibold text-sm group-hover:gap-2 transition-all" className="text-blue-700">
                   Enquire Now <ChevronRight className="w-4 h-4" />
                 </a>
               </div>
@@ -213,10 +210,10 @@ export default function LandingPage() {
       </section>
 
       {/* ── CONTACT / FREE COUNSELLING ── moved lower after courses */}
-      <section id="contact" className="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
+      <section id="contact" className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 grid lg:grid-cols-2 gap-16">
           <div>
-            <div className="inline-block font-semibold text-xs mb-3 uppercase tracking-widest px-3 py-1 rounded-full" style={{background:'linear-gradient(135deg,#0575e6,#021b79)',color:'white'}}>Free Counselling</div>
+            <div className="inline-block font-semibold text-xs mb-3 uppercase tracking-widest px-3 py-1 rounded-full" className="bg-blue-700 text-white">Free Counselling</div>
             <h2 className="text-3xl font-black text-gray-900 mt-3 mb-6">Get In Touch</h2>
             <p className="text-gray-600 mb-8">Our counselors are ready to guide you to the right course and college. Book your free counselling session today.</p>
             <div className="space-y-4">
@@ -226,7 +223,7 @@ export default function LandingPage() {
                 { icon: Clock, label: 'Office Hours', value: 'Mon – Sat: 9:00 AM – 6:00 PM' },
               ].map(({ icon: Icon, label, value }) => (
                 <div key={label} className="flex items-center gap-4 p-4 bg-white rounded-2xl border border-gray-100 shadow-sm">
-                  <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-md flex-shrink-0" style={{background:'linear-gradient(135deg,#0575e6,#021b79)'}}>
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-md flex-shrink-0" className="bg-blue-700">
                     <Icon className="w-5 h-5 text-white" />
                   </div>
                   <div>
@@ -261,13 +258,13 @@ export default function LandingPage() {
       <section id="about" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 grid lg:grid-cols-2 gap-16 items-center">
           <div>
-            <div className="inline-block font-semibold text-xs mb-3 uppercase tracking-widest px-3 py-1 rounded-full" style={{background:'linear-gradient(135deg,#0575e6,#021b79)',color:'white'}}>About ISCC</div>
+            <div className="inline-block font-semibold text-xs mb-3 uppercase tracking-widest px-3 py-1 rounded-full" className="bg-blue-700 text-white">About ISCC</div>
             <h2 className="text-3xl font-black text-gray-900 mt-3 mb-6">Shaping Global Careers Since 2010</h2>
             <p className="text-gray-600 leading-relaxed mb-6">ISCC (International Study & Career Counselling) has been guiding students to the right educational path since 2010. We specialize in distance learning, online programs, and international education across India and the world.</p>
             <div className="grid grid-cols-2 gap-3">
               {['Distance Learning', 'Study Abroad', 'Career Guidance', 'Document Support', 'Scholarship Help', 'Visa Assistance'].map(item => (
                 <div key={item} className="flex items-center gap-2 text-gray-700 text-sm">
-                  <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0" style={{background:'linear-gradient(135deg,#0575e6,#021b79)'}}>
+                  <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0" className="bg-blue-700">
                     <CheckCircle className="w-3 h-3 text-white" />
                   </div>
                   {item}
@@ -283,7 +280,7 @@ export default function LandingPage() {
               { icon: Globe,  title: 'Global Network',   desc: 'India & international universities' },
             ].map(({ icon: Icon, title, desc }) => (
               <div key={title} className="rounded-2xl p-5 bg-gray-50 border border-gray-100 hover:shadow-md transition-shadow">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-3 shadow-md" style={{background:'linear-gradient(135deg,#0575e6,#021b79)'}}>
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-3 shadow-md" className="bg-blue-700">
                   <Icon className="w-5 h-5 text-white" />
                 </div>
                 <div className="font-bold text-gray-900 text-sm mb-1">{title}</div>
@@ -295,7 +292,7 @@ export default function LandingPage() {
       </section>
 
       {/* ── PROCESS ── */}
-      <section className="py-20 relative overflow-hidden" style={{background:'linear-gradient(135deg,#021b79 0%,#022b6b 50%,#0347b5 100%)'}}>
+      <section className="py-20 relative overflow-hidden" className="bg-gradient-to-br from-blue-950 via-blue-900 to-indigo-900">
         <div className="max-w-7xl mx-auto px-4 relative z-10">
           <div className="text-center mb-12">
             <div className="inline-block text-yellow-400 font-semibold text-xs mb-3 uppercase tracking-widest bg-yellow-400/10 border border-yellow-400/20 px-3 py-1 rounded-full">How It Works</div>
@@ -317,18 +314,14 @@ export default function LandingPage() {
       </section>
 
       {/* ── FOOTER ── */}
-      <footer className="text-gray-400 py-12" style={{background:'linear-gradient(135deg,#021b79 0%,#010d3d 100%)'}}>
+      <footer className="text-gray-400 py-12" className="bg-gray-900">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>
               <div className="flex items-center gap-2.5 mb-4">
-                <svg width="32" height="32" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                <rect x="10" y="10" width="80" height="80" rx="14" transform="rotate(45 50 50)" fill="#1E3A8A"/>
-                <rect x="18" y="18" width="64" height="64" rx="10" transform="rotate(45 50 50)" fill="none" stroke="#E11D48" strokeWidth="2" opacity="0.9"/>
-                <text x="50" y="58" textAnchor="middle" fontFamily="Inter, Arial, sans-serif" fontWeight="800" fontSize="26" fill="white">iscc</text>
-              </svg>
+                <img src="/iscc-logo.svg" alt="ISCC" width="32" height="32" />
               <div>
-                <div className="font-black"><span style={{color:'#93c5fd'}}>ISCC</span><span style={{color:'#E11D48'}}> Digital</span></div>
+                <div className="font-black"><span style={{color:'#93c5fd'}}>ISCC</span><span className="text-red-600"> Digital</span></div>
                 <div style={{fontSize:'10px',color:'#9ca3af'}}>International Study &amp; Career Counselling</div>
               </div>
               </div>

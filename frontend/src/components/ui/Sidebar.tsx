@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
-
+import ISCCLogo from '@/components/ui/ISCCLogo';
 import {
   LayoutDashboard, Users, BookOpen, TrendingUp,
   LogOut, FileSpreadsheet, Zap, BarChart2,
@@ -50,19 +50,11 @@ export default function Sidebar({ role }: { role?: string }) {
   const roleLabel = effectiveRole.replace('_', ' ').toLowerCase();
 
   return (
-    <aside className="w-60 bg-[#021b79] text-white flex flex-col h-screen flex-shrink-0">
+    <aside className="w-60 bg-blue-950 text-white flex flex-col h-screen flex-shrink-0">
       {/* Logo */}
-      <div className="px-4 py-4 border-b border-white/10">
-        <Link href="/" className="flex items-center gap-2">
-          <svg width="32" height="32" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style={{flexShrink:0}}>
-            <rect x="10" y="10" width="80" height="80" rx="14" transform="rotate(45 50 50)" fill="#1E3A8A"/>
-            <rect x="18" y="18" width="64" height="64" rx="10" transform="rotate(45 50 50)" fill="none" stroke="#E11D48" strokeWidth="2" opacity="0.9"/>
-            <text x="50" y="58" textAnchor="middle" fontFamily="Inter, Arial, sans-serif" fontWeight="800" fontSize="26" fill="white">iscc</text>
-          </svg>
-          <div>
-            <div className="font-black text-sm leading-tight"><span style={{color:'#93c5fd'}}>ISCC</span><span style={{color:'#fca5a5'}}> Digital</span></div>
-            <div style={{fontSize:'8px',color:'rgba(147,197,253,0.7)',letterSpacing:'0.08em',textTransform:'uppercase'}}>Int. Study &amp; Career Counselling</div>
-          </div>
+      <div className="px-4 py-4 border-b border-blue-800/60">
+        <Link href="/">
+          <ISCCLogo size="sm" showText={true} textColor="light" />
         </Link>
         <div className="mt-2 px-0.5">
           <span className="text-xs text-blue-300 capitalize bg-blue-800/50 px-2 py-0.5 rounded-full">{roleLabel}</span>
@@ -78,7 +70,7 @@ export default function Sidebar({ role }: { role?: string }) {
           return (
             <Link key={label} href={href}
               className={clsx('flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all',
-                active ? 'bg-gradient-to-r from-[#0575e6] to-[#021b79] text-white shadow-lg' : 'text-blue-200 hover:bg-[#0575e6]/20 hover:text-white'
+                active ? 'bg-yellow-400 text-blue-900' : 'text-blue-200 hover:bg-blue-800/60 hover:text-white'
               )}>
               <Icon className="w-4 h-4 flex-shrink-0" />
               <span>{label}</span>
@@ -88,15 +80,15 @@ export default function Sidebar({ role }: { role?: string }) {
       </nav>
 
       {/* User + Logout */}
-      <div className="px-3 py-4 border-t border-white/10 space-y-1">
+      <div className="px-3 py-4 border-t border-blue-800/60 space-y-1">
         {user && (
-          <div className="px-3 py-2 bg-[#0347b5]/30 rounded-xl mb-2">
+          <div className="px-3 py-2 bg-blue-900/50 rounded-xl mb-2">
             <div className="text-white font-semibold text-sm truncate">{user.name}</div>
             <div className="text-blue-300 text-xs truncate">{user.email}</div>
           </div>
         )}
         <button onClick={logout}
-          className="flex items-center gap-3 px-3 py-2.5 w-full rounded-xl text-sm font-medium text-blue-300 hover:bg-gradient-to-r from-[#0575e6] to-[#021b79]/20 hover:text-red-300 transition-all">
+          className="flex items-center gap-3 px-3 py-2.5 w-full rounded-xl text-sm font-medium text-blue-300 hover:bg-red-600/20 hover:text-red-300 transition-all">
           <LogOut className="w-4 h-4" /> Sign Out
         </button>
       </div>

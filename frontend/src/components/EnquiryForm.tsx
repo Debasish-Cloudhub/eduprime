@@ -9,7 +9,7 @@ export default function EnquiryForm({ courses }: { courses: string[] }) {
   return (
     <div className="bg-white rounded-3xl shadow-2xl p-8">
       <div className="flex items-center gap-3 mb-6">
-        <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{background:'linear-gradient(135deg,#0575e6,#021b79)'}}>
+        <div className="w-10 h-10 rounded-xl flex items-center justify-center" className="bg-blue-700">
           <GraduationCap className="w-5 h-5 text-white" />
         </div>
         <div>
@@ -39,7 +39,7 @@ export default function EnquiryForm({ courses }: { courses: string[] }) {
             {courses.map(c => <option key={c}>{c}</option>)}
             <option>Other</option>
           </select>
-          <button type="submit" className="w-full py-3.5 text-white font-bold rounded-xl hover:opacity-90 transition-all text-sm shadow-lg" style={{background:'linear-gradient(135deg,#0575e6,#021b79)'}}>
+          <button type="submit" className="w-full py-3.5 text-white font-bold rounded-xl hover:opacity-90 transition-all text-sm shadow-lg" className="bg-blue-700">
             Submit Enquiry →
           </button>
           <p className="text-xs text-gray-400 text-center">Your information is safe with us</p>
