@@ -48,7 +48,7 @@ export default function LandingPage() {
       <nav className="fixed top-0 left-0 right-0 z-50 bg-white/98 backdrop-blur-md shadow-sm border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2.5">
-            <img src="/iscc-logo.svg" alt="ISCC" width={36} height={36} />
+            <img src="/iscc-logo.svg" alt="ISCC" width="36" height="36" />
             <div>
               <span className="font-black text-base leading-none block">
                 <span className="text-[#021b79]">ISCC</span>
@@ -318,7 +318,7 @@ export default function LandingPage() {
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>
               <div className="flex items-center gap-2.5 mb-4">
-                <img src="/iscc-logo.svg" alt="ISCC" width={32} height={32} />
+                <img src="/iscc-logo.svg" alt="ISCC" width="32" height="32" />
                 <div>
                   <span className="text-white font-black block">ISCC Digital</span>
                   <span className="text-gray-400 text-xs">International Study & Career Counselling</span>
