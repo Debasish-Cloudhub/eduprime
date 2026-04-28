@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Star, Phone, Mail, Clock, CheckCircle, ArrowRight, ChevronRight, BookOpen, GraduationCap, Globe, Shield, Zap, Users, Menu } from 'lucide-react';
 import AuthRedirect from '@/components/AuthRedirect';
 import EnquiryForm from '@/components/EnquiryForm';
+import ContactForm from '@/components/ContactForm';
 
 // ── DATA ─────────────────────────────────────────────────────────────────────
 const COURSES = [
@@ -235,18 +236,7 @@ export default function LandingPage() {
           <div className="bg-white rounded-3xl shadow-xl p-8 border border-gray-100">
             <h3 className="text-xl font-bold text-gray-900 mb-2">Book Free Counselling</h3>
             <p className="text-gray-500 text-sm mb-6">Fill the form and our expert will call you back within 24 hours</p>
-            <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
-              <input placeholder="Your Name *" className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100" />
-              <input placeholder="Phone Number *" className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100" />
-              <input placeholder="Email Address" className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100" />
-              <select className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-500 text-gray-500">
-                <option value="">Select Course of Interest</option>
-                {COURSES.map(c => <option key={c.name}>{c.name}</option>)}
-              </select>
-              <button className="w-full py-3.5 text-white font-bold rounded-xl hover:opacity-90 transition-all text-sm shadow-lg" style={{background:'linear-gradient(135deg,#0575e6,#021b79)'}}>
-                Book Free Counselling →
-              </button>
-            </form>
+            <ContactForm courses={COURSES.map(c => c.name)} />
           </div>
         </div>
       </section>
