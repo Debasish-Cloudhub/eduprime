@@ -77,10 +77,10 @@ export class AuthController {
     const bcrypt = require('bcryptjs');
     const prisma = this.authService['prisma'];
     const accounts = [
-      { email: 'admin@iscc.in',   name: 'ISCC Admin',      role: 'ADMIN',       pw: 'ISCC@Admin2025!'   },
-      { email: 'sales@iscc.in',   name: 'Sales Counselor', role: 'SALES_AGENT', pw: 'ISCC@Sales2025!'   },
-      { email: 'finance@iscc.in', name: 'Finance Manager',  role: 'FINANCE',     pw: 'ISCC@Finance2025!' },
-      { email: 'student@iscc.in', name: 'Demo Student',     role: 'STUDENT',     pw: 'ISCC@Student2025!' },
+      { email: 'admin@digitalstudy.me',   name: 'ISCC Admin',      role: 'ADMIN',       pw: 'ISCC@Admin2025!'   },
+      { email: 'sales@digitalstudy.me',   name: 'Sales Counselor', role: 'SALES_AGENT', pw: 'ISCC@Sales2025!'   },
+      { email: 'finance@digitalstudy.me', name: 'Finance Manager',  role: 'FINANCE',     pw: 'ISCC@Finance2025!' },
+      { email: 'student@digitalstudy.me', name: 'Demo Student',     role: 'STUDENT',     pw: 'ISCC@Student2025!' },
     ];
     const results = [];
     for (const acc of accounts) {

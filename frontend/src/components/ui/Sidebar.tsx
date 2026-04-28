@@ -54,7 +54,7 @@ export default function Sidebar({ role }: { role?: string }) {
       {/* Logo */}
       <div className="px-4 py-4 border-b border-white/10">
         <Link href="/">
-          <ISCCLogo size="sm" showText={true} textColor="light" />
+          <ISCCLogo size="sm" showText={true} variant="sidebar" />
         </Link>
         <div className="mt-2 px-0.5">
           <span className="text-xs text-blue-300 capitalize bg-blue-800/50 px-2 py-0.5 rounded-full">{roleLabel}</span>

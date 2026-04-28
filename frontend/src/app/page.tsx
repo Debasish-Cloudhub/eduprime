@@ -51,10 +51,10 @@ export default function LandingPage() {
             <img src="/iscc-logo.svg" alt="ISCC" width="36" height="36" />
             <div>
               <span className="font-black text-base leading-none block">
-                <span className="text-[#021b79]">ISCC</span>
-                <span className="text-red-600"> Digital</span>
+                <span className="text-[#1E3A8A]">ISCC</span>
+                <span className="text-[#E11D48]"> Digital</span>
               </span>
-              <span className="text-gray-400 text-[9px] leading-none uppercase tracking-widest">International Study & Career Counselling</span>
+              <span className="text-gray-500 text-[9px] leading-none uppercase tracking-widest">International Study & Career Counselling</span>
             </div>
           </Link>
           <div className="hidden md:flex items-center gap-6 text-sm font-medium">
@@ -218,7 +218,7 @@ export default function LandingPage() {
             <div className="space-y-4">
               {[
                 { icon: Phone, label: 'Helpline', value: '+91 72059 70889 | +91 94374 87211' },
-                { icon: Mail,  label: 'Email',    value: 'admin@iscc.in' },
+                { icon: Mail,  label: 'Email',    value: 'admin@digitalstudy.me' },
                 { icon: Clock, label: 'Office Hours', value: 'Mon – Sat: 9:00 AM – 6:00 PM' },
               ].map(({ icon: Icon, label, value }) => (
                 <div key={label} className="flex items-center gap-4 p-4 bg-white rounded-2xl border border-gray-100 shadow-sm">
@@ -320,7 +320,7 @@ export default function LandingPage() {
               <div className="flex items-center gap-2.5 mb-4">
                 <img src="/iscc-logo.svg" alt="ISCC" width="32" height="32" />
                 <div>
-                  <span className="text-white font-black block">ISCC Digital</span>
+                  <span className="font-black block"><span className="text-white">ISCC</span><span className="text-[#E11D48]"> Digital</span></span>
                   <span className="text-gray-400 text-xs">International Study & Career Counselling</span>
                 </div>
               </div>

@@ -45,7 +45,7 @@ export default function LoginPage() {
         <div className="bg-white rounded-2xl shadow-2xl p-8">
           {/* ISCC Logo */}
           <div className="flex flex-col items-center mb-8">
-            <ISCCLogo size="lg" showText={true} textColor="dark" />
+            <ISCCLogo size="lg" showText={true} />
             <div className="mt-4 text-center">
               <h1 className="text-xl font-black text-gray-900">Sign In</h1>
               <p className="text-gray-400 text-sm mt-0.5">ISCC Digital Portal</p>
