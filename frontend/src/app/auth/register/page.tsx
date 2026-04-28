@@ -32,7 +32,7 @@ export default function RegisterPage() {
   };
 
   if (done) return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-900 to-blue-700 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-[#021b79] to-[#0575e6] flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-2xl p-10 max-w-md w-full text-center">
         <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
           <CheckCircle className="w-10 h-10 text-green-500" />
@@ -40,7 +40,7 @@ export default function RegisterPage() {
         <h2 className="text-2xl font-black text-gray-900 mb-3">Registration Successful!</h2>
         <p className="text-gray-500 mb-2">Your account has been created.</p>
         <p className="text-gray-500 text-sm mb-8">Please wait for admin approval, or log in directly if access has been granted.</p>
-        <Link href="/auth/login" className="block w-full py-3 bg-blue-700 text-white font-bold rounded-xl hover:bg-blue-800 text-center">
+        <Link href="/auth/login" className="block w-full py-3 bg-[#0575e6] text-white font-bold rounded-xl hover:bg-[#0460c4] text-center">
           Go to Login
         </Link>
       </div>
@@ -48,7 +48,7 @@ export default function RegisterPage() {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-900 to-blue-700 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-[#021b79] to-[#0575e6] flex items-center justify-center p-4">
       <div className="w-full max-w-lg">
         {/* Back */}
         <Link href="/" className="flex items-center gap-2 text-blue-200 hover:text-white mb-6 text-sm">
@@ -58,7 +58,7 @@ export default function RegisterPage() {
         <div className="bg-white rounded-2xl shadow-2xl p-8">
           {/* Header */}
           <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-14 h-14 bg-blue-700 rounded-2xl mb-4">
+            <div className="inline-flex items-center justify-center w-14 h-14 bg-[#0575e6] rounded-2xl mb-4">
               <GraduationCap className="w-7 h-7 text-white" />
             </div>
             <h1 className="text-2xl font-black text-gray-900">Student Registration</h1>
@@ -117,7 +117,7 @@ export default function RegisterPage() {
             </div>
 
             <button type="submit" disabled={loading}
-              className="w-full py-3.5 bg-blue-700 text-white font-bold rounded-xl hover:bg-blue-800 disabled:opacity-50 disabled:cursor-not-allowed text-sm mt-2">
+              className="w-full py-3.5 bg-[#0575e6] text-white font-bold rounded-xl hover:bg-[#0460c4] disabled:opacity-50 disabled:cursor-not-allowed text-sm mt-2">
               {loading ? 'Creating Account...' : 'Create My Account'}
             </button>
           </form>

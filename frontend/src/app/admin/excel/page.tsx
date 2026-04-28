@@ -37,7 +37,7 @@ export default function ExcelUploadPage() {
   const downloadTemplate = async () => {
     const res = await excelApi.downloadTemplate();
     const url = URL.createObjectURL(new Blob([res.data]));
-    const a = document.createElement('a'); a.href = url; a.download = 'eduprime_courses_template.xlsx'; a.click();
+    const a = document.createElement('a'); a.href = url; a.download = 'ISCC_courses_template.xlsx'; a.click();
   };
 
   const statusIcon = (status: string) => {

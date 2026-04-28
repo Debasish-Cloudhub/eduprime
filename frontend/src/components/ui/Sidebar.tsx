@@ -50,9 +50,9 @@ export default function Sidebar({ role }: { role?: string }) {
   const roleLabel = effectiveRole.replace('_', ' ').toLowerCase();
 
   return (
-    <aside className="w-60 bg-blue-950 text-white flex flex-col h-screen flex-shrink-0">
+    <aside className="w-60 bg-[#021b79] text-white flex flex-col h-screen flex-shrink-0">
       {/* Logo */}
-      <div className="px-4 py-4 border-b border-blue-800/60">
+      <div className="px-4 py-4 border-b border-white/10">
         <Link href="/">
           <ISCCLogo size="sm" showText={true} textColor="light" />
         </Link>
@@ -70,7 +70,7 @@ export default function Sidebar({ role }: { role?: string }) {
           return (
             <Link key={label} href={href}
               className={clsx('flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all',
-                active ? 'bg-red-600 text-white shadow-lg' : 'text-blue-200 hover:bg-blue-800/60 hover:text-white'
+                active ? 'bg-gradient-to-r from-[#0575e6] to-[#021b79] text-white shadow-lg' : 'text-blue-200 hover:bg-[#0575e6]/20 hover:text-white'
               )}>
               <Icon className="w-4 h-4 flex-shrink-0" />
               <span>{label}</span>
@@ -80,15 +80,15 @@ export default function Sidebar({ role }: { role?: string }) {
       </nav>
 
       {/* User + Logout */}
-      <div className="px-3 py-4 border-t border-blue-800/60 space-y-1">
+      <div className="px-3 py-4 border-t border-white/10 space-y-1">
         {user && (
-          <div className="px-3 py-2 bg-blue-900/50 rounded-xl mb-2">
+          <div className="px-3 py-2 bg-[#0347b5]/30 rounded-xl mb-2">
             <div className="text-white font-semibold text-sm truncate">{user.name}</div>
             <div className="text-blue-300 text-xs truncate">{user.email}</div>
           </div>
         )}
         <button onClick={logout}
-          className="flex items-center gap-3 px-3 py-2.5 w-full rounded-xl text-sm font-medium text-blue-300 hover:bg-red-600/20 hover:text-red-300 transition-all">
+          className="flex items-center gap-3 px-3 py-2.5 w-full rounded-xl text-sm font-medium text-blue-300 hover:bg-gradient-to-r from-[#0575e6] to-[#021b79]/20 hover:text-red-300 transition-all">
           <LogOut className="w-4 h-4" /> Sign Out
         </button>
       </div>

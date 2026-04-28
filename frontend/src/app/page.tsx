@@ -9,11 +9,11 @@ import { GraduationCap, Users, BookOpen, CheckCircle, ArrowRight, Star, Globe, P
 
 const COURSES = [
   { name: 'MBA', desc: 'Master of Business Administration', duration: '2 Years', mode: 'Distance / Online', grad: 'from-blue-500 to-blue-700' },
-  { name: 'B.Tech', desc: 'Bachelor of Technology', duration: '4 Years', mode: 'Distance / Online', grad: 'from-indigo-500 to-indigo-700' },
-  { name: 'BBA', desc: 'Bachelor of Business Administration', duration: '3 Years', mode: 'Distance / Online', grad: 'from-violet-500 to-violet-700' },
-  { name: 'MCA', desc: 'Master of Computer Applications', duration: '2 Years', mode: 'Distance / Online', grad: 'from-cyan-500 to-cyan-700' },
-  { name: 'B.Sc Nursing', desc: 'Bachelor of Science in Nursing', duration: '4 Years', mode: 'Distance / Online', grad: 'from-teal-500 to-teal-700' },
-  { name: 'Study Abroad', desc: 'International University Programs', duration: 'Varies', mode: 'On Campus', grad: 'from-sky-500 to-sky-700' },
+  { name: 'B.Tech', desc: 'Bachelor of Technology', duration: '4 Years', mode: 'Distance / Online', grad: 'from-[#0347b5] to-[#021b79]' },
+  { name: 'BBA', desc: 'Bachelor of Business Administration', duration: '3 Years', mode: 'Distance / Online', grad: 'from-[#0460c4] to-[#021b79]' },
+  { name: 'MCA', desc: 'Master of Computer Applications', duration: '2 Years', mode: 'Distance / Online', grad: 'from-[#0575e6] to-[#0347b5]' },
+  { name: 'B.Sc Nursing', desc: 'Bachelor of Science in Nursing', duration: '4 Years', mode: 'Distance / Online', grad: 'from-[#021b79] to-[#0575e6]' },
+  { name: 'Study Abroad', desc: 'International University Programs', duration: 'Varies', mode: 'On Campus', grad: 'from-[#0460c4] to-[#021b79]' },
 ];
 
 const TESTIMONIALS = [
@@ -53,7 +53,7 @@ export default function LandingPage() {
   }, []);
 
   if (checking) return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-950 to-indigo-800">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#021b79] to-[#0575e6]">
       <div className="animate-spin w-10 h-10 border-4 border-white border-t-transparent rounded-full" />
     </div>
   );
@@ -62,7 +62,7 @@ export default function LandingPage() {
     <div className="min-h-screen bg-white">
 
       {/* ── NAVBAR ── */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm shadow-sm border-b border-gray-100">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/98 backdrop-blur-md shadow-sm border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
           <Link href="/">
             <ISCCLogo size="sm" showText={true} textColor="dark" />
@@ -77,7 +77,7 @@ export default function LandingPage() {
             <Link href="/auth/login" className="px-4 py-2 text-sm font-semibold text-blue-700 border border-blue-200 rounded-xl hover:bg-blue-50 transition-colors">
               Login
             </Link>
-            <Link href="/auth/register" className="px-4 py-2 text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all shadow-md">
+            <Link href="/auth/register" className="px-4 py-2 text-sm font-semibold text-white bg-gradient-to-r from-[#0575e6] to-[#021b79] rounded-xl hover:from-[#0460c4] hover:to-[#011560] transition-all shadow-md">
               Register Free
             </Link>
           </div>
@@ -100,7 +100,7 @@ export default function LandingPage() {
       </nav>
 
       {/* ── HERO ── */}
-      <section id="home" className="pt-16 min-h-screen flex items-center bg-gradient-to-br from-blue-950 via-blue-800 to-indigo-700 relative overflow-hidden">
+      <section id="home" className="pt-16 min-h-screen flex items-center bg-gradient-to-br from-[#021b79] via-[#0347b5] to-[#0575e6] relative overflow-hidden">
         {/* Background decorations */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute -top-40 -right-40 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl" />
@@ -180,12 +180,79 @@ export default function LandingPage() {
                   <option>Other</option>
                 </select>
                 <button type="submit"
-                  className="w-full py-3.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all text-sm shadow-lg">
+                  className="w-full py-3.5 bg-gradient-to-r from-[#0575e6] to-[#021b79] text-white font-bold rounded-xl hover:from-[#0460c4] hover:to-[#011560] transition-all text-sm shadow-lg">
                   Submit Enquiry →
                 </button>
                 <p className="text-xs text-gray-400 text-center">Your information is safe with us</p>
               </form>
             )}
+          </div>
+        </div>
+      </section>
+
+      {/* ── TESTIMONIALS ── */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="text-center mb-12">
+            <div className="inline-block text-blue-700 font-semibold text-xs mb-3 uppercase tracking-widest bg-blue-50 px-3 py-1 rounded-full">Student Stories</div>
+            <h2 className="text-3xl font-black text-gray-900">What Our Students Say</h2>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6">
+            {TESTIMONIALS.map(({ name, course, text }, i) => (
+              <div key={name} className="rounded-2xl p-6 border border-gray-100 hover:shadow-lg transition-all bg-gradient-to-br from-white to-blue-50">
+                <div className="flex gap-1 mb-4">
+                  {[...Array(5)].map((_, j) => <Star key={j} className="w-4 h-4 text-yellow-400 fill-yellow-400" />)}
+                </div>
+                <p className="text-gray-700 text-sm leading-relaxed mb-6 italic">"{text}"</p>
+                <div className="flex items-center gap-3">
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center ${['bg-gradient-to-br from-blue-500 to-blue-700', 'bg-gradient-to-br from-[#0347b5] to-[#021b79]', 'bg-gradient-to-br from-[#0460c4] to-[#021b79]'][i]}`}>
+                    <span className="text-white font-bold text-sm">{name[0]}</span>
+                  </div>
+                  <div>
+                    <div className="font-bold text-gray-900 text-sm">{name}</div>
+                    <div className="text-gray-500 text-xs">{course}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── ABOUT ── */}
+      <section id="about" className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 grid lg:grid-cols-2 gap-16 items-center">
+          <div>
+            <div className="inline-block text-blue-700 font-semibold text-xs mb-3 uppercase tracking-widest bg-blue-50 px-3 py-1 rounded-full">About ISCC</div>
+            <h2 className="text-3xl font-black text-gray-900 mb-6">Shaping Global Careers Since 2010</h2>
+            <p className="text-gray-600 leading-relaxed mb-6">ISCC (International Study & Career Counselling) has been guiding students to the right educational path since 2010. We specialize in distance learning, online programs, and international education across India and the world.</p>
+            <p className="text-gray-600 leading-relaxed mb-8">Our expert counselors handle every step — from course selection and documentation to university applications and scholarship guidance.</p>
+            <div className="grid grid-cols-2 gap-3">
+              {['Distance Learning', 'Study Abroad', 'Career Guidance', 'Document Support', 'Scholarship Help', 'Visa Assistance'].map(item => (
+                <div key={item} className="flex items-center gap-2 text-gray-700 text-sm">
+                  <div className="w-5 h-5 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center flex-shrink-0">
+                    <CheckCircle className="w-3 h-3 text-white" />
+                  </div>
+                  {item}
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            {[
+              { icon: Shield, title: 'UGC Approved', desc: 'University partners are UGC recognized', grad: 'from-blue-500 to-blue-700' },
+              { icon: Users, title: 'Expert Counselors', desc: 'Qualified education specialists', grad: 'from-[#0347b5] to-[#021b79]' },
+              { icon: Zap, title: 'Fast Processing', desc: 'Quick application turnaround', grad: 'from-[#0460c4] to-[#021b79]' },
+              { icon: Globe, title: 'Global Network', desc: 'India & international universities', grad: 'from-[#0575e6] to-[#0347b5]' },
+            ].map(({ icon: Icon, title, desc, grad }) => (
+              <div key={title} className="rounded-2xl p-5 bg-gray-50 border border-gray-100 hover:shadow-md transition-shadow">
+                <div className={`w-10 h-10 bg-gradient-to-br ${grad} rounded-xl flex items-center justify-center mb-3 shadow-md`}>
+                  <Icon className="w-5 h-5 text-white" />
+                </div>
+                <div className="font-bold text-gray-900 text-sm mb-1">{title}</div>
+                <div className="text-gray-500 text-xs">{desc}</div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -220,31 +287,39 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── TESTIMONIALS ── */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-12">
-            <div className="inline-block text-blue-700 font-semibold text-xs mb-3 uppercase tracking-widest bg-blue-50 px-3 py-1 rounded-full">Student Stories</div>
-            <h2 className="text-3xl font-black text-gray-900">What Our Students Say</h2>
+      {/* ── CONTACT ── */}
+      <section id="contact" className="py-20 bg-gradient-to-br from-gray-50 to-blue-50">
+        <div className="max-w-7xl mx-auto px-4 grid lg:grid-cols-2 gap-16">
+          <div>
+            <div className="inline-block text-blue-700 font-semibold text-xs mb-3 uppercase tracking-widest bg-blue-100 px-3 py-1 rounded-full">Contact Us</div>
+            <h2 className="text-3xl font-black text-gray-900 mb-6">Get In Touch</h2>
+            <p className="text-gray-600 mb-8">Our counselors are ready to help you choose the right path to your dream career.</p>
+            <div className="space-y-4">
+              {[
+                { icon: Phone, label: 'Helpline', value: '+91 72059 70889 | +91 94374 87211', grad: 'from-blue-500 to-blue-700' },
+                { icon: Mail, label: 'Email', value: 'admin@iscc.in', grad: 'from-[#0347b5] to-[#021b79]' },
+                { icon: Clock, label: 'Office Hours', value: 'Mon – Sat: 9:00 AM – 6:00 PM', grad: 'from-[#0460c4] to-[#021b79]' },
+              ].map(({ icon: Icon, label, value, grad }) => (
+                <div key={label} className="flex items-center gap-4 p-4 bg-white rounded-2xl border border-gray-100 shadow-sm">
+                  <div className={`w-10 h-10 bg-gradient-to-br ${grad} rounded-xl flex items-center justify-center shadow-md flex-shrink-0`}>
+                    <Icon className="w-5 h-5 text-white" />
+                  </div>
+                  <div><div className="text-xs text-gray-500">{label}</div><div className="font-semibold text-gray-900 text-sm">{value}</div></div>
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="grid md:grid-cols-3 gap-6">
-            {TESTIMONIALS.map(({ name, course, text }, i) => (
-              <div key={name} className="rounded-2xl p-6 border border-gray-100 hover:shadow-lg transition-all bg-gradient-to-br from-white to-blue-50">
-                <div className="flex gap-1 mb-4">
-                  {[...Array(5)].map((_, j) => <Star key={j} className="w-4 h-4 text-yellow-400 fill-yellow-400" />)}
-                </div>
-                <p className="text-gray-700 text-sm leading-relaxed mb-6 italic">"{text}"</p>
-                <div className="flex items-center gap-3">
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center ${['bg-gradient-to-br from-blue-500 to-blue-700', 'bg-gradient-to-br from-indigo-500 to-indigo-700', 'bg-gradient-to-br from-violet-500 to-violet-700'][i]}`}>
-                    <span className="text-white font-bold text-sm">{name[0]}</span>
-                  </div>
-                  <div>
-                    <div className="font-bold text-gray-900 text-sm">{name}</div>
-                    <div className="text-gray-500 text-xs">{course}</div>
-                  </div>
-                </div>
-              </div>
-            ))}
+          <div className="bg-white rounded-3xl shadow-xl p-8 border border-gray-100">
+            <h3 className="text-xl font-bold text-gray-900 mb-6">Send us a Message</h3>
+            <form className="space-y-4" onSubmit={e => e.preventDefault()}>
+              <input placeholder="Your Name *" className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100" />
+              <input placeholder="Phone Number *" className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100" />
+              <input placeholder="Email Address" className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100" />
+              <textarea placeholder="Your Message" rows={4} className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 resize-none" />
+              <button className="w-full py-3.5 bg-gradient-to-r from-[#0575e6] to-[#021b79] text-white font-bold rounded-xl hover:from-[#0460c4] hover:to-[#011560] transition-all text-sm shadow-lg">
+                Send Message →
+              </button>
+            </form>
           </div>
         </div>
       </section>
@@ -261,46 +336,8 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── ABOUT ── */}
-      <section id="about" className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 grid lg:grid-cols-2 gap-16 items-center">
-          <div>
-            <div className="inline-block text-blue-700 font-semibold text-xs mb-3 uppercase tracking-widest bg-blue-50 px-3 py-1 rounded-full">About ISCC</div>
-            <h2 className="text-3xl font-black text-gray-900 mb-6">Shaping Global Careers Since 2010</h2>
-            <p className="text-gray-600 leading-relaxed mb-6">ISCC (International Study & Career Counselling) has been guiding students to the right educational path since 2010. We specialize in distance learning, online programs, and international education across India and the world.</p>
-            <p className="text-gray-600 leading-relaxed mb-8">Our expert counselors handle every step — from course selection and documentation to university applications and scholarship guidance.</p>
-            <div className="grid grid-cols-2 gap-3">
-              {['Distance Learning', 'Study Abroad', 'Career Guidance', 'Document Support', 'Scholarship Help', 'Visa Assistance'].map(item => (
-                <div key={item} className="flex items-center gap-2 text-gray-700 text-sm">
-                  <div className="w-5 h-5 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center flex-shrink-0">
-                    <CheckCircle className="w-3 h-3 text-white" />
-                  </div>
-                  {item}
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            {[
-              { icon: Shield, title: 'UGC Approved', desc: 'University partners are UGC recognized', grad: 'from-blue-500 to-blue-700' },
-              { icon: Users, title: 'Expert Counselors', desc: 'Qualified education specialists', grad: 'from-indigo-500 to-indigo-700' },
-              { icon: Zap, title: 'Fast Processing', desc: 'Quick application turnaround', grad: 'from-violet-500 to-violet-700' },
-              { icon: Globe, title: 'Global Network', desc: 'India & international universities', grad: 'from-cyan-500 to-cyan-700' },
-            ].map(({ icon: Icon, title, desc, grad }) => (
-              <div key={title} className="rounded-2xl p-5 bg-gray-50 border border-gray-100 hover:shadow-md transition-shadow">
-                <div className={`w-10 h-10 bg-gradient-to-br ${grad} rounded-xl flex items-center justify-center mb-3 shadow-md`}>
-                  <Icon className="w-5 h-5 text-white" />
-                </div>
-                <div className="font-bold text-gray-900 text-sm mb-1">{title}</div>
-                <div className="text-gray-500 text-xs">{desc}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ── PROCESS ── */}
-      <section className="py-20 bg-gradient-to-br from-blue-950 via-blue-900 to-indigo-900 relative overflow-hidden">
+      <section className="py-20 bg-gradient-to-br from-[#021b79] via-[#022b6b] to-[#0347b5] relative overflow-hidden">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
           <div className="absolute bottom-0 left-0 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl" />
@@ -325,45 +362,8 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── CONTACT ── */}
-      <section id="contact" className="py-20 bg-gradient-to-br from-gray-50 to-indigo-50">
-        <div className="max-w-7xl mx-auto px-4 grid lg:grid-cols-2 gap-16">
-          <div>
-            <div className="inline-block text-blue-700 font-semibold text-xs mb-3 uppercase tracking-widest bg-blue-100 px-3 py-1 rounded-full">Contact Us</div>
-            <h2 className="text-3xl font-black text-gray-900 mb-6">Get In Touch</h2>
-            <p className="text-gray-600 mb-8">Our counselors are ready to help you choose the right path to your dream career.</p>
-            <div className="space-y-4">
-              {[
-                { icon: Phone, label: 'Helpline', value: '+91 72059 70889 | +91 94374 87211', grad: 'from-blue-500 to-blue-700' },
-                { icon: Mail, label: 'Email', value: 'admin@iscc.in', grad: 'from-indigo-500 to-indigo-700' },
-                { icon: Clock, label: 'Office Hours', value: 'Mon – Sat: 9:00 AM – 6:00 PM', grad: 'from-violet-500 to-violet-700' },
-              ].map(({ icon: Icon, label, value, grad }) => (
-                <div key={label} className="flex items-center gap-4 p-4 bg-white rounded-2xl border border-gray-100 shadow-sm">
-                  <div className={`w-10 h-10 bg-gradient-to-br ${grad} rounded-xl flex items-center justify-center shadow-md flex-shrink-0`}>
-                    <Icon className="w-5 h-5 text-white" />
-                  </div>
-                  <div><div className="text-xs text-gray-500">{label}</div><div className="font-semibold text-gray-900 text-sm">{value}</div></div>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="bg-white rounded-3xl shadow-xl p-8 border border-gray-100">
-            <h3 className="text-xl font-bold text-gray-900 mb-6">Send us a Message</h3>
-            <form className="space-y-4" onSubmit={e => e.preventDefault()}>
-              <input placeholder="Your Name *" className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100" />
-              <input placeholder="Phone Number *" className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100" />
-              <input placeholder="Email Address" className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100" />
-              <textarea placeholder="Your Message" rows={4} className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 resize-none" />
-              <button className="w-full py-3.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all text-sm shadow-lg">
-                Send Message →
-              </button>
-            </form>
-          </div>
-        </div>
-      </section>
-
       {/* ── FOOTER ── */}
-      <footer className="bg-gradient-to-br from-gray-900 to-blue-950 text-gray-400 py-12">
+      <footer className="bg-gradient-to-br from-gray-950 to-[#021b79] text-gray-400 py-12">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>

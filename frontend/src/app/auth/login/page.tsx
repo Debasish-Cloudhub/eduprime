@@ -36,7 +36,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-950 via-blue-900 to-indigo-800 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-[#021b79] via-[#022b6b] to-[#0575e6] flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <Link href="/" className="flex items-center gap-2 text-blue-200 hover:text-white mb-8 text-sm w-fit transition-colors">
           <ArrowLeft className="w-4 h-4" /> Back to Home
@@ -76,7 +76,7 @@ export default function LoginPage() {
               </div>
             </div>
             <button type="submit" disabled={loading}
-              className="w-full py-3.5 bg-gradient-to-r from-blue-900 to-blue-700 text-white font-bold rounded-xl hover:from-blue-800 hover:to-blue-600 disabled:opacity-50 transition-all text-sm shadow-lg">
+              className="w-full py-3.5 bg-gradient-to-r from-[#021b79] to-[#0575e6] text-white font-bold rounded-xl hover:from-blue-800 hover:to-blue-600 disabled:opacity-50 transition-all text-sm shadow-lg">
               {loading ? 'Signing in...' : 'Sign In'}
             </button>
           </form>
