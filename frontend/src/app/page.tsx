@@ -4,7 +4,7 @@ import ISCCLogo from '@/components/ui/ISCCLogo';
 import AuthRedirect from '@/components/AuthRedirect';
 import ContactForm from '@/components/ContactForm';
 
-// ── DATA ─────────────────────────────────────────────────────────────────────
+// ── DATA ──────────────────────────────────────────────────────────────── v20260430075018
 const COURSES = [
   { name: 'MBA',          desc: 'Master of Business Administration',  duration: '2 Years',  mode: 'Distance / Online' },
   { name: 'B.Tech',       desc: 'Bachelor of Technology',             duration: '4 Years',  mode: 'Distance / Online' },

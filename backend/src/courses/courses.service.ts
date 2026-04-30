@@ -131,7 +131,7 @@ export class CoursesService {
     if (dto.eligibility !== undefined)   data.eligibility = dto.eligibility || null;
     if (dto.description !== undefined)   data.description = dto.description || null;
     if (dto.seats !== undefined)         data.seats = dto.seats ? parseInt(String(dto.seats)) : null;
-    if (dto.fees !== undefined)          data.fees = dto.fees ? parseFloat(String(dto.fees)) : 0;
+    if (dto.fees !== undefined) data.fees = (() => { const n = parseFloat(String(dto.fees ?? 0)); return isNaN(n) ? 0 : n; })();
     if (dto.totalFees !== undefined)     data.totalFees = dto.totalFees ? parseFloat(String(dto.totalFees)) : null;
     if (dto.incentiveFixed !== undefined) data.incentiveFixed = dto.incentiveFixed ? parseFloat(String(dto.incentiveFixed)) : null;
     if (dto.incentivePct !== undefined)  data.incentivePct = dto.incentivePct ? parseFloat(String(dto.incentivePct)) : null;
@@ -144,8 +144,10 @@ export class CoursesService {
   }
 
   async deleteCourse(id: string) {
-    await this.prisma.course.update({ where: { id }, data: { isActive: false } });
-    return { message: 'Course deactivated' };
+    await this.prisma.course.delete({ where: { id } }).catch(() =>
+      this.prisma.course.update({ where: { id }, data: { isActive: false } })
+    );
+    return { message: 'Course deleted successfully' };
   }
 
   async getStreams() {
