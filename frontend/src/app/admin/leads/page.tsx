@@ -5,7 +5,7 @@ import { leadsApi, usersApi } from '@/lib/api';
 import Topbar from '@/components/ui/Topbar';
 import StatusBadge from '@/components/ui/StatusBadge';
 import { toast } from 'sonner';
-import { Plus, Search, Filter, RefreshCw, Eye, UserCheck } from 'lucide-react';
+import { Plus, Search, Filter, RefreshCw, Eye, UserCheck , Trash2} from 'lucide-react';
 import Link from 'next/link';
 
 const STATUSES = ['NEW','INITIATED','IN_PROGRESS','DOCS_SUBMITTED','OFFER_RECEIVED','ENROLLED','WON','LOST'];
@@ -13,6 +13,7 @@ const SOURCES  = ['SULEKHA','WEBSITE','REFERRAL','WALK_IN','SOCIAL_MEDIA','OTHER
 
 export default function AdminLeadsPage() {
   const qc = useQueryClient();
+  const [deleteTarget, setDeleteTarget] = useState<any>(null);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
   const [status, setStatus] = useState('');
@@ -159,12 +160,18 @@ export default function AdminLeadsPage() {
 
 function CreateLeadModal({ onClose, agents }: { onClose: () => void; agents: any[] }) {
   const qc = useQueryClient();
+  const [deleteTarget, setDeleteTarget] = useState<any>(null);
   const [form, setForm] = useState({ studentName: '', studentPhone: '', studentEmail: '', city: '', state: '', source: 'WEBSITE', agentId: '', notes: '' });
   const mutation = useMutation({
     mutationFn: () => leadsApi.create(form),
     onSuccess: () => { toast.success('Lead created!'); qc.invalidateQueries({ queryKey: ['leads'] }); onClose(); },
     onError: (e: any) => toast.error(e?.response?.data?.message || 'Failed to create lead'),
-  });
+  })
+  const deleteLead = useMutation({
+    mutationFn: leadsApi.delete,
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ['leads'] }); setDeleteTarget(null); toast.success('Lead deleted successfully'); },
+    onError: () => toast.error('Failed to delete lead'),
+  });;
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }));
 
   return (

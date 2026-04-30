@@ -117,6 +117,7 @@ export const usersApi = {
   create: (dto: any) => api.post('/users', dto),
   update: (id: string, dto: any) => api.put(`/users/${id}`, dto),
   toggleActive: (id: string) => api.patch(`/users/${id}/toggle-active`),
+  delete: (id: string) => api.delete(`/users/${id}`),
 };
 
 // ─── Sulekha ─────────────────────────────────────────────────────────────────

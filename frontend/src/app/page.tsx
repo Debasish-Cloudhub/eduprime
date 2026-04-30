@@ -209,6 +209,43 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* ── ABOUT ── */}
+      <section id="about" className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 grid lg:grid-cols-2 gap-16 items-center">
+          <div>
+            <div className="inline-block font-semibold text-xs mb-3 uppercase tracking-widest px-3 py-1 rounded-full bg-blue-700 text-white">About ISCC</div>
+            <h2 className="text-3xl font-black text-gray-900 mt-3 mb-6">Shaping Global Careers Since 2010</h2>
+            <p className="text-gray-600 leading-relaxed mb-6">ISCC (International Study & Career Counselling) has been guiding students to the right educational path since 2010. We specialize in distance learning, online programs, and international education across India and the world.</p>
+            <div className="grid grid-cols-2 gap-3">
+              {['Distance Learning', 'Study Abroad', 'Career Guidance', 'Document Support', 'Scholarship Help', 'Visa Assistance'].map(item => (
+                <div key={item} className="flex items-center gap-2 text-gray-700 text-sm">
+                  <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 bg-blue-700">
+                    <CheckCircle className="w-3 h-3 text-white" />
+                  </div>
+                  {item}
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            {[
+              { icon: Shield, title: 'UGC Approved',     desc: 'University partners are UGC recognized' },
+              { icon: Users,  title: 'Expert Counselors', desc: 'Qualified education specialists' },
+              { icon: Zap,    title: 'Fast Processing',  desc: 'Quick application turnaround' },
+              { icon: Globe,  title: 'Global Network',   desc: 'India & international universities' },
+            ].map(({ icon: Icon, title, desc }) => (
+              <div key={title} className="rounded-2xl p-5 bg-gray-50 border border-gray-100 hover:shadow-md transition-shadow">
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-3 shadow-md bg-blue-700">
+                  <Icon className="w-5 h-5 text-white" />
+                </div>
+                <div className="font-bold text-gray-900 text-sm mb-1">{title}</div>
+                <div className="text-gray-500 text-xs">{desc}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── CONTACT / FREE COUNSELLING ── moved lower after courses */}
       <section id="contact" className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 grid lg:grid-cols-2 gap-16">
@@ -251,43 +288,6 @@ export default function LandingPage() {
               <div className="text-blue-800 text-sm font-medium mt-1">{label}</div>
             </div>
           ))}
-        </div>
-      </section>
-
-      {/* ── ABOUT ── */}
-      <section id="about" className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 grid lg:grid-cols-2 gap-16 items-center">
-          <div>
-            <div className="inline-block font-semibold text-xs mb-3 uppercase tracking-widest px-3 py-1 rounded-full bg-blue-700 text-white">About ISCC</div>
-            <h2 className="text-3xl font-black text-gray-900 mt-3 mb-6">Shaping Global Careers Since 2010</h2>
-            <p className="text-gray-600 leading-relaxed mb-6">ISCC (International Study & Career Counselling) has been guiding students to the right educational path since 2010. We specialize in distance learning, online programs, and international education across India and the world.</p>
-            <div className="grid grid-cols-2 gap-3">
-              {['Distance Learning', 'Study Abroad', 'Career Guidance', 'Document Support', 'Scholarship Help', 'Visa Assistance'].map(item => (
-                <div key={item} className="flex items-center gap-2 text-gray-700 text-sm">
-                  <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 bg-blue-700">
-                    <CheckCircle className="w-3 h-3 text-white" />
-                  </div>
-                  {item}
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            {[
-              { icon: Shield, title: 'UGC Approved',     desc: 'University partners are UGC recognized' },
-              { icon: Users,  title: 'Expert Counselors', desc: 'Qualified education specialists' },
-              { icon: Zap,    title: 'Fast Processing',  desc: 'Quick application turnaround' },
-              { icon: Globe,  title: 'Global Network',   desc: 'India & international universities' },
-            ].map(({ icon: Icon, title, desc }) => (
-              <div key={title} className="rounded-2xl p-5 bg-gray-50 border border-gray-100 hover:shadow-md transition-shadow">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-3 shadow-md bg-blue-700">
-                  <Icon className="w-5 h-5 text-white" />
-                </div>
-                <div className="font-bold text-gray-900 text-sm mb-1">{title}</div>
-                <div className="text-gray-500 text-xs">{desc}</div>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 

@@ -83,4 +83,11 @@ export class UsersService {
       orderBy: { name: 'asc' },
     });
   }
+
+  async delete(id: string) {
+    await this.findOne(id);
+    await this.prisma.user.delete({ where: { id } });
+    return { message: 'User deleted successfully' };
+  }
+
 }

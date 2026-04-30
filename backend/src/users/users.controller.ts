@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Patch, Param, Query, Body, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Put, Patch, Delete, Param, Query, Body, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard, Roles } from '../auth/roles.guard';
@@ -43,6 +43,12 @@ export class UsersController {
   resetPassword(@Param('id') id: string, @Body('password') password: string) {
     return this.usersService.resetPassword(id, password);
   }
+
+
+  @Delete(':id')
+  @Roles('ADMIN')
+  @ApiOperation({ summary: 'Delete user (Admin only)' })
+  delete(@Param('id') id: string) { return this.usersService.delete(id); }
 
   @Post('seed-admin')
   async seedAdmin() {
