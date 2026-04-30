@@ -121,9 +121,24 @@ export class CoursesService {
   }
 
   async updateCourse(id: string, dto: any) {
+    // Clean and cast data to correct types before updating
+    const data: any = {};
+    if (dto.name !== undefined)          data.name = dto.name;
+    if (dto.collegeId !== undefined)     data.collegeId = dto.collegeId;
+    if (dto.stream !== undefined)        data.stream = dto.stream || null;
+    if (dto.degree !== undefined)        data.degree = dto.degree || null;
+    if (dto.duration !== undefined)      data.duration = dto.duration || null;
+    if (dto.eligibility !== undefined)   data.eligibility = dto.eligibility || null;
+    if (dto.description !== undefined)   data.description = dto.description || null;
+    if (dto.seats !== undefined)         data.seats = dto.seats ? parseInt(String(dto.seats)) : null;
+    if (dto.fees !== undefined)          data.fees = dto.fees ? parseFloat(String(dto.fees)) : 0;
+    if (dto.totalFees !== undefined)     data.totalFees = dto.totalFees ? parseFloat(String(dto.totalFees)) : null;
+    if (dto.incentiveFixed !== undefined) data.incentiveFixed = dto.incentiveFixed ? parseFloat(String(dto.incentiveFixed)) : null;
+    if (dto.incentivePct !== undefined)  data.incentivePct = dto.incentivePct ? parseFloat(String(dto.incentivePct)) : null;
+
     return this.prisma.course.update({
       where: { id },
-      data: dto,
+      data,
       include: { college: { select: { id: true, name: true } } },
     });
   }

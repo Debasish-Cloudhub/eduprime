@@ -68,6 +68,7 @@ export const coursesApi = {
   getStreams: () => api.get('/courses/streams'),
   createCourse: (dto: any) => api.post('/courses', dto),
   updateCourse: (id: string, dto: any) => api.put(`/courses/${id}`, dto),
+  deleteCourse: (id: string) => api.delete(`/courses/${id}`),
 };
 
 // ─── Incentives ───────────────────────────────────────────────────────────────

@@ -2,7 +2,6 @@ import Link from 'next/link';
 import { Star, Phone, Mail, Clock, CheckCircle, ArrowRight, ChevronRight, BookOpen, GraduationCap, Globe, Shield, Zap, Users, Menu } from 'lucide-react';
 import ISCCLogo from '@/components/ui/ISCCLogo';
 import AuthRedirect from '@/components/AuthRedirect';
-import EnquiryForm from '@/components/EnquiryForm';
 import ContactForm from '@/components/ContactForm';
 
 // ── DATA ─────────────────────────────────────────────────────────────────────
@@ -116,8 +115,29 @@ export default function LandingPage() {
               </a>
             </div>
           </div>
-          {/* Enquiry Form — client island */}
-          <EnquiryForm courses={COURSES.map(c => c.name)} />
+          {/* Student hero image */}
+          <div className="hidden lg:flex items-center justify-center">
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 to-indigo-400/20 rounded-3xl blur-2xl" />
+              <img
+                src="/student-hero.png"
+                alt="ISCC Digital Student"
+                className="relative z-10 rounded-3xl shadow-2xl object-cover"
+                style={{maxHeight: '480px', maxWidth: '420px', width: '100%'}}
+              />
+              {/* Floating badge */}
+              <div className="absolute -bottom-4 -left-4 bg-white rounded-2xl shadow-xl px-5 py-3 z-20">
+                <div className="text-xs text-gray-500 font-medium">Success Rate</div>
+                <div className="text-2xl font-black text-blue-900">99%</div>
+                <div className="text-xs text-gray-400">Employment Rate</div>
+              </div>
+              <div className="absolute -top-4 -right-4 bg-white rounded-2xl shadow-xl px-5 py-3 z-20">
+                <div className="text-xs text-gray-500 font-medium">Students Guided</div>
+                <div className="text-2xl font-black text-blue-900">2000+</div>
+                <div className="text-xs text-gray-400">Since 2010</div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
