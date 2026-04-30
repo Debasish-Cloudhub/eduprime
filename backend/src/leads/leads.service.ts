@@ -61,14 +61,16 @@ export class LeadsService {
   };
 
   async create(dto: CreateLeadDto, actorId: string) {
-    // Dedup check
-    const existing = await this.prisma.lead.findFirst({
-      where: { studentPhone: dto.studentPhone, status: { not: 'LOST' } },
-    });
-    if (existing) {
-      throw new BadRequestException(
-        `Lead with phone ${dto.studentPhone} already exists (ID: ${existing.id})`,
-      );
+    // Dedup check — only if phone is provided
+    if (dto.studentPhone) {
+      const existing = await this.prisma.lead.findFirst({
+        where: { studentPhone: dto.studentPhone, status: { not: 'LOST' } },
+      });
+      if (existing) {
+        throw new BadRequestException(
+          `Lead with phone ${dto.studentPhone} already exists (ID: ${existing.id})`,
+        );
+      }
     }
 
     const lead = await this.prisma.lead.create({
