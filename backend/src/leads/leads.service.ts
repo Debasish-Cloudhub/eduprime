@@ -12,7 +12,7 @@ import * as dayjs from 'dayjs';
 export interface CreateLeadDto {
   studentName: string;
   studentEmail?: string;
-  studentPhone: string;
+  studentPhone?: string;
   city?: string;
   state?: string;
   qualification?: string;
