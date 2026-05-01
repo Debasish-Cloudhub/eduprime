@@ -97,3 +97,38 @@ export class AuthController {
     return { message: 'ISCC setup complete', accounts: results };
   }
 }
+  // Emergency migration endpoint — runs DB schema updates
+  @Post('run-migrations')
+  async runMigrations() {
+    const { PrismaClient } = require('@prisma/client');
+    const db = new PrismaClient();
+    const results = [];
+    try {
+      // Create CurrencyType enum
+      await db.$executeRawUnsafe(`
+        DO $$ BEGIN
+          CREATE TYPE "CurrencyType" AS ENUM ('INR', 'USD', 'EUR', 'AUD', 'CNY', 'SGD');
+        EXCEPTION WHEN duplicate_object THEN NULL;
+        END $$;
+      `);
+      results.push('CurrencyType enum: OK');
+
+      // Add currencyType to Course
+      await db.$executeRawUnsafe(`ALTER TABLE "Course" ADD COLUMN IF NOT EXISTS "currencyType" "CurrencyType" NOT NULL DEFAULT 'INR';`);
+      results.push('Course.currencyType: OK');
+
+      // Add country to Course
+      await db.$executeRawUnsafe(`ALTER TABLE "Course" ADD COLUMN IF NOT EXISTS "country" TEXT;`);
+      results.push('Course.country: OK');
+
+      // Add currencyType to College
+      await db.$executeRawUnsafe(`ALTER TABLE "College" ADD COLUMN IF NOT EXISTS "currencyType" "CurrencyType" NOT NULL DEFAULT 'INR';`);
+      results.push('College.currencyType: OK');
+
+      await db.$disconnect();
+      return { success: true, results };
+    } catch (err) {
+      await db.$disconnect();
+      return { success: false, error: err.message, results };
+    }
+  }
