@@ -116,4 +116,17 @@ export class AuthService {
     await this.prisma.user.update({ where: { id: userId }, data: { passwordHash: hash } });
     return { message: 'Password changed successfully' };
   }
+  async runMigrations() {
+    const results: string[] = [];
+    await this.prisma.$executeRawUnsafe(`DO $$ BEGIN CREATE TYPE "CurrencyType" AS ENUM ('INR','USD','EUR','AUD','CNY','SGD'); EXCEPTION WHEN duplicate_object THEN NULL; END $$;`);
+    results.push('enum ok');
+    await this.prisma.$executeRawUnsafe(`ALTER TABLE "Course" ADD COLUMN IF NOT EXISTS "currencyType" "CurrencyType" NOT NULL DEFAULT 'INR'`);
+    results.push('Course.currencyType ok');
+    await this.prisma.$executeRawUnsafe(`ALTER TABLE "Course" ADD COLUMN IF NOT EXISTS "country" TEXT`);
+    results.push('Course.country ok');
+    await this.prisma.$executeRawUnsafe(`ALTER TABLE "College" ADD COLUMN IF NOT EXISTS "currencyType" "CurrencyType" NOT NULL DEFAULT 'INR'`);
+    results.push('College.currencyType ok');
+    return results;
+  }
+
 }
