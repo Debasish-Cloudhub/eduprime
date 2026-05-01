@@ -55,7 +55,21 @@ export class CoursesService {
   }
 
   async updateCollege(id: string, dto: any) {
-    return this.prisma.college.update({ where: { id }, data: dto });
+    const data: any = {};
+    if (dto.name !== undefined)         data.name = dto.name;
+    if (dto.city !== undefined)         data.city = dto.city || null;
+    if (dto.state !== undefined)        data.state = dto.state || null;
+    if (dto.country !== undefined)      data.country = dto.country || 'India';
+    if (dto.type !== undefined)         data.type = dto.type || null;
+    if (dto.website !== undefined)      data.website = dto.website || null;
+    if (dto.ranking !== undefined)      data.ranking = dto.ranking ? parseInt(String(dto.ranking)) : null;
+    if (dto.currencyType !== undefined) data.currencyType = dto.currencyType || 'INR';
+    return this.prisma.college.update({ where: { id }, data });
+  }
+
+  async deleteCollege(id: string) {
+    await this.prisma.college.update({ where: { id }, data: { isActive: false } });
+    return { message: 'College deleted successfully' };
   }
 
   // ─── COURSES ──────────────────────────────────────
@@ -135,6 +149,8 @@ export class CoursesService {
     if (dto.totalFees !== undefined)     data.totalFees = dto.totalFees ? parseFloat(String(dto.totalFees)) : null;
     if (dto.incentiveFixed !== undefined) data.incentiveFixed = dto.incentiveFixed ? parseFloat(String(dto.incentiveFixed)) : null;
     if (dto.incentivePct !== undefined)  data.incentivePct = dto.incentivePct ? parseFloat(String(dto.incentivePct)) : null;
+    if (dto.currencyType !== undefined)  data.currencyType = dto.currencyType || 'INR';
+    if (dto.country !== undefined)       data.country = dto.country || null;
 
     return this.prisma.course.update({
       where: { id },
@@ -216,6 +232,8 @@ export class CoursesService {
           seats: row.seats ? parseInt(row.seats) : null,
           eligibility: row.eligibility || null,
           description: row.description || null,
+          country: row.courseCountry || row.country || null,
+          currencyType: row.currencyType || 'INR',
           excelRowId: row.__rowNum?.toString(),
           isActive: true,
         };

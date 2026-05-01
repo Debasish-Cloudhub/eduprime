@@ -40,6 +40,13 @@ export class CoursesController {
     return this.coursesService.updateCollege(id, dto);
   }
 
+  @Delete('colleges/:id')
+  @UseGuards(RolesGuard)
+  @Roles('ADMIN')
+  deleteCollege(@Param('id') id: string) {
+    return this.coursesService.deleteCollege(id);
+  }
+
   // ─── COURSES ──────────────────────────────────────
 
   @Post()
