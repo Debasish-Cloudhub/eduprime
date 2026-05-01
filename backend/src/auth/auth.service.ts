@@ -129,4 +129,44 @@ export class AuthService {
     return results;
   }
 
+  async fixCollegeData() {
+    // Map of known international universities that were wrongly assigned "India"
+    const knownForeign: Record<string, {country: string, currencyType: string}> = {
+      'arizona state': { country: 'United States', currencyType: 'USD' },
+      'california': { country: 'United States', currencyType: 'USD' },
+      'florida': { country: 'United States', currencyType: 'USD' },
+      'texas': { country: 'United States', currencyType: 'USD' },
+      'new york': { country: 'United States', currencyType: 'USD' },
+      'oxford': { country: 'United Kingdom', currencyType: 'GBP' },
+      'cambridge': { country: 'United Kingdom', currencyType: 'GBP' },
+      'london': { country: 'United Kingdom', currencyType: 'GBP' },
+      'australia': { country: 'Australia', currencyType: 'AUD' },
+      'sydney': { country: 'Australia', currencyType: 'AUD' },
+      'melbourne': { country: 'Australia', currencyType: 'AUD' },
+      'singapore': { country: 'Singapore', currencyType: 'SGD' },
+      'nanyang': { country: 'Singapore', currencyType: 'SGD' },
+      'china': { country: 'China', currencyType: 'CNY' },
+      'beijing': { country: 'China', currencyType: 'CNY' },
+      'toronto': { country: 'Canada', currencyType: 'USD' },
+      'canada': { country: 'Canada', currencyType: 'USD' },
+    };
+
+    const colleges = await this.prisma.college.findMany({ where: { country: 'India' } });
+    let fixed = 0;
+    for (const college of colleges) {
+      const nameLower = college.name.toLowerCase();
+      for (const [keyword, data] of Object.entries(knownForeign)) {
+        if (nameLower.includes(keyword)) {
+          await this.prisma.college.update({
+            where: { id: college.id },
+            data: { country: data.country, currencyType: data.currencyType as any },
+          });
+          fixed++;
+          break;
+        }
+      }
+    }
+    return { fixed, total: colleges.length };
+  }
+
 }

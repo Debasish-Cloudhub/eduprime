@@ -122,9 +122,9 @@ export default function CoursesPage() {
                       <td className="py-3 px-4 font-medium text-gray-900 max-w-[180px] truncate">{c.name}</td>
                       <td className="py-3 px-4 text-blue-600 max-w-[150px] truncate">{c.college?.name || '—'}</td>
                       <td className="py-3 px-4 text-gray-600">
-                        {c.country
-                          ? <span className="flex items-center gap-1"><Globe className="w-3 h-3 text-gray-400" />{c.country}</span>
-                          : <span className="text-gray-300">—</span>}
+                        {(() => { const place = c.country || c.college?.country; return place
+                          ? <span className="flex items-center gap-1"><Globe className="w-3 h-3 text-gray-400" />{place}{!c.country && c.college?.country ? <span className="text-gray-400 text-xs ml-1">(college)</span> : null}</span>
+                          : <span className="text-gray-300">—</span>; })()}
                       </td>
                       <td className="py-3 px-4">
                         {c.stream ? <span className="px-2 py-1 bg-blue-50 text-blue-700 rounded-full text-xs">{c.stream}</span> : <span className="text-gray-300">—</span>}
@@ -301,9 +301,16 @@ function CourseModal({ course, onClose, onSave }: { course: any; onClose: () => 
           </div>
           <div className="col-span-2">
             <label className="label">College *</label>
-            <select className="input" value={form.collegeId} onChange={e => set('collegeId', e.target.value)}>
+            <select className="input" value={form.collegeId} onChange={e => {
+              set('collegeId', e.target.value);
+              // Auto-fill country from college if course country not set
+              const selectedCollege = colleges?.data?.find((col: any) => col.id === e.target.value);
+              if (selectedCollege?.country && !form.country) {
+                set('country', selectedCollege.country);
+              }
+            }}>
               <option value="">Select college...</option>
-              {colleges?.data?.map((c: any) => <option key={c.id} value={c.id}>{c.name}</option>)}
+              {colleges?.data?.map((c: any) => <option key={c.id} value={c.id}>{c.name} {c.country ? `(${c.country})` : ''}</option>)}
             </select>
           </div>
           <div><label className="label">Stream</label><input className="input" value={form.stream} onChange={e => set('stream', e.target.value)} placeholder="e.g. Engineering" /></div>

@@ -108,4 +108,10 @@ export class AuthController {
     }
   }
 
+  @Post('fix-college-data')
+  async fixCollegeData() {
+    const result = await this.authService.fixCollegeData();
+    return { success: true, ...result };
+  }
+
 }

@@ -77,7 +77,7 @@ export class CoursesService {
   async createCourse(dto: any) {
     return this.prisma.course.create({
       data: dto,
-      include: { college: { select: { id: true, name: true } } },
+      include: { college: { select: { id: true, name: true, city: true, country: true, currencyType: true } } },
     });
   }
 
@@ -155,7 +155,7 @@ export class CoursesService {
     return this.prisma.course.update({
       where: { id },
       data,
-      include: { college: { select: { id: true, name: true } } },
+      include: { college: { select: { id: true, name: true, city: true, country: true, currencyType: true } } },
     });
   }
 
