@@ -1,6 +1,6 @@
 [build]
 builder = "DOCKERFILE"
-buildArgs = { NEXT_PUBLIC_API_URL = "https://iscc-backend-production.up.railway.app/api/v1", BUILD_ID = "20260501071011" }
+buildArgs = { NEXT_PUBLIC_API_URL = "https://iscc-backend-production.up.railway.app/api/v1", BUILD_ID = "20260505085652" }
 
 [deploy]
 startCommand = "node server.js"

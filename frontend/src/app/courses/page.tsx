@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Search, GraduationCap, Clock, BookOpen, Globe, ChevronRight, Filter, X, ArrowLeft } from 'lucide-react';
+import { Search, GraduationCap, Clock, BookOpen, Globe, ChevronRight, X, ArrowLeft } from 'lucide-react';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://iscc-backend-production.up.railway.app/api/v1';
 const CURRENCY_SYMBOLS: Record<string, string> = { INR:'₹', USD:'$', EUR:'€', AUD:'A$', CNY:'¥', SGD:'S$' };
