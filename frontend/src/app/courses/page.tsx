@@ -40,7 +40,7 @@ export default function CoursesPage() {
     fetch(`${API_URL}/public/courses?limit=100`)
       .then(r => r.json())
       .then(d => {
-        const s = [...new Set<string>((d?.data || []).map((c: Course) => c.stream).filter(Boolean))].sort();
+        const s = Array.from(new Set<string>((d?.data || []).map((c: Course) => c.stream).filter(Boolean) as string[])).sort();
         setStreams(s);
       });
   }, []);
