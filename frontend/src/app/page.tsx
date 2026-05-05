@@ -3,6 +3,7 @@ import { Star, Phone, Mail, Clock, CheckCircle, ArrowRight, ChevronRight, BookOp
 import ISCCLogo from '@/components/ui/ISCCLogo';
 import AuthRedirect from '@/components/AuthRedirect';
 import ContactForm from '@/components/ContactForm';
+import CollegesSection from '@/components/CollegesSection';
 
 // ── DATA ──────────────────────────────────────────────────────────────── v20260430075018
 const COURSES = [
@@ -20,14 +21,7 @@ const TESTIMONIALS = [
   { name: 'Anita Patel',   course: 'Study Abroad — UK', text: 'From IELTS prep to visa assistance, ISCC handled everything. I am now pursuing my Masters in London.' },
 ];
 
-const COLLEGES = [
-  { name: 'Manipal University',          courses: 'MBA, BBA, MCA', type: 'Distance' },
-  { name: 'Amity University',            courses: 'MBA, B.Tech',    type: 'Online'   },
-  { name: 'Symbiosis University',        courses: 'MBA, BBA',       type: 'Distance' },
-  { name: 'IGNOU',                       courses: 'All Programs',   type: 'Distance' },
-  { name: 'LPU (Lovely Professional)',   courses: 'MBA, B.Tech, BCA', type: 'Online' },
-  { name: 'Chandigarh University',       courses: 'MBA, MCA',       type: 'Online'   },
-];
+// Colleges fetched from DB — see CollegesSection component
 
 const PROCESS = [
   { step: '01', title: 'Register & Enquire',  desc: 'Fill your details and tell us your goals',    color: 'from-blue-500 to-blue-700' },
@@ -171,33 +165,8 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── COLLEGES ── below testimonials */}
-      <section id="colleges" className="py-20 bg-gradient-to-br from-slate-50 to-blue-50">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-12">
-            <div className="inline-block font-semibold text-xs mb-3 uppercase tracking-widest px-3 py-1 rounded-full bg-blue-700 text-white">Our Partners</div>
-            <h2 className="text-3xl font-black text-gray-900 mt-3">Top Partner Colleges</h2>
-            <p className="text-gray-500 mt-2 max-w-xl mx-auto">We partner with UGC-approved universities across India and abroad</p>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {COLLEGES.map(({ name, courses, type }) => (
-              <div key={name} className="bg-white rounded-2xl border border-gray-100 p-6 hover:shadow-lg transition-all group">
-                <div className="flex items-start justify-between mb-3">
-                  <div className="w-12 h-12 rounded-xl flex items-center justify-center shadow-md bg-blue-700">
-                    <GraduationCap className="w-6 h-6 text-white" />
-                  </div>
-                  <span className={`text-xs font-semibold px-2 py-1 rounded-full ${type === 'Online' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700'}`}>{type}</span>
-                </div>
-                <h3 className="font-bold text-gray-900 text-base mb-1">{name}</h3>
-                <p className="text-gray-500 text-sm mb-4">{courses}</p>
-                <a href="#contact" className="flex items-center gap-1 text-sm font-semibold transition-all text-blue-700">
-                  Enquire Now <ChevronRight className="w-4 h-4" />
-                </a>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* ── COLLEGES ── fetched from real database ──────────────────────────── */}
+      <CollegesSection />
 
       {/* ── COURSES ── */}
       <section id="courses" className="py-20 bg-white">

@@ -23,7 +23,8 @@ export class CoursesController {
   }
 
   @Get('colleges')
-  @ApiOperation({ summary: 'List all colleges (public for portal)' })
+  @UseGuards()
+  @ApiOperation({ summary: 'List all colleges - public endpoint' })
   findAllColleges(@Query() query: any) {
     return this.coursesService.findAllColleges(query);
   }
@@ -57,7 +58,8 @@ export class CoursesController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'List all courses with filters' })
+  @UseGuards()
+  @ApiOperation({ summary: 'List all courses - public endpoint' })
   findAllCourses(@Query() query: any) {
     return this.coursesService.findAllCourses(query);
   }
