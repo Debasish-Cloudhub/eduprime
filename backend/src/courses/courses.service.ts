@@ -94,9 +94,9 @@ export class CoursesService {
     const limit = Math.min(query.limit || 20, 100);
     const where: any = { isActive: true };
     if (query.collegeId) where.collegeId = query.collegeId;
-    if (query.stream) where.stream = { contains: query.stream, mode: 'insensitive' };
-    if (query.maxFees) where.fees = { lte: query.maxFees };
-    if (query.country) where.college = { country: query.country };
+    if (query.stream)    where.stream = { contains: query.stream, mode: 'insensitive' };
+    if (query.maxFees)   where.fees = { lte: query.maxFees };
+    if (query.country)   where.college = { is: { country: { contains: query.country, mode: 'insensitive' } } };
     if (query.search) {
       where.OR = [
         { name: { contains: query.search, mode: 'insensitive' } },
