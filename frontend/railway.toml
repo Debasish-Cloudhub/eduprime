@@ -1,11 +1,8 @@
 [build]
 builder = "NIXPACKS"
 
-[build.nixpacksPlan.variables]
-NEXT_PUBLIC_API_URL = "https://iscc-backend-production.up.railway.app/api/v1"
-
 [deploy]
-startCommand = "node server.js"
+startCommand = "npm start"
 healthcheckPath = "/"
 healthcheckTimeout = 120
 restartPolicyType = "ON_FAILURE"
