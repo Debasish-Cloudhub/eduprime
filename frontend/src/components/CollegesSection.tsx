@@ -19,7 +19,7 @@ interface College {
 async function fetchColleges(): Promise<College[]> {
   try {
     const res = await fetch(
-      `${API_URL}/courses/colleges?limit=8&page=1`,
+      `${API_URL}/public/colleges?limit=8&page=1`,
       {
         next: { revalidate: 3600 }, // cache for 1 hour, refresh in background
         headers: { 'Content-Type': 'application/json' },
