@@ -1,6 +1,8 @@
 [build]
-builder = "DOCKERFILE"
-buildArgs = { NEXT_PUBLIC_API_URL = "https://iscc-backend-production.up.railway.app/api/v1", BUILD_ID = "20260505111752" }
+builder = "NIXPACKS"
+
+[build.nixpacksPlan.variables]
+NEXT_PUBLIC_API_URL = "https://iscc-backend-production.up.railway.app/api/v1"
 
 [deploy]
 startCommand = "node server.js"
@@ -8,6 +10,3 @@ healthcheckPath = "/"
 healthcheckTimeout = 120
 restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 3
-
-
-# Build Thu Apr 30 10:34:10 UTC 2026
