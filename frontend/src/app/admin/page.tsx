@@ -65,8 +65,8 @@ export default function AdminDashboard() {
         <div>
           <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-3">Catalogue</p>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            <StatCard title="Total Courses"  value={dash?.totalCourses  ?? '—'} icon={<BookOpen size={20}/>}   color="blue"   />
-            <StatCard title="Total Colleges" value={dash?.totalColleges ?? '—'} icon={<Building2 size={20}/>}  color="purple" />
+            <StatCard title="Total Courses"  value={dash?.totalCourses  ?? '—'} icon={<BookOpen size={20}/>}   color="blue"   href="/admin/courses" />
+            <StatCard title="Total Colleges" value={dash?.totalColleges ?? '—'} icon={<Building2 size={20}/>}  color="purple" href="/admin/courses" />
 
             {/* Sulekha mini-card 1: Total Leads Synced */}
             <div className="bg-white rounded-2xl border border-gray-100 p-4 shadow-sm">

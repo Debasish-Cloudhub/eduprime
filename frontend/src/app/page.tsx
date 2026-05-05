@@ -4,6 +4,7 @@ import ISCCLogo from '@/components/ui/ISCCLogo';
 import AuthRedirect from '@/components/AuthRedirect';
 import ContactForm from '@/components/ContactForm';
 import CollegesSection from '@/components/CollegesSection';
+import CoursesSection from '@/components/CoursesSection';
 
 // ── DATA ──────────────────────────────────────────────────────────────── v20260430075018
 const COURSES = [
@@ -168,37 +169,10 @@ export default function LandingPage() {
       {/* ── COLLEGES ── fetched from real database ──────────────────────────── */}
       <CollegesSection />
 
-      {/* ── COURSES ── */}
-      <section id="courses" className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-12">
-            <div className="inline-block font-semibold text-xs mb-3 uppercase tracking-widest px-3 py-1 rounded-full bg-blue-700 text-white">Our Programs</div>
-            <h2 className="text-3xl font-black text-gray-900 mt-3">Popular Courses</h2>
-            <p className="text-gray-500 mt-2 max-w-xl mx-auto">UGC-approved distance and online programs from top universities</p>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {COURSES.map(({ name, desc, duration, mode }) => (
-              <div key={name} className="bg-white rounded-2xl border border-gray-100 p-6 hover:shadow-xl transition-all group cursor-pointer overflow-hidden relative">
-                <div className="absolute top-0 left-0 right-0 h-1 bg-blue-700" />
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 shadow-md bg-blue-700">
-                  <GraduationCap className="w-6 h-6 text-white" />
-                </div>
-                <h3 className="font-bold text-gray-900 text-lg mb-1">{name}</h3>
-                <p className="text-gray-500 text-sm mb-4">{desc}</p>
-                <div className="flex items-center gap-4 text-xs text-gray-400 mb-4">
-                  <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{duration}</span>
-                  <span className="flex items-center gap-1"><BookOpen className="w-3 h-3" />{mode}</span>
-                </div>
-                <a href="#contact" className="flex items-center gap-1 font-semibold text-sm group-hover:gap-2 transition-all text-blue-700">
-                  Enquire Now <ChevronRight className="w-4 h-4" />
-                </a>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* ── COURSES ── real data from DB ──────────────────────────────────── */}
+      <CoursesSection />
 
-      {/* ── ABOUT ── */}
+            {/* ── ABOUT ── */}
       <section id="about" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 grid lg:grid-cols-2 gap-16 items-center">
           <div>
@@ -263,7 +237,7 @@ export default function LandingPage() {
           <div className="bg-white rounded-3xl shadow-xl p-8 border border-gray-100">
             <h3 className="text-xl font-bold text-gray-900 mb-2">Book Free Counselling</h3>
             <p className="text-gray-500 text-sm mb-6">Fill the form and our expert will call you back within 24 hours</p>
-            <ContactForm courses={COURSES.map(c => c.name)} />
+            <ContactForm courses={["MBA","B.Tech","BBA","MCA","B.Sc Nursing","Study Abroad","Other"]} />
           </div>
         </div>
       </section>
@@ -327,7 +301,7 @@ export default function LandingPage() {
             <div>
               <div className="text-white font-semibold mb-4">Programs</div>
               <div className="space-y-2 text-sm">
-                {COURSES.map(c => <a key={c.name} href="#courses" className="block hover:text-white transition-colors">{c.name}</a>)}
+                <a href="/courses" className="block hover:text-white transition-colors">View All Courses →</a>
               </div>
             </div>
             <div>

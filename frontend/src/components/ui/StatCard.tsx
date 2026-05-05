@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import Link from 'next/link';
 
 interface StatCardProps {
   title: string;
@@ -7,6 +8,7 @@ interface StatCardProps {
   icon?: React.ReactNode;
   color?: 'blue' | 'green' | 'amber' | 'red' | 'purple';
   trend?: { value: number; label: string };
+  href?: string;           // ← NEW: makes card clickable
 }
 
 const colors = {
@@ -17,10 +19,10 @@ const colors = {
   purple: { bg: 'bg-purple-50', icon: 'bg-purple-100 text-purple-600',text: 'text-purple-700' },
 };
 
-export default function StatCard({ title, value, subtitle, icon, color = 'blue', trend }: StatCardProps) {
+export default function StatCard({ title, value, subtitle, icon, color = 'blue', trend, href }: StatCardProps) {
   const c = colors[color];
-  return (
-    <div className="card flex items-start gap-4">
+  const inner = (
+    <div className={clsx('card flex items-start gap-4', href && 'hover:shadow-md transition-shadow cursor-pointer group')}>
       {icon && (
         <div className={clsx('p-3 rounded-xl flex-shrink-0', c.icon)}>
           {icon}
@@ -35,7 +37,11 @@ export default function StatCard({ title, value, subtitle, icon, color = 'blue',
             {trend.value >= 0 ? '↑' : '↓'} {Math.abs(trend.value)}% {trend.label}
           </p>
         )}
+        {href && <p className="text-xs text-gray-400 mt-1 group-hover:text-blue-500 transition-colors">Click to view →</p>}
       </div>
     </div>
   );
+
+  if (href) return <Link href={href} className="block">{inner}</Link>;
+  return inner;
 }
