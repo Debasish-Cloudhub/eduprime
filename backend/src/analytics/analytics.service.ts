@@ -9,7 +9,8 @@ export class AnalyticsService {
   async getDashboard(role: string, userId: string) {
     const agentFilter = role === 'SALES_AGENT' ? { agentId: userId } : {};
 
-    const [totalLeads, wonLeads, lostLeads, activeLeads, slaBreached, pendingExpenses] =
+    const [totalLeads, wonLeads, lostLeads, activeLeads, slaBreached, pendingExpenses,
+           totalCourses, totalColleges, sulekhaTotal, sulekhaLastSync] =
       await Promise.all([
         this.prisma.lead.count({ where: agentFilter }),
         this.prisma.lead.count({ where: { ...agentFilter, status: 'WON' } }),
@@ -17,6 +18,10 @@ export class AnalyticsService {
         this.prisma.lead.count({ where: { ...agentFilter, status: { notIn: ['WON', 'LOST', 'DROPPED'] } } }),
         this.prisma.lead.count({ where: { ...agentFilter, slaStatus: 'BREACHED' } }),
         this.prisma.expense.count({ where: { status: 'PENDING', ...(role === 'SALES_AGENT' ? { agentId: userId } : {}) } }),
+        this.prisma.course.count({ where: { isActive: true } }),
+        this.prisma.college.count({ where: { isActive: true } }),
+        this.prisma.sulekhaSync.aggregate({ _sum: { leadsCreated: true, leadsFound: true, leadsDuplicate: true } }),
+        this.prisma.sulekhaSync.findFirst({ orderBy: { startedAt: 'desc' }, select: { startedAt: true, status: true, leadsFound: true, leadsCreated: true } }),
       ]);
 
     const conversionRate = totalLeads > 0 ? ((wonLeads / totalLeads) * 100).toFixed(1) : '0';
@@ -35,6 +40,17 @@ export class AnalyticsService {
       pendingExpenses,
       conversionRate: parseFloat(conversionRate),
       totalIncentiveLocked: Number(incentiveSummary._sum.incentiveAmount || 0),
+      totalCourses,
+      totalColleges,
+      sulekha: {
+        totalLeadsFound:     Number(sulekhaTotal._sum.leadsFound     || 0),
+        totalLeadsCreated:   Number(sulekhaTotal._sum.leadsCreated   || 0),
+        totalDuplicates:     Number(sulekhaTotal._sum.leadsDuplicate || 0),
+        lastSyncAt:          sulekhaLastSync?.startedAt ?? null,
+        lastSyncStatus:      sulekhaLastSync?.status ?? null,
+        lastSyncLeadsFound:  sulekhaLastSync?.leadsFound ?? 0,
+        lastSyncLeadsCreated: sulekhaLastSync?.leadsCreated ?? 0,
+      },
     };
   }
 
