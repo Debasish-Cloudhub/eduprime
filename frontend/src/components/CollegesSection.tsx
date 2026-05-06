@@ -82,7 +82,7 @@ export default function CollegesSection() {
                 const badge = getTypeBadge(college.type, college.country);
                 const loc = [college.city, college.country !== 'India' ? college.country : null].filter(Boolean).join(', ');
                 return (
-                  <Link key={college.id} href={`/colleges?id=${college.id}`}
+                  <Link key={college.id} href={`/colleges/${college.id}`}
                     className="block bg-white rounded-2xl border border-gray-100 p-6 hover:shadow-lg transition-all group">
                     <div className="flex items-start justify-between mb-3">
                       <div className="w-12 h-12 rounded-xl flex items-center justify-center shadow-md bg-blue-700"><GraduationCap className="w-6 h-6 text-white" /></div>

@@ -34,9 +34,17 @@ export default function CollegesPage() {
   const [loading, setLoading]         = useState(true);
   const [search, setSearch]           = useState('');
   const [countryFilter, setCountry]   = useState('');
-  const [selected, setSelected]       = useState<College|null>(null);
-  const [collegeCourses, setCollegeCourses] = useState<Course[]>([]);
-  const [coursesLoading, setCoursesLoading] = useState(false);
+
+  // Fetch all available countries
+  useEffect(() => {
+    fetch(`${API_URL}/public/colleges?limit=200`)
+      .then(r => r.json())
+      .then(d => {
+        const cSet = new Set<string>((d?.data || []).map((c: College) => c.country).filter(Boolean));
+        setCountries(Array.from(cSet).sort());
+      })
+      .catch(() => {});
+  }, []);
 
   // Fetch all available countries
   useEffect(() => {
@@ -55,7 +63,7 @@ export default function CollegesPage() {
     if (id) {
       fetch(`${API_URL}/public/colleges?limit=100`)
         .then(r => r.json())
-        .then(d => { const c = d?.data?.find((x: College) => x.id === id); if (c) openCollege(c); });
+        .then(d => { const c = d?.data?.find((x: College) => x.id === id);  });
     }
   }, []);
 
@@ -80,16 +88,6 @@ export default function CollegesPage() {
       .then(d => setColleges(d?.data || []))
       .finally(() => setLoading(false));
   }, [search, countryFilter]);
-
-  const openCollege = (college: College) => {
-    setSelected(college);
-    setCoursesLoading(true);
-    setCollegeCourses([]);
-    fetch(`${API_URL}/public/courses?collegeId=${college.id}&limit=20`)
-      .then(r => r.json())
-      .then(d => setCollegeCourses(d?.data || []))
-      .finally(() => setCoursesLoading(false));
-  };
 
   const hasFilters = search || countryFilter;
 
@@ -162,8 +160,8 @@ export default function CollegesPage() {
               const badge = getTypeBadge(college.type, college.country);
               const location = [college.city, college.state, college.country !== 'India' ? college.country : null].filter(Boolean).join(', ');
               return (
-                <button key={college.id} onClick={() => openCollege(college)}
-                  className="text-left bg-white rounded-2xl border border-gray-100 p-6 hover:shadow-lg transition-all group cursor-pointer">
+                <Link key={college.id} href={`/colleges/${college.id}`}
+                  className="block bg-white rounded-2xl border border-gray-100 p-6 hover:shadow-lg transition-all group cursor-pointer">
                   <div className="flex items-start justify-between mb-3">
                     <div className="w-12 h-12 rounded-xl flex items-center justify-center shadow-md bg-blue-700">
                       <Building2 className="w-6 h-6 text-white" />
@@ -184,104 +182,14 @@ export default function CollegesPage() {
                       View Courses <ChevronRight className="w-3.5 h-3.5" />
                     </span>
                   </div>
-                </button>
+                </Link>
               );
             })}
           </div>
         )}
       </div>
 
-      {/* College Detail + Courses Modal */}
-      {selected && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={() => setSelected(null)}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[85vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
-            <div className="relative">
-              <div className="h-2 bg-blue-700 rounded-t-2xl" />
-              <button onClick={() => setSelected(null)} className="absolute top-4 right-4 w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200">
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-            <div className="p-6">
-              {/* College header */}
-              <div className="flex items-start gap-4 mb-5">
-                <div className="w-14 h-14 rounded-xl bg-blue-700 flex items-center justify-center flex-shrink-0 shadow-md">
-                  <Building2 className="w-7 h-7 text-white" />
-                </div>
-                <div className="flex-1">
-                  <h2 className="text-xl font-black text-gray-900">{selected.name}</h2>
-                  <div className="flex flex-wrap gap-3 mt-1 text-xs text-gray-500">
-                    {selected.country && <span className="flex items-center gap-1"><Globe className="w-3 h-3" />{selected.country}</span>}
-                    {selected.city    && <span className="flex items-center gap-1"><MapPin className="w-3 h-3" />{selected.city}</span>}
-                    {selected.ranking && <span>Ranked #{selected.ranking}</span>}
-                  </div>
-                  {selected.website && (
-                    <a href={selected.website} target="_blank" rel="noreferrer" className="text-blue-600 text-xs hover:underline mt-1 block">
-                      {selected.website}
-                    </a>
-                  )}
-                </div>
-              </div>
 
-              {/* Courses from this college */}
-              <div className="border-t border-gray-100 pt-5">
-                <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
-                  <BookOpen className="w-4 h-4 text-blue-700" />
-                  Courses at {selected.name}
-                  <span className="text-xs text-gray-400 font-normal">({selected._count?.courses || 0} total)</span>
-                </h3>
-
-                {coursesLoading ? (
-                  <div className="space-y-3">
-                    {[...Array(3)].map((_,i) => (
-                      <div key={i} className="bg-gray-50 rounded-xl p-4 animate-pulse">
-                        <div className="h-4 bg-gray-200 rounded w-2/3 mb-2" />
-                        <div className="h-3 bg-gray-100 rounded w-1/3" />
-                      </div>
-                    ))}
-                  </div>
-                ) : collegeCourses.length === 0 ? (
-                  <div className="text-center py-8 text-gray-400 text-sm">No courses listed for this college yet</div>
-                ) : (
-                  <div className="space-y-3">
-                    {collegeCourses.map(course => {
-                      const sym = CURRENCY_SYMBOLS[course.currencyType] || '₹';
-                      return (
-                        <div key={course.id} className="bg-gray-50 rounded-xl p-4 hover:bg-blue-50 transition-colors">
-                          <div className="flex items-start justify-between gap-2">
-                            <div className="flex-1">
-                              <div className="font-semibold text-gray-900 text-sm">{course.name}</div>
-                              <div className="flex flex-wrap gap-3 mt-1 text-xs text-gray-500">
-                                {course.stream   && <span className="flex items-center gap-1"><BookOpen className="w-3 h-3" />{course.stream}</span>}
-                                {course.degree   && <span>{course.degree}</span>}
-                                {course.duration && <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{course.duration}</span>}
-                              </div>
-                            </div>
-                            <div className="text-right flex-shrink-0">
-                              {course.fees > 0
-                                ? <div className="font-bold text-blue-700 text-sm">{sym}{Number(course.fees).toLocaleString()}<span className="text-xs text-gray-400 font-normal">/yr</span></div>
-                                : <div className="text-xs text-gray-400">On request</div>}
-                            </div>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
-
-              <div className="mt-6 flex gap-3">
-                <a href="/#contact" onClick={() => setSelected(null)}
-                  className="flex-1 py-3 bg-blue-700 text-white font-bold rounded-xl hover:bg-blue-800 text-sm text-center">
-                  Book Free Counselling
-                </a>
-                <Link href="/courses" className="px-4 py-3 border border-gray-200 text-gray-600 rounded-xl hover:bg-gray-50 text-sm font-medium text-center">
-                  Browse All Courses
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
