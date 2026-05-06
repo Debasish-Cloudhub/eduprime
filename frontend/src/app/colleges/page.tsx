@@ -54,7 +54,7 @@ export default function CollegesPage() {
       .then(r => r.json())
       .then(d => {
         const cSet = new Set<string>((d?.data || []).map((c: College) => c.country).filter(Boolean));
-        setCountries([...cSet].sort());
+        setCountries(Array.from(cSet).sort());
       });
   }, []);
 
