@@ -173,6 +173,42 @@ export default function LandingPage() {
       {/* ── COURSES ── real data from DB ──────────────────────────────────── */}
       <CoursesSection />
 
+      
+
+      {/* ── CONTACT / FREE COUNSELLING ── moved lower after courses */}
+      <section id="contact" className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 grid lg:grid-cols-2 gap-16">
+          <div>
+            <div className="inline-block font-semibold text-xs mb-3 uppercase tracking-widest px-3 py-1 rounded-full bg-blue-700 text-white">Free Counselling</div>
+            <h2 className="text-3xl font-black text-gray-900 mt-3 mb-6">Get In Touch</h2>
+            <p className="text-gray-600 mb-8">Our counselors are ready to guide you to the right course and college. Book your free counselling session today.</p>
+            <div className="space-y-4">
+              {[
+                { icon: Phone, label: 'Helpline', value: '+91 72059 70889 | +91 94374 87211' },
+                { icon: Mail,  label: 'Email',    value: 'admin@digitalstudy.me' },
+                { icon: Clock, label: 'Office Hours', value: 'Mon – Sat: 9:00 AM – 6:00 PM' },
+              ].map(({ icon: Icon, label, value }) => (
+                <div key={label} className="flex items-center gap-4 p-4 bg-white rounded-2xl border border-gray-100 shadow-sm">
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-md flex-shrink-0 bg-blue-700">
+                    <Icon className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <div className="text-xs text-gray-500">{label}</div>
+                    <div className="font-semibold text-gray-900 text-sm">{value}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="bg-white rounded-3xl shadow-xl p-8 border border-gray-100">
+            <h3 className="text-xl font-bold text-gray-900 mb-2">Book Free Counselling</h3>
+            <p className="text-gray-500 text-sm mb-6">Fill the form and our expert will call you back within 24 hours</p>
+            <ContactForm courses={COURSES.map(c => c.name)} />
+          </div>
+        </div>
+      </section>
+
+
             {/* ── ABOUT US + MD SECTION ── */}
       <section id="about-us" className="py-20 bg-white scroll-mt-16">
         <div className="max-w-7xl mx-auto px-4">
@@ -230,7 +266,7 @@ export default function LandingPage() {
               {/* MD Photo */}
               <div className="lg:col-span-2 relative">
                 <img
-                  src="/md-photo.jpg"
+                  src="/md-priyabrat-das.jpg"
                   alt="Priyabrat Das — Managing Director, ISCC Digital Study"
                   className="w-full h-full object-cover object-top min-h-[400px] lg:min-h-full"
                   style={{maxHeight:'520px'}}
@@ -333,160 +369,4 @@ export default function LandingPage() {
 
     </div>
   );
-}// cache-bust: Thu Apr 30 07:14:38 UTC 2026
-// deployed: 20260430072053      {/* ── ABOUT US + MD SECTION ── */}
-      <section id="about-us" className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4">
-
-          {/* Section label */}
-          <div className="text-center mb-14">
-            <div className="inline-block font-semibold text-xs mb-3 uppercase tracking-widest px-3 py-1 rounded-full bg-blue-700 text-white">Who We Are</div>
-            <h2 className="text-3xl font-black text-gray-900 mt-3">About ISCC Digital</h2>
-            <p className="text-gray-500 mt-2 max-w-2xl mx-auto">A progressive education consulting and learning solutions organization committed to transforming academic aspirations into successful careers.</p>
-          </div>
-
-          {/* About Us body */}
-          <div className="grid lg:grid-cols-2 gap-16 items-start mb-20">
-            <div>
-              <p className="text-gray-700 leading-relaxed mb-5">
-                Since 2010, we have been guiding students toward the right educational pathways through domestic admissions, study abroad consulting, and flexible learning opportunities.
-              </p>
-              <p className="text-gray-700 leading-relaxed mb-5">
-                What began as an initiative to support students who had discontinued their studies due to personal, professional, or financial circumstances has evolved into a comprehensive education support platform serving learners across multiple disciplines and destinations.
-              </p>
-              <p className="text-gray-700 leading-relaxed mb-6">
-                As education rapidly evolves, ISCC continues to embrace the future of ODL (Online & Digital Learning) by integrating technology-driven academic support systems, digital counseling, and modern learning accessibility.
-              </p>
-              <p className="text-blue-800 font-semibold italic">
-                "At ISCC, we believe education should never stop because of circumstances."
-              </p>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              {[
-                { title: 'Domestic University Admissions',   icon: '▸' },
-                { title: 'Study Abroad Counseling',          icon: '▸' },
-                { title: 'Online & Distance Learning',       icon: '▸' },
-                { title: 'IELTS & Language Preparation',     icon: '▸' },
-                { title: 'Career Guidance & Counseling',     icon: '▸' },
-                { title: 'University Application Assistance',icon: '▸' },
-                { title: 'Student Support & Mentorship',     icon: '▸' },
-                { title: 'International Pathways',           icon: '▸' },
-              ].map(({ title, icon }) => (
-                <div key={title} className="flex items-start gap-3 p-4 bg-blue-50 rounded-xl border border-blue-100">
-                  <span className="text-xl flex-shrink-0">{icon}</span>
-                  <span className="text-sm font-medium text-gray-800 leading-tight">{title}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* MD Section */}
-          <div className="bg-gradient-to-br from-blue-950 to-blue-800 rounded-3xl p-8 lg:p-12">
-            <div className="text-center mb-8">
-              <div className="inline-block font-semibold text-xs mb-2 uppercase tracking-widest px-3 py-1 rounded-full bg-white/10 text-blue-200">Leadership</div>
-              <h3 className="text-2xl font-black text-white mt-2">Message from the Managing Director</h3>
-            </div>
-            <div className="grid lg:grid-cols-3 gap-10 items-center">
-              {/* MD Photo */}
-              <div className="flex flex-col items-center text-center">
-                <div className="w-48 h-48 rounded-2xl overflow-hidden shadow-2xl border-4 border-white/20 mb-4">
-                  <img
-                    src="/md-priyabrat-das.jpg"
-                    alt="Priyabrat Das — Managing Director, ISCC Digital"
-                    className="w-full h-full object-cover object-top"
-                  />
-                </div>
-                <div className="text-white font-bold text-lg">Priyabrat Das</div>
-                <div className="text-blue-300 text-sm">Managing Director</div>
-                <div className="text-blue-400 text-xs mt-1">ISCC Digital Study</div>
-              </div>
-              {/* MD Message */}
-              <div className="lg:col-span-2 space-y-4">
-                {[
-                  `"At ISCC, our journey has always been driven by one simple belief — every student deserves a second opportunity to learn, grow, and succeed.`,
-                  `Since 2010, we have worked closely with students from diverse backgrounds, many of whom had paused or discontinued their education due to personal responsibilities, career challenges, or financial limitations. Our goal has been to help them restart their academic journey with the right guidance and support.`,
-                  `Today, education is no longer limited by geography or traditional classrooms. With the rapid growth of online and digital learning ecosystems, students now have access to global opportunities like never before. ISCC is proud to be part of this transformation by connecting learners with reputed institutions, innovative programs, and international pathways.`,
-                  `We continuously strive to create a student-centric ecosystem where counseling, technology, and mentorship come together to empower careers and build confidence.`,
-                  `The future belongs to learners, and we are here to guide them every step of the way."`,
-                ].map((para, i) => (
-                  <p key={i} className={`leading-relaxed ${i === 0 || i === 4 ? 'text-white font-medium italic' : 'text-blue-100'}`}>
-                    {para}
-                  </p>
-                ))}
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-            {/* ── PROCESS ── */}
-      <section className="py-20 relative overflow-hidden bg-gradient-to-br from-blue-950 via-blue-900 to-indigo-900">
-        <div className="max-w-7xl mx-auto px-4 relative z-10">
-          <div className="text-center mb-12">
-            <div className="inline-block text-yellow-400 font-semibold text-xs mb-3 uppercase tracking-widest bg-yellow-400/10 border border-yellow-400/20 px-3 py-1 rounded-full">How It Works</div>
-            <h2 className="text-3xl font-black text-white mt-3 mb-2">Simple 4-Step Process</h2>
-            <p className="text-blue-200 max-w-xl mx-auto">From enquiry to enrollment, we make your education journey seamless</p>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {PROCESS.map(({ step, title, desc, color }) => (
-              <div key={step} className="bg-white/5 border border-white/10 backdrop-blur-sm rounded-2xl p-6 text-center hover:bg-white/10 transition-all">
-                <div className={`w-14 h-14 bg-gradient-to-br ${color} rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-xl`}>
-                  <span className="text-white font-black text-lg">{step}</span>
-                </div>
-                <h3 className="font-bold text-white mb-2">{title}</h3>
-                <p className="text-blue-200 text-sm">{desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── FOOTER ── */}
-      <footer className="text-gray-400 py-12 bg-gray-900">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="grid md:grid-cols-4 gap-8 mb-8">
-            <div>
-              <div className="flex items-center gap-2.5 mb-4">
-                <img src="/iscc-logo.svg" alt="ISCC" width="32" height="32" />
-              <div>
-                <div className="font-black"><span style={{color:'#93c5fd'}}>ISCC</span><span className="text-red-600"> Digital</span></div>
-                <div style={{fontSize:'10px',color:'#9ca3af'}}>International Study &amp; Career Counselling</div>
-              </div>
-              </div>
-              <p className="text-sm leading-relaxed">India's trusted international education consulting platform since 2010.</p>
-            </div>
-            <div>
-              <div className="text-white font-semibold mb-4">Quick Links</div>
-              <div className="space-y-2 text-sm">
-                {[['#home','Home'],['#courses','Courses'],['#colleges','Colleges'],['#contact','Contact']].map(([href,label]) => (
-                  <a key={label} href={href} className="block hover:text-white transition-colors">{label}</a>
-                ))}
-              </div>
-            </div>
-            <div>
-              <div className="text-white font-semibold mb-4">Programs</div>
-              <div className="space-y-2 text-sm">
-                <a href="/courses" className="block hover:text-white transition-colors">View All Courses →</a>
-              </div>
-            </div>
-            <div>
-              <div className="text-white font-semibold mb-4">Portal Access</div>
-              <div className="space-y-2 text-sm">
-                <Link href="/auth/login"    className="block hover:text-white transition-colors">Staff / Admin Login</Link>
-                <Link href="/auth/login"    className="block hover:text-white transition-colors">Student Login</Link>
-                <Link href="/auth/register" className="block hover:text-white transition-colors">New Student Registration</Link>
-              </div>
-            </div>
-          </div>
-          <div className="border-t border-white/10 pt-6 flex flex-col md:flex-row items-center justify-between gap-4 text-sm">
-            <p>© 2025 ISCC Digital — International Study & Career Counselling. All rights reserved.</p>
-            <div className="flex gap-4"><a href="#" className="hover:text-white">Privacy Policy</a><a href="#" className="hover:text-white">Terms</a></div>
-          </div>
-        </div>
-      </footer>
-
-    </div>
-  );
-}// cache-bust: Thu Apr 30 07:14:38 UTC 2026
-// deployed: 20260430072053
+}
