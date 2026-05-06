@@ -20,7 +20,7 @@ export class CoursesService {
     const page = query.page || 1;
     const limit = Math.min(query.limit || 20, 100);
     const where: any = { isActive: true };
-    if (query.country) where.country = query.country;
+    if (query.country) where.country = { contains: query.country, mode: 'insensitive' };
     if (query.search) {
       where.OR = [
         { name: { contains: query.search, mode: 'insensitive' } },
@@ -96,7 +96,11 @@ export class CoursesService {
     if (query.collegeId) where.collegeId = query.collegeId;
     if (query.stream)    where.stream = { contains: query.stream, mode: 'insensitive' };
     if (query.maxFees)   where.fees = { lte: query.maxFees };
-    if (query.country)   where.college = { is: { country: { contains: query.country, mode: 'insensitive' } } };
+    if (query.country)   where.OR = [
+      ...(where.OR || []),
+      { country: { contains: query.country, mode: 'insensitive' } },
+      { college: { is: { country: { contains: query.country, mode: 'insensitive' } } } },
+    ];
     if (query.search) {
       where.OR = [
         { name: { contains: query.search, mode: 'insensitive' } },

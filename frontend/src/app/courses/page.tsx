@@ -18,6 +18,7 @@ export default function CoursesPage() {
   const [courses, setCourses]   = useState<Course[]>([]);
   const [meta, setMeta]         = useState<Meta|null>(null);
   const [streams, setStreams]    = useState<string[]>([]);
+  const [countries, setCountries] = useState<string[]>([]);
   const [loading, setLoading]   = useState(true);
   const [search, setSearch]     = useState('');
   const [stream, setStream]     = useState('');
@@ -105,11 +106,7 @@ export default function CoursesPage() {
           <select value={country} onChange={e => { setCountry(e.target.value); setPage(1); }}
             className="border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none min-w-[160px]">
             <option value="">All Countries</option>
-            <option value="India">India</option>
-            <option value="United States">United States</option>
-            <option value="United Kingdom">United Kingdom</option>
-            <option value="Australia">Australia</option>
-            <option value="Singapore">Singapore</option>
+            {countries.map(c => <option key={c} value={c}>{c}</option>)}
           </select>
           {hasFilters && (
             <button onClick={resetFilters} className="flex items-center gap-1.5 px-4 py-2.5 text-sm text-gray-500 hover:text-red-600 border border-gray-200 rounded-xl hover:border-red-200 transition-colors">

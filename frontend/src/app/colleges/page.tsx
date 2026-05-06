@@ -30,6 +30,7 @@ function getTypeBadge(type: string|null, country: string) {
 
 export default function CollegesPage() {
   const [colleges, setColleges]       = useState<College[]>([]);
+  const [countries, setCountries]     = useState<string[]>([]);
   const [loading, setLoading]         = useState(true);
   const [search, setSearch]           = useState('');
   const [countryFilter, setCountry]   = useState('');
@@ -45,6 +46,16 @@ export default function CollegesPage() {
         .then(r => r.json())
         .then(d => { const c = d?.data?.find((x: College) => x.id === id); if (c) openCollege(c); });
     }
+  }, []);
+
+  // Fetch available countries from colleges
+  useEffect(() => {
+    fetch(`${API_URL}/public/colleges?limit=200`)
+      .then(r => r.json())
+      .then(d => {
+        const cSet = new Set<string>((d?.data || []).map((c: College) => c.country).filter(Boolean));
+        setCountries([...cSet].sort());
+      });
   }, []);
 
   // Fetch colleges
@@ -108,11 +119,7 @@ export default function CollegesPage() {
           <select value={countryFilter} onChange={e => setCountry(e.target.value)}
             className="border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none min-w-[160px]">
             <option value="">All Countries</option>
-            <option value="India">India</option>
-            <option value="United States">United States</option>
-            <option value="United Kingdom">United Kingdom</option>
-            <option value="Australia">Australia</option>
-            <option value="Singapore">Singapore</option>
+            {countries.map(c => <option key={c} value={c}>{c}</option>)}
           </select>
           {hasFilters && (
             <button onClick={() => { setSearch(''); setCountry(''); }} className="flex items-center gap-1.5 px-4 py-2.5 text-sm text-gray-500 border border-gray-200 rounded-xl hover:border-red-200 hover:text-red-600">
