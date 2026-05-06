@@ -363,14 +363,14 @@ export default function LandingPage() {
             </div>
             <div className="grid grid-cols-2 gap-4">
               {[
-                { title: 'Domestic University Admissions',   icon: '🎓' },
-                { title: 'Study Abroad Counseling',          icon: '✈️' },
-                { title: 'Online & Distance Learning',       icon: '💻' },
-                { title: 'IELTS & Language Preparation',     icon: '📝' },
-                { title: 'Career Guidance & Counseling',     icon: '🧭' },
-                { title: 'University Application Assistance',icon: '📋' },
-                { title: 'Student Support & Mentorship',     icon: '🤝' },
-                { title: 'International Pathways',           icon: '🌍' },
+                { title: 'Domestic University Admissions',   icon: '▸' },
+                { title: 'Study Abroad Counseling',          icon: '▸' },
+                { title: 'Online & Distance Learning',       icon: '▸' },
+                { title: 'IELTS & Language Preparation',     icon: '▸' },
+                { title: 'Career Guidance & Counseling',     icon: '▸' },
+                { title: 'University Application Assistance',icon: '▸' },
+                { title: 'Student Support & Mentorship',     icon: '▸' },
+                { title: 'International Pathways',           icon: '▸' },
               ].map(({ title, icon }) => (
                 <div key={title} className="flex items-start gap-3 p-4 bg-blue-50 rounded-xl border border-blue-100">
                   <span className="text-xl flex-shrink-0">{icon}</span>
