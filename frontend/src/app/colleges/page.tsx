@@ -38,6 +38,17 @@ export default function CollegesPage() {
   const [collegeCourses, setCollegeCourses] = useState<Course[]>([]);
   const [coursesLoading, setCoursesLoading] = useState(false);
 
+  // Fetch all available countries
+  useEffect(() => {
+    fetch(`${API_URL}/public/colleges?limit=200`)
+      .then(r => r.json())
+      .then(d => {
+        const cSet = new Set<string>((d?.data || []).map((c: College) => c.country).filter(Boolean));
+        setCountries([...cSet].sort());
+      })
+      .catch(() => {});
+  }, []);
+
   // Check URL for ?id= on mount
   useEffect(() => {
     const id = new URLSearchParams(window.location.search).get('id');
