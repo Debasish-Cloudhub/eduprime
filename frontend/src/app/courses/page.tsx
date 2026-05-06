@@ -24,26 +24,22 @@ export default function CoursesPage() {
   const [stream, setStream]     = useState('');
   const [country, setCountry]   = useState('');
   const [page, setPage]         = useState(1);
-  const [selected, setSelected] = useState<Course|null>(null);
 
-  // Check URL for ?id= on mount
+  // Fetch streams + countries from BOTH courses and colleges
   useEffect(() => {
-    const id = new URLSearchParams(window.location.search).get('id');
-    if (id) {
-      fetch(`${API_URL}/public/courses?limit=100`)
-        .then(r => r.json())
-        .then(d => { const c = d?.data?.find((x: Course) => x.id === id); if (c) setSelected(c); });
-    }
-  }, []);
-
-  // Fetch streams
-  useEffect(() => {
-    fetch(`${API_URL}/public/courses?limit=100`)
-      .then(r => r.json())
-      .then(d => {
-        const s = Array.from(new Set<string>((d?.data || []).map((c: Course) => c.stream).filter(Boolean) as string[])).sort();
-        setStreams(s);
-      });
+    Promise.all([
+      fetch(`${API_URL}/public/courses?limit=200`).then(r => r.json()),
+      fetch(`${API_URL}/public/colleges?limit=200`).then(r => r.json()),
+    ]).then(([crsData, colData]) => {
+      const courses: Course[] = crsData?.data || [];
+      const colleges: {country:string}[] = colData?.data || [];
+      const s = Array.from(new Set<string>(courses.map((c:Course)=>c.stream).filter(Boolean) as string[])).sort();
+      setStreams(s);
+      const cSet = new Set<string>();
+      courses.forEach((c:Course)=>{ if(c.country) cSet.add(c.country); if(c.college?.country) cSet.add(c.college.country); });
+      colleges.forEach((col)=>{ if(col.country) cSet.add(col.country); });
+      setCountries(Array.from(cSet).sort());
+    }).catch(()=>{});
   }, []);
 
   // Fetch courses with filters
@@ -140,8 +136,8 @@ export default function CoursesPage() {
               const symbol = CURRENCY_SYMBOLS[course.currencyType] || '₹';
               const location = course.country || course.college?.country;
               return (
-                <button key={course.id} onClick={() => setSelected(course)}
-                  className="text-left bg-white rounded-2xl border border-gray-100 p-6 hover:shadow-xl transition-all group cursor-pointer overflow-hidden relative">
+                <Link key={course.id} href={`/courses/${course.id}`}
+                  className="block text-left bg-white rounded-2xl border border-gray-100 p-6 hover:shadow-xl transition-all group cursor-pointer overflow-hidden relative">
                   <div className="absolute top-0 left-0 right-0 h-1 bg-blue-700" />
                   <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 shadow-md bg-blue-700">
                     <GraduationCap className="w-6 h-6 text-white" />
@@ -170,7 +166,7 @@ export default function CoursesPage() {
                       View <ChevronRight className="w-3.5 h-3.5" />
                     </span>
                   </div>
-                </button>
+                </Link>
               );
             })}
           </div>
@@ -188,60 +184,7 @@ export default function CoursesPage() {
         )}
       </div>
 
-      {/* Course Detail Modal */}
-      {selected && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={() => setSelected(null)}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[85vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
-            <div className="relative">
-              <div className="h-2 bg-blue-700 rounded-t-2xl" />
-              <button onClick={() => setSelected(null)} className="absolute top-4 right-4 w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors">
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-            <div className="p-6">
-              <div className="flex items-start gap-4 mb-5">
-                <div className="w-14 h-14 rounded-xl bg-blue-700 flex items-center justify-center flex-shrink-0 shadow-md">
-                  <GraduationCap className="w-7 h-7 text-white" />
-                </div>
-                <div>
-                  <h2 className="text-xl font-black text-gray-900">{selected.name}</h2>
-                  <Link href={`/colleges?id=${selected.college?.id}`} className="text-blue-700 text-sm hover:underline font-medium" onClick={() => setSelected(null)}>
-                    {selected.college?.name}
-                  </Link>
-                </div>
-              </div>
 
-              <div className="grid grid-cols-2 gap-4 mb-6">
-                {[
-                  { label: 'Stream',      value: selected.stream      },
-                  { label: 'Degree',      value: selected.degree      },
-                  { label: 'Duration',    value: selected.duration    },
-                  { label: 'Eligibility', value: selected.eligibility },
-                  { label: 'Annual Fees', value: selected.fees > 0 ? `${CURRENCY_SYMBOLS[selected.currencyType]||'₹'}${Number(selected.fees).toLocaleString()} (${selected.currencyType})` : 'On request' },
-                  { label: 'Country',     value: selected.country || selected.college?.country },
-                  { label: 'College City',value: selected.college?.city },
-                ].filter(r => r.value).map(({ label, value }) => (
-                  <div key={label} className="bg-gray-50 rounded-xl p-3">
-                    <div className="text-xs text-gray-400 mb-0.5">{label}</div>
-                    <div className="font-semibold text-gray-800 text-sm">{value}</div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="flex gap-3">
-                <a href="/#contact" onClick={() => setSelected(null)}
-                  className="flex-1 py-3 bg-blue-700 text-white font-bold rounded-xl hover:bg-blue-800 transition-all text-sm text-center">
-                  Book Free Counselling
-                </a>
-                <button onClick={() => setSelected(null)}
-                  className="px-4 py-3 border border-gray-200 text-gray-600 rounded-xl hover:bg-gray-50 text-sm font-medium">
-                  Close
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
