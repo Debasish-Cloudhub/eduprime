@@ -253,7 +253,7 @@ export default function CollegeDetailPage() {
                 {filtered.map(course => {
                   const sym = CURRENCY_SYMBOLS[course.currencyType] || '₹';
                   return (
-                    <Link key={course.id} href={`/courses?id=${course.id}`}
+                    <Link key={course.id} href={`/courses/${course.id}`}
                       className="block border border-gray-100 rounded-xl p-5 hover:shadow-md hover:border-blue-200 transition-all group bg-gray-50 hover:bg-white">
                       {/* Stream badge */}
                       {course.stream && (
