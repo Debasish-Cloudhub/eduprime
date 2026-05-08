@@ -10,3 +10,6 @@ ALTER TABLE "IncentiveRecord" DROP CONSTRAINT IF EXISTS "IncentiveRecord_leadId_
 CREATE UNIQUE INDEX IF NOT EXISTS "IncentiveRecord_leadId_unique" ON "IncentiveRecord"("leadId") WHERE "leadId" IS NOT NULL;
 
 ALTER TABLE "IncentiveRecord" ADD COLUMN IF NOT EXISTS "incentiveType" TEXT;
+
+-- Make studentPhone optional on Lead
+ALTER TABLE "Lead" ALTER COLUMN "studentPhone" DROP NOT NULL;
