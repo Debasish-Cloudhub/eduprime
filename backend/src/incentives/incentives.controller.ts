@@ -1,5 +1,5 @@
 import {
-  Controller, Get, Post, Patch, Param, Query, Body, UseGuards, Request,
+  Controller, Get, Post, Patch, Delete, Param, Query, Body, UseGuards, Request,
 } from '@nestjs/common';
 import { ApiTags, ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
