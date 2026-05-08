@@ -131,7 +131,9 @@ export class LeadsService {
       ];
     }
 
-    const [total, leads] = await Promise.all([
+    let total: number, leads: any[];
+    try {
+      [total, leads] = await Promise.all([
       this.prisma.lead.count({ where }),
       this.prisma.lead.findMany({
         where,
@@ -146,9 +148,10 @@ export class LeadsService {
         },
       }),
     ]);
+    } catch (e: any) { console.error('[LEADS_ERROR]', e?.message||e); throw e; }
 
     return {
-      data: leads,
+      data: leads!,
       meta: { total, page, limit, totalPages: Math.ceil(total / limit) },
     };
   }
