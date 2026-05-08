@@ -64,6 +64,7 @@ export class AuthController {
   }
 
   @Patch('me')
+  @UseGuards(JwtAuthGuard)
   updateMe(@Request() req: any, @Body() dto: any) {
     return this.authService.updateMe(req.user.id, dto);
   }
