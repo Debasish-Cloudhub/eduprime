@@ -183,7 +183,6 @@ model Course {
   updatedAt       DateTime  @updatedAt
 
   leads           Lead[]
-  incentiveRecords IncentiveRecord[]
 
   @@index([collegeId])
   @@index([stream])

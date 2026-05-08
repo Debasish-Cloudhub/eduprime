@@ -5,7 +5,7 @@ RUN apk add --no-cache openssl
 WORKDIR /app
 
 # Force fresh build - invalidates ALL layers below including npm ci
-ARG CACHEBUST=20260508092231
+ARG CACHEBUST=20260508092810
 
 COPY package*.json ./
 RUN npm ci
