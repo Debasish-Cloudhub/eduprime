@@ -169,4 +169,16 @@ export class AuthService {
     return { fixed, total: colleges.length };
   }
 
+  async updateMe(userId: string, dto: { name?: string; phone?: string; city?: string; qualification?: string }) {
+    const data: any = {};
+    if (dto.name)          data.name          = dto.name;
+    if (dto.phone)         data.phone         = dto.phone;
+    if (dto.city)          data.city          = dto.city;
+    if (dto.qualification) data.qualification = dto.qualification;
+    const user = await this.prisma.user.update({ where: { id: userId }, data,
+      select: { id:true, name:true, email:true, role:true, phone:true, city:true, qualification:true, isActive:true }
+    });
+    return user;
+  }
+
 }

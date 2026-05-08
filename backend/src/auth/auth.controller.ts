@@ -63,6 +63,11 @@ export class AuthController {
     return this.authService.me(req.user.id);
   }
 
+  @Patch('me')
+  updateMe(@Request() req: any, @Body() dto: any) {
+    return this.authService.updateMe(req.user.id, dto);
+  }
+
   @Post('change-password')
   @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()

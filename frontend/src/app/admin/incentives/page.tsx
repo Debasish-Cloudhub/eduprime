@@ -4,7 +4,8 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { incentivesApi } from '@/lib/api';
 import Topbar from '@/components/ui/Topbar';
 import { toast } from 'sonner';
-import { DollarSign, Lock, CheckCircle } from 'lucide-react';
+import { exportToExcel, exportToPDF } from '@/lib/export';
+import { FileDown, DollarSign, Lock, CheckCircle } from 'lucide-react';
 import { format } from 'date-fns';
 import api from '@/lib/api';
 
@@ -40,6 +41,23 @@ export default function AdminIncentivesPage() {
   const totalLocked = (data?.data || []).reduce((s: number, r: any) => s + Number(r.incentiveAmount), 0);
   const totalPaid = (data?.data || []).filter((r: any) => r.paidAt).reduce((s: number, r: any) => s + Number(r.incentiveAmount), 0);
 
+  const exportExcel = () => {
+    const rows = (data?.data || []).map((r: any) => ({
+      'Agent': r.agent?.name||'', 'Course': r.lead?.course?.name||'',
+      'Amount': Number(r.incentiveAmount||0), 'Type': r.incentiveType||'',
+      'Locked': r.isLocked?'Yes':'No', 'Paid': r.paidAt ? new Date(r.paidAt).toLocaleDateString('en-IN') : 'Pending',
+      'Pay Mode': r.paymentMode||'', 'Ref': r.paymentRef||'',
+    }));
+    exportToExcel(rows, `Incentives_${new Date().toISOString().slice(0,10)}`, 'Incentives');
+    toast.success('Excel downloaded!');
+  };
+  const exportPDF = async () => {
+    const cols = ['Agent','Course','Amount','Type','Paid'];
+    const rows = (data?.data || []).map((r: any) => [r.agent?.name||'', r.lead?.course?.name||'', fmt(Number(r.incentiveAmount||0)), r.incentiveType||'', r.paidAt ? new Date(r.paidAt).toLocaleDateString('en-IN') : 'Pending']);
+    await exportToPDF(cols, rows, 'Incentives Report — ISCC Digital', `Incentives_${new Date().toISOString().slice(0,10)}`);
+    toast.success('PDF downloaded!');
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
       <Topbar title="Incentive Management" />
@@ -61,7 +79,11 @@ export default function AdminIncentivesPage() {
           </div>
         </div>
 
-        {/* Filters + Config */}
+        <div className="flex justify-end gap-2 mb-3">
+          <button onClick={exportExcel} className="flex items-center gap-1.5 px-3 py-1.5 border border-gray-200 text-gray-600 rounded-lg text-sm hover:bg-gray-50"><FileDown size={14}/> Excel</button>
+          <button onClick={exportPDF}   className="flex items-center gap-1.5 px-3 py-1.5 border border-gray-200 text-gray-600 rounded-lg text-sm hover:bg-gray-50"><FileDown size={14}/> PDF</button>
+        </div>
+    {/* Filters + Config */}
         <div className="flex flex-wrap items-center gap-3 mb-4">
           <select className="input w-36" value={filter.isLocked} onChange={e => setFilter(f => ({ ...f, isLocked: e.target.value, page: 1 }))}>
             <option value="">All</option>

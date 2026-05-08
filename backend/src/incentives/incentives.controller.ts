@@ -45,8 +45,8 @@ export class IncentivesController {
   @Patch(':id/mark-paid')
   @Roles('ADMIN', 'FINANCE')
   @ApiOperation({ summary: 'Mark incentive as paid' })
-  markPaid(@Param('id') id: string) {
-    return this.incentivesService.markPaid(id);
+  markPaid(@Param('id') id: string, @Body() dto: any) {
+    return this.incentivesService.markPaid(id, dto);
   }
 
   @Post('config')

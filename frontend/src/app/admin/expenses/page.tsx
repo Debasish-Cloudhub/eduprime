@@ -5,11 +5,31 @@ import { expensesApi } from '@/lib/api';
 import Topbar from '@/components/ui/Topbar';
 import StatusBadge from '@/components/ui/StatusBadge';
 import { toast } from 'sonner';
+import { exportToExcel, exportToPDF } from '@/lib/export';
 import { CheckCircle, XCircle, BarChart2 } from 'lucide-react';
 import { format } from 'date-fns';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 
 const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+function useExportExpenses(data: any) {
+  const exportExcel = () => {
+    const rows = (data?.expenses || []).map((e: any) => ({
+      'Agent': e.agent?.name||'', 'Category': e.category,
+      'Amount': Number(e.amount), 'Description': e.description||'',
+      'Month': e.month, 'Year': e.year, 'Status': e.status,
+      'Rejection Reason': e.rejectionReason||'',
+      'Date': new Date(e.createdAt).toLocaleDateString('en-IN'),
+    }));
+    exportToExcel(rows, `All_Expenses_${new Date().toISOString().slice(0,10)}`, 'Expenses');
+  };
+  const exportPDF = async () => {
+    const cols = ['Agent','Category','Amount','Month/Year','Status'];
+    const rows = (data?.expenses || []).map((e: any) => [e.agent?.name||'', e.category, `₹${Number(e.amount).toLocaleString()}`, `${e.month}/${e.year}`, e.status]);
+    await exportToPDF(cols, rows, 'All Expenses — ISCC Digital', `All_Expenses_${new Date().toISOString().slice(0,10)}`);
+  };
+  return { exportExcel, exportPDF };
+}
 
 export default function AdminExpensesPage() {
   const qc = useQueryClient();

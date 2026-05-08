@@ -13,6 +13,15 @@ export default function FinanceDashboard() {
   const qc = useQueryClient();
   const [rejectTarget, setRejectTarget] = useState<any>(null);
   const [rejectReason, setRejectReason] = useState('');
+  // Payout modal
+  const [payTarget, setPayTarget]     = useState<any>(null);
+  const [payForm, setPayForm]         = useState({ paymentMode: 'BANK', paymentRef: '', paymentRemarks: '' });
+  // Bulk select
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [bulkPayForm, setBulkPayForm] = useState({ paymentMode: 'BANK', paymentRef: '', paymentRemarks: '' });
+  const [showBulkPay, setShowBulkPay] = useState(false);
+  // Month filter for incentives
+  const [incMonth, setIncMonth] = useState('');
 
   const { data: expenses }   = useQuery({ queryKey: ['expenses-all'],   queryFn: () => expensesApi.getAll({ limit: 200 }).then(r => r.data) });
   const { data: incentives } = useQuery({ queryKey: ['incentives-all'], queryFn: () => incentivesApi.getAll({ limit: 200 }).then(r => r.data) });
@@ -35,10 +44,28 @@ export default function FinanceDashboard() {
   });
 
   const markPaid = useMutation({
-    mutationFn: (id: string) => incentivesApi.markPaid(id),
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ['incentives-all'] }); toast.success('Incentive marked as paid'); },
+    mutationFn: ({ id, details }: { id: string; details: any }) => incentivesApi.markPaid(id, details),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['incentives-all'] });
+      toast.success('Incentive marked as paid!');
+      setPayTarget(null);
+      setPayForm({ paymentMode:'BANK', paymentRef:'', paymentRemarks:'' });
+      setSelectedIds(new Set());
+      setShowBulkPay(false);
+    },
     onError: (e: any) => toast.error(e?.response?.data?.message || 'Failed'),
   });
+
+  const bulkMarkPaid = () => {
+    if (selectedIds.size === 0) return;
+    Promise.all(Array.from(selectedIds).map(id => incentivesApi.markPaid(id, bulkPayForm)))
+      .then(() => {
+        qc.invalidateQueries({ queryKey: ['incentives-all'] });
+        toast.success(`${selectedIds.size} incentives marked as paid!`);
+        setSelectedIds(new Set()); setShowBulkPay(false);
+        setBulkPayForm({ paymentMode:'BANK', paymentRef:'', paymentRemarks:'' });
+      }).catch(() => toast.error('Some payments failed'));
+  };
 
   const expList: any[]  = expenses?.expenses  || expenses?.data  || [];
   const incList: any[]  = incentives?.incentives || incentives?.data || [];
@@ -195,7 +222,13 @@ export default function FinanceDashboard() {
               Incentive Payouts
               <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">{unpaid.length} unpaid</span>
             </h3>
-            <div className="flex gap-2">
+            <div className="flex gap-2 flex-wrap">
+              {selectedIds.size > 0 && (
+                <button onClick={() => setShowBulkPay(true)}
+                  className="flex items-center gap-1.5 px-3 py-1.5 bg-brand-600 text-white text-sm rounded-lg hover:bg-brand-700 font-medium">
+                  Pay {selectedIds.size} Selected
+                </button>
+              )}
               <button onClick={exportIncentivesExcel}
                 className="flex items-center gap-1.5 px-3 py-1.5 border border-green-200 bg-green-50 text-green-700 rounded-lg text-xs font-medium hover:bg-green-100">
                 <FileSpreadsheet className="w-3.5 h-3.5" /> Excel
@@ -231,7 +264,7 @@ export default function FinanceDashboard() {
                     </td>
                     <td className="py-3 px-3">
                       {!inc.paidAt && (
-                        <button onClick={() => markPaid.mutate(inc.id)} disabled={markPaid.isPending}
+                        <button onClick={() => { setPayTarget(inc); setPayForm({ paymentMode:'BANK', paymentRef:'', paymentRemarks:'' }); }} disabled={markPaid.isPending}
                           className="px-3 py-1.5 bg-blue-100 text-blue-700 text-xs rounded-lg hover:bg-blue-200 font-medium disabled:opacity-50">
                           Mark Paid
                         </button>
@@ -290,6 +323,75 @@ export default function FinanceDashboard() {
           </div>
         </div>
       )}
+
+      {/* ── Payout Details Modal ── */}
+      {payTarget && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={() => setPayTarget(null)}>
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-6" onClick={e => e.stopPropagation()}>
+            <h3 className="font-bold text-gray-900 text-lg mb-1">Record Payment</h3>
+            <p className="text-sm text-gray-500 mb-5">
+              {payTarget.agent?.name} · {payTarget.lead?.course?.name || 'Course'} · ₹{Number(payTarget.amount||payTarget.incentiveAmount||0).toLocaleString()}
+            </p>
+            <div className="space-y-3">
+              <div>
+                <label className="label">Payment Mode *</label>
+                <select className="input" value={payForm.paymentMode} onChange={e => setPayForm(f=>({...f,paymentMode:e.target.value}))}>
+                  {['BANK','UPI','CHEQUE','CASH'].map(m=><option key={m} value={m}>{m}</option>)}
+                </select>
+              </div>
+              <div>
+                <label className="label">Reference / Transaction ID</label>
+                <input className="input" value={payForm.paymentRef} onChange={e => setPayForm(f=>({...f,paymentRef:e.target.value}))} placeholder="e.g. UTR123456 / Cheque No." />
+              </div>
+              <div>
+                <label className="label">Remarks (optional)</label>
+                <input className="input" value={payForm.paymentRemarks} onChange={e => setPayForm(f=>({...f,paymentRemarks:e.target.value}))} placeholder="Any notes about this payment" />
+              </div>
+            </div>
+            <div className="flex gap-3 mt-5">
+              <button onClick={() => setPayTarget(null)} className="btn-secondary flex-1">Cancel</button>
+              <button onClick={() => markPaid.mutate({ id: payTarget.id, details: payForm })}
+                disabled={markPaid.isPending}
+                className="btn-primary flex-1">
+                {markPaid.isPending ? 'Processing...' : 'Confirm Payment'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── Bulk Pay Modal ── */}
+      {showBulkPay && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={() => setShowBulkPay(false)}>
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-6" onClick={e => e.stopPropagation()}>
+            <h3 className="font-bold text-gray-900 text-lg mb-1">Bulk Payment</h3>
+            <p className="text-sm text-gray-500 mb-5">Recording payment for {selectedIds.size} incentives</p>
+            <div className="space-y-3">
+              <div>
+                <label className="label">Payment Mode *</label>
+                <select className="input" value={bulkPayForm.paymentMode} onChange={e => setBulkPayForm(f=>({...f,paymentMode:e.target.value}))}>
+                  {['BANK','UPI','CHEQUE','CASH'].map(m=><option key={m} value={m}>{m}</option>)}
+                </select>
+              </div>
+              <div>
+                <label className="label">Reference / Transaction ID</label>
+                <input className="input" value={bulkPayForm.paymentRef} onChange={e => setBulkPayForm(f=>({...f,paymentRef:e.target.value}))} placeholder="Batch payment reference" />
+              </div>
+              <div>
+                <label className="label">Remarks</label>
+                <input className="input" value={bulkPayForm.paymentRemarks} onChange={e => setBulkPayForm(f=>({...f,paymentRemarks:e.target.value}))} placeholder="e.g. May 2026 batch payout" />
+              </div>
+            </div>
+            <div className="flex gap-3 mt-5">
+              <button onClick={() => setShowBulkPay(false)} className="btn-secondary flex-1">Cancel</button>
+              <button onClick={bulkMarkPaid} disabled={markPaid.isPending} className="btn-primary flex-1">
+                Pay {selectedIds.size} Incentives
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }

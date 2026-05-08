@@ -297,6 +297,9 @@ model IncentiveRecord {
   isLocked          Boolean         @default(false)
   lockedAt          DateTime?
   paidAt            DateTime?
+  paymentMode       String?   // BANK / UPI / CHEQUE / CASH
+  paymentRef        String?   // transaction ref / cheque no
+  paymentRemarks    String?
   
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt

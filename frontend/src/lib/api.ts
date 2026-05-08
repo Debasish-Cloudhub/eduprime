@@ -39,6 +39,8 @@ export default api;
 
 // ─── Auth ─────────────────────────────────────────────────────────────────────
 export const authApi = {
+  updateMe: (dto: any) => api.patch('/auth/me', dto),
+  changePassword: (oldPassword: string, newPassword: string) => api.post('/auth/change-password', { oldPassword, newPassword }),
   login: (email: string, password: string) => api.post('/auth/login', { email, password }),
   register: (dto: any) => api.post('/auth/register', dto),
   me: () => api.get('/auth/me'),
@@ -79,7 +81,7 @@ export const incentivesApi = {
   preview: (courseId: string) => api.get(`/incentives/preview/${courseId}`),
   myIncentives: (params?: any) => api.get('/incentives/my', { params }),
   getAll: (params?: any) => api.get('/incentives', { params }),
-  markPaid: (id: string) => api.patch(`/incentives/${id}/mark-paid`),
+  markPaid: (id: string, details?: any) => api.patch(`/incentives/${id}/mark-paid`, details || {}),
 };
 
 // ─── Expenses ────────────────────────────────────────────────────────────────

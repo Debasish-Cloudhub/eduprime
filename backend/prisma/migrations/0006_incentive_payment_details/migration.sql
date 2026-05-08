@@ -1,0 +1,3 @@
+ALTER TABLE "Incentive" ADD COLUMN IF NOT EXISTS "paymentMode" TEXT;
+ALTER TABLE "Incentive" ADD COLUMN IF NOT EXISTS "paymentRef" TEXT;
+ALTER TABLE "Incentive" ADD COLUMN IF NOT EXISTS "paymentRemarks" TEXT;

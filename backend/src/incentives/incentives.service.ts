@@ -179,10 +179,10 @@ export class IncentivesService {
     };
   }
 
-  async markPaid(id: string) {
+  async markPaid(id: string, details?: { paymentMode?: string; paymentRef?: string; paymentRemarks?: string }) {
     return this.prisma.incentiveRecord.update({
       where: { id },
-      data: { paidAt: new Date() },
+      data: { paidAt: new Date(), paymentMode: details?.paymentMode, paymentRef: details?.paymentRef, paymentRemarks: details?.paymentRemarks },
     });
   }
 
