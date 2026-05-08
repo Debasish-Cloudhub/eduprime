@@ -6,7 +6,7 @@ import Topbar from '@/components/ui/Topbar';
 import StatusBadge from '@/components/ui/StatusBadge';
 import { toast } from 'sonner';
 import { exportToExcel, exportToPDF } from '@/lib/export';
-import { Plus, Search, Filter, RefreshCw, Eye, UserCheck , Trash2} from 'lucide-react';
+import { Plus, Search, Filter, RefreshCw, Eye, UserCheck, Trash2, FileDown } from 'lucide-react';
 import Link from 'next/link';
 
 const STATUSES = ['NEW','INITIATED','IN_PROGRESS','DOCS_SUBMITTED','OFFER_RECEIVED','ENROLLED','WON','LOST'];
@@ -77,6 +77,14 @@ export default function AdminLeadsPage() {
           </select>
           <button onClick={() => qc.invalidateQueries({ queryKey: ['leads'] })} className="btn-secondary">
             <RefreshCw size={16} />
+          </button>
+          <button onClick={exportLeadsExcel}
+            className="flex items-center gap-1.5 px-3 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-600 hover:bg-gray-50 font-medium">
+            <FileDown size={15}/> Excel
+          </button>
+          <button onClick={exportLeadsPDF}
+            className="flex items-center gap-1.5 px-3 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-600 hover:bg-gray-50 font-medium">
+            <FileDown size={15}/> PDF
           </button>
           <button onClick={() => setShowCreate(true)} className="btn-primary flex items-center gap-2">
             <Plus size={16} /> New Lead

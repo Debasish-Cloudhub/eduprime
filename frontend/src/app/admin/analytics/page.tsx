@@ -16,7 +16,7 @@ export default function AdminAnalyticsPage() {
   const [agentId, setAgentId] = useState<string>('');
   const [year, setYear] = useState(new Date().getFullYear());
 
-  const { data: funnel } = useQuery({ queryKey: ['funnel', agentId], queryFn: () => analyticsApi.funnel().then(r => r.data) });
+  const { data: funnel } = useQuery({ queryKey: ['funnel', agentId], queryFn: () => analyticsApi.funnel(agentId || undefined).then(r => r.data) });
   const { data: sources } = useQuery({ queryKey: ['sources'], queryFn: () => analyticsApi.conversionBySource().then(r => r.data) });
   const { data: rvE } = useQuery({ queryKey: ['rve', year], queryFn: () => analyticsApi.revenueVsExpense(year).then(r => r.data) });
   const { data: leaderboard } = useQuery({ queryKey: ['leaderboard'], queryFn: () => analyticsApi.leaderboard().then(r => r.data) });
@@ -48,6 +48,19 @@ export default function AdminAnalyticsPage() {
               <Line type="monotone" dataKey="won" stroke="#10b981" strokeWidth={2} dot={false} name="Won" />
             </LineChart>
           </ResponsiveContainer>
+        </div>
+
+        {/* Agent Filter */}
+        <div className="flex items-center gap-3 mb-5 bg-white rounded-xl border border-gray-100 p-3 shadow-sm">
+          <span className="text-sm font-medium text-gray-600">Filter by Agent:</span>
+          <select value={agentId} onChange={e => setAgentId(e.target.value)}
+            className="border border-gray-200 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-brand-400 flex-1 max-w-xs">
+            <option value="">All Agents</option>
+            {(agentsList?.data || agentsList || []).map((a:any) => (
+              <option key={a.id} value={a.id}>{a.name}</option>
+            ))}
+          </select>
+          {agentId && <button onClick={() => setAgentId('')} className="text-xs text-gray-400 hover:text-red-500">Clear</button>}
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
