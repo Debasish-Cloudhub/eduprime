@@ -85,7 +85,7 @@ export class LeadsService {
         priority: dto.priority || 1,
         notes: dto.notes,
         tags: dto.tags || [],
-        agentId: dto.agentId,
+        agentId: dto.agentId || actorId,  // default to creating user
         status: 'NEW',
         lastActivityAt: new Date(),
       },

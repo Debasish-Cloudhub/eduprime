@@ -70,6 +70,13 @@ export class IncentivesController {
     return this.incentivesService.delete(id);
   }
 
+  @Post()
+  @Roles('ADMIN')
+  @ApiOperation({ summary: 'Create incentive manually (admin only)' })
+  createManual(@Body() dto: any) {
+    return this.incentivesService.createManual(dto);
+  }
+
   @Post('config')
   @Roles('ADMIN')
   @ApiOperation({ summary: 'Update incentive config (e.g. DEFAULT_INCENTIVE_PCT)' })
