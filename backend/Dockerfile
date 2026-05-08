@@ -4,13 +4,13 @@ RUN apk add --no-cache openssl
 
 WORKDIR /app
 
+# Force fresh build - invalidates ALL layers below including npm ci
+ARG CACHEBUST=20260508091020
+
 COPY package*.json ./
 RUN npm ci
 
 COPY . .
-
-# Force fresh build - no cache
-ARG CACHEBUST=20260501075141
 
 RUN npx prisma generate
 RUN npm run build
