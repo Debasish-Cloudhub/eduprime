@@ -114,9 +114,6 @@ export class IncentivesService {
             wonAt: true,
           },
         },
-        course: {
-          select: { id: true, name: true },
-        },
       },
       orderBy: { createdAt: 'desc' },
     });
@@ -167,7 +164,6 @@ export class IncentivesService {
         include: {
           agent: { select: { id: true, name: true, email: true } },
           lead: { select: { id: true, studentName: true, status: true } },
-          course: { select: { id: true, name: true } },
         },
         orderBy: { createdAt: 'desc' },
       }),
