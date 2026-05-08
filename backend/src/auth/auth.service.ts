@@ -126,6 +126,25 @@ export class AuthService {
     results.push('Course.country ok');
     await this.prisma.$executeRawUnsafe(`ALTER TABLE "College" ADD COLUMN IF NOT EXISTS "currencyType" "CurrencyType" NOT NULL DEFAULT 'INR'`);
     results.push('College.currencyType ok');
+
+    // Migration 0006: incentive payment details
+    await this.prisma.$executeRawUnsafe(`ALTER TABLE "IncentiveRecord" ADD COLUMN IF NOT EXISTS "paymentMode" TEXT`);
+    await this.prisma.$executeRawUnsafe(`ALTER TABLE "IncentiveRecord" ADD COLUMN IF NOT EXISTS "paymentRef" TEXT`);
+    await this.prisma.$executeRawUnsafe(`ALTER TABLE "IncentiveRecord" ADD COLUMN IF NOT EXISTS "paymentRemarks" TEXT`);
+    results.push('Migration 0006: payment details ok');
+
+    // Migration 0007: make IncentiveRecord fields optional for manual records
+    await this.prisma.$executeRawUnsafe(`ALTER TABLE "IncentiveRecord" ALTER COLUMN "leadId" DROP NOT NULL`);
+    await this.prisma.$executeRawUnsafe(`ALTER TABLE "IncentiveRecord" ALTER COLUMN "courseId" DROP NOT NULL`);
+    await this.prisma.$executeRawUnsafe(`ALTER TABLE "IncentiveRecord" ALTER COLUMN "feesAtClosure" DROP NOT NULL`);
+    await this.prisma.$executeRawUnsafe(`ALTER TABLE "IncentiveRecord" ALTER COLUMN "incentiveSource" DROP NOT NULL`);
+    await this.prisma.$executeRawUnsafe(`ALTER TABLE "IncentiveRecord" ADD COLUMN IF NOT EXISTS "incentiveType" TEXT`);
+    await this.prisma.$executeRawUnsafe(`ALTER TABLE "Lead" ALTER COLUMN "studentPhone" DROP NOT NULL`);
+    // Drop unique constraint if exists, add partial unique index
+    await this.prisma.$executeRawUnsafe(`ALTER TABLE "IncentiveRecord" DROP CONSTRAINT IF EXISTS "IncentiveRecord_leadId_key"`);
+    await this.prisma.$executeRawUnsafe(`CREATE UNIQUE INDEX IF NOT EXISTS "IncentiveRecord_leadId_unique" ON "IncentiveRecord"("leadId") WHERE "leadId" IS NOT NULL`);
+    results.push('Migration 0007: optional fields ok');
+
     return results;
   }
 
