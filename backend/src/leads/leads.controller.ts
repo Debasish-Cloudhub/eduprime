@@ -113,9 +113,9 @@ export class LeadsController {
   }
 
   @Delete(':id')
-  @Roles('ADMIN')
-  @ApiOperation({ summary: 'Delete a lead (Admin only)' })
-  delete(@Param('id') id: string) {
-    return this.leadsService.delete(id);
+  @Roles('ADMIN', 'SALES_AGENT')
+  @ApiOperation({ summary: 'Delete a lead (Admin or own Sales Agent)' })
+  delete(@Param('id') id: string, @Request() req: any) {
+    return this.leadsService.delete(id, req.user.id, req.user.role);
   }
 }

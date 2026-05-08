@@ -346,8 +346,12 @@ export class LeadsService {
     return this.incentivesService.calculatePreview(lead.courseId);
   }
 
-  async delete(id: string) {
-    await this.findOne(id);
+  async delete(id: string, actorId?: string, actorRole?: string) {
+    const lead = await this.findOne(id);
+    // Sales agents can only delete their own leads
+    if (actorRole === 'SALES_AGENT' && lead.agentId !== actorId) {
+      throw new ForbiddenException('You can only delete your own leads');
+    }
     await this.prisma.leadActivity.deleteMany({ where: { leadId: id } });
     await this.prisma.lead.delete({ where: { id } });
     return { message: 'Lead deleted' };
