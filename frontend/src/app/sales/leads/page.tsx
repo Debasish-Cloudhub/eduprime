@@ -5,7 +5,7 @@ import { leadsApi, coursesApi } from '@/lib/api';
 import Topbar from '@/components/ui/Topbar';
 import StatusBadge from '@/components/ui/StatusBadge';
 import { toast } from 'sonner';
-import { Eye, ArrowRight, IndianRupee, Plus, Download, FileSpreadsheet, FileText, X } from 'lucide-react';
+import { Eye, ArrowRight, IndianRupee, Plus, Download, FileSpreadsheet, FileText, X, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import { exportToExcel, exportToPDF } from '@/lib/export';
 
@@ -24,6 +24,7 @@ export default function SalesLeadsPage() {
   const [search, setSearch]     = useState('');
   const [page, setPage]         = useState(1);
   const [showAdd, setShowAdd]   = useState(false);
+  const [deleteId, setDeleteId]  = useState<string|null>(null);
   const [form, setForm]         = useState(emptyForm);
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }));
 
@@ -54,6 +55,12 @@ export default function SalesLeadsPage() {
       setForm(emptyForm);
     },
     onError: (e: any) => toast.error(e?.response?.data?.message || 'Failed to create lead'),
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: (id: string) => leadsApi.delete(id),
+    onSuccess: () => { qc.invalidateQueries({ queryKey:['my-leads'] }); toast.success('Lead deleted'); setDeleteId(null); },
+    onError: (e:any) => toast.error(e?.response?.data?.message || 'Delete failed'),
   });
 
   const transitionMutation = useMutation({
@@ -174,6 +181,10 @@ export default function SalesLeadsPage() {
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-1">
                       <Link href={`/sales/leads/${lead.id}`} className="p-1.5 rounded hover:bg-gray-100 text-gray-500"><Eye size={14} /></Link>
+                      <button onClick={() => setDeleteId(lead.id)}
+                        className="p-1.5 rounded hover:bg-red-50 text-red-400 hover:text-red-600" title="Delete lead">
+                        <Trash2 size={14}/>
+                      </button>
                       {NEXT_STATUS[lead.status] && (
                         <button
                           onClick={() => transitionMutation.mutate({ id: lead.id, toStatus: NEXT_STATUS[lead.status] })}
@@ -268,6 +279,24 @@ export default function SalesLeadsPage() {
           </div>
         </div>
       )}
+
+      {/* Delete Lead Confirm */}
+      {deleteId && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={() => setDeleteId(null)}>
+          <div className="bg-white rounded-2xl shadow-xl p-6 w-full max-w-sm" onClick={e => e.stopPropagation()}>
+            <h3 className="font-bold text-gray-900 mb-2">Delete Lead?</h3>
+            <p className="text-gray-500 text-sm mb-5">This will permanently delete the lead and all associated notes. This cannot be undone.</p>
+            <div className="flex gap-3">
+              <button onClick={() => setDeleteId(null)} className="btn-secondary flex-1">Cancel</button>
+              <button onClick={() => deleteMutation.mutate(deleteId!)} disabled={deleteMutation.isPending}
+                className="flex-1 py-2.5 bg-red-600 text-white font-semibold rounded-xl hover:bg-red-700 disabled:opacity-50">
+                {deleteMutation.isPending ? 'Deleting...' : 'Delete Lead'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }

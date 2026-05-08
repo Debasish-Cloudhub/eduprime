@@ -16,6 +16,10 @@ export default function FinanceDashboard() {
   // Payout modal
   const [payTarget, setPayTarget]     = useState<any>(null);
   const [payForm, setPayForm]         = useState({ paymentMode: 'BANK', paymentRef: '', paymentRemarks: '' });
+  // Incentive actions
+  const [incRejectTarget, setIncRejectTarget] = useState<any>(null);
+  const [incRejectReason, setIncRejectReason] = useState('');
+  const [incDeleteId, setIncDeleteId]         = useState<string|null>(null);
   // Bulk select
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [bulkPayForm, setBulkPayForm] = useState({ paymentMode: 'BANK', paymentRef: '', paymentRemarks: '' });
@@ -41,6 +45,19 @@ export default function FinanceDashboard() {
       setRejectReason('');
     },
     onError: (e: any) => toast.error(e?.response?.data?.message || 'Reject failed'),
+  });
+
+  const approveInc = useMutation({
+    mutationFn: (id: string) => incentivesApi.approve(id),
+    onSuccess: () => { qc.invalidateQueries({ queryKey:['incentives-all'] }); toast.success('Incentive approved & locked'); },
+  });
+  const rejectInc = useMutation({
+    mutationFn: ({id,reason}:{id:string;reason:string}) => incentivesApi.reject(id, reason),
+    onSuccess: () => { qc.invalidateQueries({ queryKey:['incentives-all'] }); toast.success('Incentive rejected'); setIncRejectTarget(null); setIncRejectReason(''); },
+  });
+  const deleteInc = useMutation({
+    mutationFn: (id: string) => incentivesApi.delete(id),
+    onSuccess: () => { qc.invalidateQueries({ queryKey:['incentives-all'] }); toast.success('Incentive deleted'); setIncDeleteId(null); },
   });
 
   const markPaid = useMutation({
@@ -386,6 +403,45 @@ export default function FinanceDashboard() {
               <button onClick={() => setShowBulkPay(false)} className="btn-secondary flex-1">Cancel</button>
               <button onClick={bulkMarkPaid} disabled={markPaid.isPending} className="btn-primary flex-1">
                 Pay {selectedIds.size} Incentives
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+
+      {/* Reject Incentive Modal */}
+      {incRejectTarget && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={() => setIncRejectTarget(null)}>
+          <div className="bg-white rounded-2xl shadow-xl p-6 w-full max-w-sm" onClick={e => e.stopPropagation()}>
+            <h3 className="font-bold text-gray-900 mb-1">Reject Incentive</h3>
+            <p className="text-sm text-gray-500 mb-4">{incRejectTarget.agent?.name} · ₹{Number(incRejectTarget.amount||incRejectTarget.incentiveAmount||0).toLocaleString()}</p>
+            <label className="label">Rejection Reason</label>
+            <textarea className="input h-20 resize-none mb-4" value={incRejectReason}
+              onChange={e => setIncRejectReason(e.target.value)} placeholder="Why is this incentive being rejected?" />
+            <div className="flex gap-3">
+              <button onClick={() => setIncRejectTarget(null)} className="btn-secondary flex-1">Cancel</button>
+              <button onClick={() => rejectInc.mutate({ id: incRejectTarget.id, reason: incRejectReason })}
+                disabled={!incRejectReason.trim() || rejectInc.isPending}
+                className="flex-1 py-2.5 bg-amber-600 text-white font-semibold rounded-xl hover:bg-amber-700 disabled:opacity-50">
+                Reject
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Incentive Confirm */}
+      {incDeleteId && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={() => setIncDeleteId(null)}>
+          <div className="bg-white rounded-2xl shadow-xl p-6 w-full max-w-sm" onClick={e => e.stopPropagation()}>
+            <h3 className="font-bold text-gray-900 mb-2">Delete Incentive?</h3>
+            <p className="text-gray-500 text-sm mb-5">This permanently removes the incentive record. This cannot be undone.</p>
+            <div className="flex gap-3">
+              <button onClick={() => setIncDeleteId(null)} className="btn-secondary flex-1">Cancel</button>
+              <button onClick={() => deleteInc.mutate(incDeleteId!)} disabled={deleteInc.isPending}
+                className="flex-1 py-2.5 bg-red-600 text-white font-semibold rounded-xl hover:bg-red-700 disabled:opacity-50">
+                {deleteInc.isPending ? 'Deleting...' : 'Delete'}
               </button>
             </div>
           </div>

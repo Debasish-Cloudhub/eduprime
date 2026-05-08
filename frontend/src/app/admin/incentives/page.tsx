@@ -5,15 +5,23 @@ import { incentivesApi } from '@/lib/api';
 import Topbar from '@/components/ui/Topbar';
 import { toast } from 'sonner';
 import { exportToExcel, exportToPDF } from '@/lib/export';
-import { FileDown, DollarSign, Lock, CheckCircle } from 'lucide-react';
+import { FileDown, DollarSign, Trash2, Plus, Lock, CheckCircle } from 'lucide-react';
 import { format } from 'date-fns';
 import api from '@/lib/api';
 
 export default function AdminIncentivesPage() {
   const qc = useQueryClient();
-  const [filter, setFilter] = useState({ isPaid: '', isLocked: 'true', page: 1 });
+  const [filter, setFilter]         = useState({ isPaid: '', isLocked: 'true', page: 1 });
+  const [showCreate, setShowCreate] = useState(false);
+  const [deleteId, setDeleteId]     = useState<string|null>(null);
+  const [createForm, setCreateForm] = useState({ agentId:'', amount:'', incentiveType:'MANUAL', notes:'' });
   const [configPct, setConfigPct] = useState('');
   const [showConfig, setShowConfig] = useState(false);
+
+  const { data: agents } = useQuery({
+    queryKey: ['agents'],
+    queryFn: () => api.get('/users?role=SALES_AGENT&limit=50').then(r => r.data),
+  });
 
   const { data, isLoading } = useQuery({
     queryKey: ['incentives', filter],
@@ -28,6 +36,17 @@ export default function AdminIncentivesPage() {
   const markPaidMutation = useMutation({
     mutationFn: (id: string) => incentivesApi.markPaid(id),
     onSuccess: () => { toast.success('Marked as paid!'); qc.invalidateQueries({ queryKey: ['incentives'] }); },
+  });
+
+  const createMutation = useMutation({
+    mutationFn: () => incentivesApi.createManual({ ...createForm, amount: Number(createForm.amount) }),
+    onSuccess: () => { qc.invalidateQueries({ queryKey:['incentives'] }); toast.success('Incentive created!'); setShowCreate(false); setCreateForm({ agentId:'', amount:'', incentiveType:'MANUAL', notes:'' }); },
+    onError: (e:any) => toast.error(e?.response?.data?.message || 'Create failed'),
+  });
+  const deleteMutation = useMutation({
+    mutationFn: (id: string) => incentivesApi.delete(id),
+    onSuccess: () => { qc.invalidateQueries({ queryKey:['incentives'] }); toast.success('Incentive deleted'); setDeleteId(null); },
+    onError: () => toast.error('Delete failed'),
   });
 
   const updateConfigMutation = useMutation({
@@ -80,6 +99,10 @@ export default function AdminIncentivesPage() {
         </div>
 
         <div className="flex justify-end gap-2 mb-3">
+          <button onClick={() => setShowCreate(true)}
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-brand-600 text-white rounded-lg text-sm hover:bg-brand-700 font-medium">
+            + Add Incentive
+          </button>
           <button onClick={exportExcel} className="flex items-center gap-1.5 px-3 py-1.5 border border-gray-200 text-gray-600 rounded-lg text-sm hover:bg-gray-50"><FileDown size={14}/> Excel</button>
           <button onClick={exportPDF}   className="flex items-center gap-1.5 px-3 py-1.5 border border-gray-200 text-gray-600 rounded-lg text-sm hover:bg-gray-50"><FileDown size={14}/> PDF</button>
         </div>
@@ -132,9 +155,15 @@ export default function AdminIncentivesPage() {
                   </td>
                   <td className="px-4 py-3">
                     {r.isLocked && !r.paidAt && (
-                      <button onClick={() => markPaidMutation.mutate(r.id)} className="btn-primary text-xs py-1 px-2">
-                        Mark Paid
-                      </button>
+                      <div className="flex items-center gap-1">
+                        <button onClick={() => markPaidMutation.mutate(r.id)} className="btn-primary text-xs py-1 px-2">
+                          Mark Paid
+                        </button>
+                        <button onClick={() => setDeleteId(r.id)}
+                          className="p-1 rounded hover:bg-red-50 text-red-400 hover:text-red-600" title="Delete">
+                          <Trash2 size={13}/>
+                        </button>
+                      </div>
                     )}
                   </td>
                 </tr>
@@ -169,6 +198,65 @@ export default function AdminIncentivesPage() {
           </div>
         </div>
       )}
+
+      {/* Create Manual Incentive */}
+      {showCreate && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={() => setShowCreate(false)}>
+          <div className="bg-white rounded-2xl shadow-xl p-6 w-full max-w-md" onClick={e => e.stopPropagation()}>
+            <h3 className="font-bold text-gray-900 text-lg mb-4">Add Incentive Manually</h3>
+            <div className="space-y-3">
+              <div>
+                <label className="label">Sales Agent *</label>
+                <select className="input" value={createForm.agentId} onChange={e => setCreateForm(f=>({...f,agentId:e.target.value}))}>
+                  <option value="">Select agent...</option>
+                  {(agents?.data || agents || []).map((a:any) => <option key={a.id} value={a.id}>{a.name}</option>)}
+                </select>
+              </div>
+              <div>
+                <label className="label">Amount (₹) *</label>
+                <input className="input" type="number" min="0" value={createForm.amount}
+                  onChange={e => setCreateForm(f=>({...f,amount:e.target.value}))} placeholder="e.g. 5000" />
+              </div>
+              <div>
+                <label className="label">Type</label>
+                <select className="input" value={createForm.incentiveType} onChange={e => setCreateForm(f=>({...f,incentiveType:e.target.value}))}>
+                  {['MANUAL','BONUS','CORRECTION','REFERRAL','SPECIAL'].map(t=><option key={t} value={t}>{t}</option>)}
+                </select>
+              </div>
+              <div>
+                <label className="label">Notes</label>
+                <input className="input" value={createForm.notes} onChange={e => setCreateForm(f=>({...f,notes:e.target.value}))} placeholder="Reason for manual incentive" />
+              </div>
+            </div>
+            <div className="flex gap-3 mt-5">
+              <button onClick={() => setShowCreate(false)} className="btn-secondary flex-1">Cancel</button>
+              <button onClick={() => createMutation.mutate()}
+                disabled={!createForm.agentId || !createForm.amount || createMutation.isPending}
+                className="btn-primary flex-1">
+                {createMutation.isPending ? 'Creating...' : 'Create Incentive'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Incentive Confirm */}
+      {deleteId && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={() => setDeleteId(null)}>
+          <div className="bg-white rounded-2xl shadow-xl p-6 w-full max-w-sm" onClick={e => e.stopPropagation()}>
+            <h3 className="font-bold text-gray-900 mb-2">Delete Incentive?</h3>
+            <p className="text-gray-500 text-sm mb-5">This permanently removes the incentive record. Cannot be undone.</p>
+            <div className="flex gap-3">
+              <button onClick={() => setDeleteId(null)} className="btn-secondary flex-1">Cancel</button>
+              <button onClick={() => deleteMutation.mutate(deleteId!)} disabled={deleteMutation.isPending}
+                className="flex-1 py-2.5 bg-red-600 text-white font-semibold rounded-xl hover:bg-red-700 disabled:opacity-50">
+                {deleteMutation.isPending ? 'Deleting...' : 'Delete'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }

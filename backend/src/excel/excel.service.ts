@@ -224,4 +224,15 @@ export class ExcelService {
     ]);
     return { data: uploads, meta: { total, page, limit } };
   }
+  async clearOldHistory(keepLast: number = 5) {
+    const records = await this.prisma.excelUpload.findMany({
+      orderBy: { createdAt: 'desc' },
+      select: { id: true },
+    });
+    if (records.length <= keepLast) return { deleted: 0, kept: records.length };
+    const toDelete = records.slice(keepLast).map(r => r.id);
+    await this.prisma.excelUpload.deleteMany({ where: { id: { in: toDelete } } });
+    return { deleted: toDelete.length, kept: keepLast };
+  }
+
 }

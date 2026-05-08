@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import api from '@/lib/api';
 import { analyticsApi } from '@/lib/api';
 import Topbar from '@/components/ui/Topbar';
 import {
@@ -12,12 +13,18 @@ const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov
 const PIE_COLORS = ['#3b82f6','#10b981','#f59e0b','#ef4444','#8b5cf6','#ec4899'];
 
 export default function AdminAnalyticsPage() {
+  const [agentId, setAgentId] = useState<string>('');
   const [year, setYear] = useState(new Date().getFullYear());
 
-  const { data: funnel } = useQuery({ queryKey: ['funnel'], queryFn: () => analyticsApi.funnel().then(r => r.data) });
+  const { data: funnel } = useQuery({ queryKey: ['funnel', agentId], queryFn: () => analyticsApi.funnel().then(r => r.data) });
   const { data: sources } = useQuery({ queryKey: ['sources'], queryFn: () => analyticsApi.conversionBySource().then(r => r.data) });
   const { data: rvE } = useQuery({ queryKey: ['rve', year], queryFn: () => analyticsApi.revenueVsExpense(year).then(r => r.data) });
   const { data: leaderboard } = useQuery({ queryKey: ['leaderboard'], queryFn: () => analyticsApi.leaderboard().then(r => r.data) });
+  const { data: agentsList } = useQuery({
+    queryKey: ['agents-list'],
+    queryFn: () => api.get('/users?role=SALES_AGENT&limit=50').then(r => r.data),
+  });
+
   const { data: trend } = useQuery({ queryKey: ['trend-60'], queryFn: () => analyticsApi.leadTrend({ days: 60 }).then(r => r.data) });
 
   const fmt = (n: number) => `₹${(n / 1000).toFixed(0)}k`;

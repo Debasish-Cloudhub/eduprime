@@ -5,7 +5,7 @@ import { expensesApi } from '@/lib/api';
 import Topbar from '@/components/ui/Topbar';
 import StatusBadge from '@/components/ui/StatusBadge';
 import { toast } from 'sonner';
-import { Plus, FileSpreadsheet, FileText, X } from 'lucide-react';
+import { Plus, Trash2, FileSpreadsheet, FileText, X } from 'lucide-react';
 import { format } from 'date-fns';
 import { exportToExcel, exportToPDF } from '@/lib/export';
 
@@ -15,6 +15,7 @@ export default function SalesExpensesPage() {
   const qc = useQueryClient();
   const now = new Date();
   const [showForm, setShowForm] = useState(false);
+  const [deleteId, setDeleteId] = useState<string|null>(null);
   const [form, setForm] = useState({
     category: 'TRAVEL', amount: '', description: '',
     month: String(now.getMonth() + 1), year: String(now.getFullYear()),
@@ -29,6 +30,12 @@ export default function SalesExpensesPage() {
   const { data: summary } = useQuery({
     queryKey: ['my-expense-summary', now.getMonth() + 1, now.getFullYear()],
     queryFn: () => expensesApi.getMySummary(now.getMonth() + 1, now.getFullYear()).then(r => r.data),
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: (id: string) => expensesApi.delete(id),
+    onSuccess: () => { qc.invalidateQueries({ queryKey:['my-expenses'] }); toast.success('Expense deleted'); setDeleteId(null); },
+    onError: () => toast.error('Delete failed — only PENDING expenses can be deleted'),
   });
 
   const createMutation = useMutation({
@@ -146,6 +153,14 @@ export default function SalesExpensesPage() {
                   <td className="px-4 py-3 text-gray-400 text-xs">
                     {exp.createdAt ? format(new Date(exp.createdAt), 'dd MMM yyyy') : '—'}
                   </td>
+                  <td className="px-4 py-3">
+                    {exp.status === 'PENDING' && (
+                      <button onClick={() => setDeleteId(exp.id)}
+                        className="p-1.5 rounded hover:bg-red-50 text-red-400 hover:text-red-600" title="Delete">
+                        <Trash2 size={14}/>
+                      </button>
+                    )}
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -206,6 +221,24 @@ export default function SalesExpensesPage() {
           </div>
         </div>
       )}
+
+      {/* Delete Confirm */}
+      {deleteId && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={() => setDeleteId(null)}>
+          <div className="bg-white rounded-2xl shadow-xl p-6 w-full max-w-sm" onClick={e => e.stopPropagation()}>
+            <h3 className="font-bold text-gray-900 mb-2">Delete Expense?</h3>
+            <p className="text-gray-500 text-sm mb-5">This will permanently remove the expense record. Only pending expenses can be deleted.</p>
+            <div className="flex gap-3">
+              <button onClick={() => setDeleteId(null)} className="btn-secondary flex-1">Cancel</button>
+              <button onClick={() => deleteMutation.mutate(deleteId)} disabled={deleteMutation.isPending}
+                className="flex-1 py-2.5 bg-red-600 text-white font-semibold rounded-xl hover:bg-red-700 disabled:opacity-50">
+                {deleteMutation.isPending ? 'Deleting...' : 'Delete'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }

@@ -49,6 +49,27 @@ export class IncentivesController {
     return this.incentivesService.markPaid(id, dto);
   }
 
+  @Patch(':id/approve')
+  @Roles('ADMIN', 'FINANCE')
+  @ApiOperation({ summary: 'Approve/lock incentive amount' })
+  approve(@Param('id') id: string) {
+    return this.incentivesService.approve(id);
+  }
+
+  @Patch(':id/reject')
+  @Roles('ADMIN', 'FINANCE')
+  @ApiOperation({ summary: 'Reject/dispute incentive' })
+  reject(@Param('id') id: string, @Body() dto: { reason?: string }) {
+    return this.incentivesService.reject(id, dto.reason);
+  }
+
+  @Delete(':id')
+  @Roles('ADMIN')
+  @ApiOperation({ summary: 'Delete incentive record (admin only)' })
+  delete(@Param('id') id: string) {
+    return this.incentivesService.delete(id);
+  }
+
   @Post('config')
   @Roles('ADMIN')
   @ApiOperation({ summary: 'Update incentive config (e.g. DEFAULT_INCENTIVE_PCT)' })

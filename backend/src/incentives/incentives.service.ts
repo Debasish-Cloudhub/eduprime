@@ -202,4 +202,37 @@ export class IncentivesService {
     });
     return config ? parseFloat(config.value) : 5; // default 5%
   }
+  async approve(id: string) {
+    return this.prisma.incentiveRecord.update({
+      where: { id },
+      data: { isLocked: true, lockedAt: new Date() },
+    });
+  }
+
+  async reject(id: string, reason?: string) {
+    // Mark as disputed — store reason in paymentRemarks, set not locked
+    return this.prisma.incentiveRecord.update({
+      where: { id },
+      data: { isLocked: false, paymentRemarks: reason ? `REJECTED: ${reason}` : 'REJECTED' },
+    });
+  }
+
+  async delete(id: string) {
+    return this.prisma.incentiveRecord.delete({ where: { id } });
+  }
+
+  async createManual(dto: { agentId: string; leadId?: string; amount: number; incentiveType?: string; notes?: string }) {
+    return this.prisma.incentiveRecord.create({
+      data: {
+        agentId: dto.agentId,
+        leadId: dto.leadId || null,
+        incentiveAmount: dto.amount,
+        incentiveType: dto.incentiveType || 'MANUAL',
+        isLocked: false,
+        paymentRemarks: dto.notes,
+      },
+      include: { agent: { select: { id: true, name: true } } },
+    });
+  }
+
 }

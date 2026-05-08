@@ -1,4 +1,5 @@
 'use client';
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { analyticsApi, slaApi } from '@/lib/api';
 import StatCard from '@/components/ui/StatCard';
@@ -29,7 +30,27 @@ function formatRelativeTime(date: string | null): string {
 }
 
 export default function AdminDashboard() {
-  const { data: dash }        = useQuery({ queryKey: ['dashboard'],  queryFn: () => analyticsApi.dashboard().then(r => r.data) });
+  const [dateRange, setDateRange] = useState<'today'|'week'|'month'|'all'>('all');
+
+  // Convert range to date params for backend
+  const getDateParams = () => {
+    const now = new Date();
+    if (dateRange === 'today') {
+      const start = new Date(now); start.setHours(0,0,0,0);
+      return { startDate: start.toISOString(), endDate: now.toISOString() };
+    }
+    if (dateRange === 'week') {
+      const start = new Date(now); start.setDate(now.getDate() - 7);
+      return { startDate: start.toISOString(), endDate: now.toISOString() };
+    }
+    if (dateRange === 'month') {
+      const start = new Date(now); start.setDate(1); start.setHours(0,0,0,0);
+      return { startDate: start.toISOString(), endDate: now.toISOString() };
+    }
+    return {};
+  };
+
+  const { data: dash }        = useQuery({ queryKey: ['dashboard', dateRange],  queryFn: () => analyticsApi.dashboard(getDateParams()).then(r => r.data) });
   const { data: funnel }      = useQuery({ queryKey: ['funnel'],     queryFn: () => analyticsApi.funnel().then(r => r.data) });
   const { data: leaderboard } = useQuery({ queryKey: ['leaderboard'],queryFn: () => analyticsApi.leaderboard().then(r => r.data) });
   const { data: trend }       = useQuery({ queryKey: ['trend'],      queryFn: () => analyticsApi.leadTrend({ days: 30 }).then(r => r.data) });
@@ -46,7 +67,17 @@ export default function AdminDashboard() {
 
         {/* ── ROW 1: Lead KPIs ─────────────────────────────────────────── */}
         <div>
-          <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-3">Lead Overview</p>
+          <div className="flex items-center justify-between mb-3">
+            <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest">Lead Overview</p>
+            <div className="flex bg-gray-100 rounded-xl p-1 gap-0.5">
+              {([['today','Today'],['week','7 Days'],['month','This Month'],['all','All Time']] as const).map(([val,label]) => (
+                <button key={val} onClick={() => setDateRange(val)}
+                  className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${dateRange===val ? 'bg-white shadow text-gray-900' : 'text-gray-500 hover:text-gray-700'}`}>
+                  {label}
+                </button>
+              ))}
+            </div>
+          </div>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             <StatCard title="Total Leads"      value={dash?.totalLeads      ?? '—'} icon={<Users size={20}/>}         color="blue"   />
             <StatCard title="Won"              value={dash?.wonLeads        ?? '—'} icon={<CheckCircle size={20}/>}   color="green"  />

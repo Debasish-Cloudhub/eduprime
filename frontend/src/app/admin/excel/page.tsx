@@ -17,7 +17,9 @@ export default function ExcelUploadPage() {
 
   const uploadMutation = useMutation({
     mutationFn: (file: File) => excelApi.upload(file).then(r => r.data),
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
+      // Auto-clear old history keeping last 5
+      try { await excelApi.clearHistory(); } catch {}
       setResult(data);
       toast.success(`Processed ${data.rowsProcessed} rows — ${data.rowsCreated} created, ${data.rowsUpdated} updated`);
       qc.invalidateQueries({ queryKey: ['excel-history'] });
@@ -109,7 +111,13 @@ export default function ExcelUploadPage() {
 
         {/* History */}
         <div className="card">
-          <h3 className="font-semibold text-gray-800 mb-4">Upload History</h3>
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="font-semibold text-gray-800">Upload History</h3>
+            <button onClick={async () => { await excelApi.clearHistory(); qc.invalidateQueries({queryKey:['excel-history']}); toast.success('Old history cleared'); }}
+              className="text-xs text-gray-400 hover:text-red-600 transition-colors px-2 py-1 rounded hover:bg-red-50">
+              Clear Old
+            </button>
+          </div>
           <div className="space-y-3">
             {history?.data?.map((h: any) => (
               <div key={h.id} className="flex items-center gap-4 py-3 border-b border-gray-50 last:border-0">

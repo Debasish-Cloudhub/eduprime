@@ -81,7 +81,11 @@ export const incentivesApi = {
   preview: (courseId: string) => api.get(`/incentives/preview/${courseId}`),
   myIncentives: (params?: any) => api.get('/incentives/my', { params }),
   getAll: (params?: any) => api.get('/incentives', { params }),
-  markPaid: (id: string, details?: any) => api.patch(`/incentives/${id}/mark-paid`, details || {}),
+  markPaid:     (id: string, details?: any) => api.patch(`/incentives/${id}/mark-paid`, details || {}),
+  approve:      (id: string)                  => api.patch(`/incentives/${id}/approve`),
+  reject:       (id: string, reason: string)   => api.patch(`/incentives/${id}/reject`, { reason }),
+  delete:       (id: string)                  => api.delete(`/incentives/${id}`),
+  createManual: (dto: any)                     => api.post('/incentives', dto),
 };
 
 // ─── Expenses ────────────────────────────────────────────────────────────────
@@ -89,6 +93,7 @@ export const expensesApi = {
   getAll: (params?: any) => api.get('/expenses', { params }),
   getOne: (id: string) => api.get(`/expenses/${id}`),
   create: (dto: any) => api.post('/expenses', dto),
+  delete:  (id: string) => api.delete(`/expenses/${id}`),
   approve: (id: string) => api.patch(`/expenses/${id}/approve`),
   reject: (id: string, reason: string) => api.patch(`/expenses/${id}/reject`, { reason }),
   getMonthlySummary: (year: number) => api.get('/expenses/monthly-summary', { params: { year } }),
@@ -97,7 +102,7 @@ export const expensesApi = {
 
 // ─── Analytics ───────────────────────────────────────────────────────────────
 export const analyticsApi = {
-  dashboard: () => api.get('/analytics/dashboard'),
+  dashboard: (params?: any) => api.get('/analytics/dashboard', { params }),
   funnel: (params?: any) => api.get('/analytics/funnel', { params }),
   conversionBySource: () => api.get('/analytics/conversion-by-source'),
   revenueVsExpense: (year: number) => api.get('/analytics/revenue-vs-expense', { params: { year } }),
@@ -113,7 +118,8 @@ export const excelApi = {
     return api.post('/excel/upload', fd, { headers: { 'Content-Type': 'multipart/form-data' } });
   },
   downloadTemplate: () => api.get('/excel/template', { responseType: 'blob' }),
-  getHistory: (params?: any) => api.get('/excel/history', { params }),
+  getHistory:   (params?: any) => api.get('/excel/history', { params }),
+  clearHistory: ()              => api.delete('/excel/history'),
 };
 
 // ─── Users ────────────────────────────────────────────────────────────────────

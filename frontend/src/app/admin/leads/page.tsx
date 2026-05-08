@@ -34,6 +34,27 @@ export default function AdminLeadsPage() {
     onSuccess: () => { toast.success('Lead assigned'); qc.invalidateQueries({ queryKey: ['leads'] }); setShowAssign(null); },
   });
 
+  const exportLeadsExcel = () => {
+    const rows = (data?.data || []).map((l: any) => ({
+      'Student': l.studentName, 'Phone': l.studentPhone||'', 'Email': l.studentEmail||'',
+      'City': l.city||'', 'Source': l.source||'', 'Status': l.status,
+      'Agent': l.agent?.name||'Unassigned', 'College': l.college?.name||'',
+      'Course': l.course?.name||'', 'SLA': l.slaStatus||'',
+      'Created': new Date(l.createdAt).toLocaleDateString('en-IN'),
+    }));
+    exportToExcel(rows, `All_Leads_${new Date().toISOString().slice(0,10)}`, 'Leads');
+    toast.success('Excel downloaded!');
+  };
+  const exportLeadsPDF = async () => {
+    const cols = ['Student','Phone','City','Status','Agent','College','SLA'];
+    const rows = (data?.data || []).map((l: any) => [
+      l.studentName, l.studentPhone||'', l.city||'', l.status,
+      l.agent?.name||'-', l.college?.name||'-', l.slaStatus||'',
+    ]);
+    await exportToPDF(cols, rows, 'All Leads — ISCC Digital', `All_Leads_${new Date().toISOString().slice(0,10)}`);
+    toast.success('PDF downloaded!');
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
       <Topbar title="Lead Management" />

@@ -1,5 +1,5 @@
 import {
-  Controller, Post, Get, Query, UseGuards, UseInterceptors,
+  Controller, Post, Get, Delete, Query, UseGuards, UseInterceptors,
   UploadedFile, Res, Request,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -43,5 +43,12 @@ export class ExcelController {
     return this.excelService.getUploadHistory(
       parseInt(page || '1'), parseInt(limit || '20'),
     );
+  }
+
+  @Delete('history')
+  @Roles('ADMIN')
+  @ApiOperation({ summary: 'Clear old Excel upload history (keep last 5)' })
+  async clearHistory() {
+    return this.excelService.clearOldHistory(5);
   }
 }
