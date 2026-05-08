@@ -142,7 +142,11 @@ export class LeadsService {
           agent: { select: { id: true, name: true, email: true } },
           college: { select: { id: true, name: true, city: true } },
           course: { select: { id: true, name: true, fees: true } },
-          incentiveRecord: true,
+          incentiveRecord: { select: {
+            id: true, incentiveAmount: true, incentiveSource: true, incentiveType: true,
+            isLocked: true, lockedAt: true, paidAt: true, paymentMode: true,
+            paymentRef: true, paymentRemarks: true, agentId: true, courseId: true,
+          } },
         },
       }),
     ]);
@@ -160,7 +164,11 @@ export class LeadsService {
         agent: { select: { id: true, name: true, email: true } },
         college: true,
         course: true,
-        incentiveRecord: true,
+        incentiveRecord: { select: {
+          id: true, incentiveAmount: true, incentiveSource: true, incentiveType: true,
+          isLocked: true, lockedAt: true, paidAt: true, paymentMode: true,
+          paymentRef: true, paymentRemarks: true, agentId: true, courseId: true,
+        } },
         activities: { orderBy: { createdAt: 'desc' }, take: 50 },
         documents: true,
       },
@@ -277,7 +285,11 @@ export class LeadsService {
       include: {
         college: { select: { id: true, name: true } },
         course: { select: { id: true, name: true } },
-        incentiveRecord: true,
+        incentiveRecord: { select: {
+          id: true, incentiveAmount: true, incentiveSource: true, incentiveType: true,
+          isLocked: true, lockedAt: true, paidAt: true, paymentMode: true,
+          paymentRef: true, paymentRemarks: true, agentId: true, courseId: true,
+        } },
       },
     });
 
