@@ -10,13 +10,13 @@ export default function StudentProfilePage() {
   const qc = useQueryClient();
   const { data: me, isLoading } = useQuery({ queryKey: ['me'], queryFn: () => authApi.me().then(r => r.data) });
 
-  const [form, setForm]       = useState({ name:'', phone:'', city:'', qualification:'' });
+  const [form, setForm]       = useState({ name:'', phone:'' });
   const [pwForm, setPwForm]   = useState({ oldPassword:'', newPassword:'', confirm:'' });
   const [showPw, setShowPw]   = useState(false);
   const [tab, setTab]         = useState<'profile'|'password'>('profile');
 
   useEffect(() => {
-    if (me) setForm({ name: me.name||'', phone: me.phone||'', city: me.city||'', qualification: me.qualification||'' });
+    if (me) setForm({ name: me.name||'', phone: me.phone||'' });
   }, [me]);
 
   const updateMutation = useMutation({
@@ -84,14 +84,7 @@ export default function StudentProfilePage() {
                 <label className="label flex items-center gap-1"><Phone size={13}/> Phone Number</label>
                 <input className="input" value={form.phone} onChange={e => set('phone', e.target.value)} placeholder="+91 98765 43210" />
               </div>
-              <div>
-                <label className="label flex items-center gap-1"><MapPin size={13}/> City</label>
-                <input className="input" value={form.city} onChange={e => set('city', e.target.value)} placeholder="Your city" />
-              </div>
-              <div>
-                <label className="label flex items-center gap-1"><GraduationCap size={13}/> Qualification</label>
-                <input className="input" value={form.qualification} onChange={e => set('qualification', e.target.value)} placeholder="e.g. B.Com, 12th Pass" />
-              </div>
+
             </div>
             <div className="pt-2">
               <label className="label flex items-center gap-1"><Mail size={13}/> Email (cannot be changed)</label>
